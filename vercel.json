@@ -1,0 +1,17 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/boringpunk-crypto-portal/:path*",
+      "destination": "/boringpunk-crypto-portal/:path*"
+    },
+    {
+      "source": "/",
+      "destination": "/boringpunk-crypto-portal/home.html"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/boringpunk-crypto-portal/:path*"
+    }
+  ]
+}
