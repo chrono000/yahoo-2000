@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Search Results | Digital Asset Terminal</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  /* Search-specific styles */
+  .search-box { background: #fff; border: 1px solid #a8a8a8; padding: 12px; margin-bottom: 10px; box-shadow: 1px 1px 0 #b8b8b8; }
+  .search-box .row { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+  .search-box input[type="text"] { flex: 1; font-family: inherit; font-size: 12px; padding: 4px 6px; border: 1px solid #888; box-shadow: inset 1px 1px 0 #d4d4d4; }
+  .search-box select { font-family: inherit; font-size: 11px; padding: 3px 4px; border: 1px solid #888; }
+  .search-box .sbtn { display: inline-block; padding: 3px 14px; background: linear-gradient(to bottom, #d4e8ff, #8ab4e8); border: 1px solid #4a7ac8; color: #002855; font-weight: bold; font-size: 11px; cursor: pointer; }
+  .search-box .sbtn:hover { background: linear-gradient(to bottom, #e8f4ff, #a0c4f4); }
+  .search-box .sbtn.ghost { background: linear-gradient(to bottom, #fff, #e0dcd4); border-color: #8a8a8a; color: #000; font-weight: normal; }
+  .search-box .filters { font-size: 10px; color: #555; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .search-box .filters label { display: flex; gap: 3px; align-items: center; }
+
+  .result-item { background: #fff; border: 1px solid #d8d8d8; padding: 8px 10px; margin-bottom: 6px; font-size: 11px; }
+  .result-item:hover { background: #ffffcc; border-color: #b88a30; }
+  .result-item .r-title { font-size: 12px; font-weight: bold; margin-bottom: 3px; }
+  .result-item .r-title a { font-size: 12px; }
+  .result-item .r-path { font-size: 10px; color: #2a5a10; margin-bottom: 3px; }
+  .result-item .r-snippet { font-size: 11px; color: #333; line-height: 1.4; }
+  .result-item .r-snippet b { color: #000; background: #fffce0; padding: 0 1px; }
+  .result-item .r-meta { font-size: 9px; color: #888; margin-top: 4px; display: flex; gap: 12px; }
+
+  .result-category { font-size: 10px; display: inline-block; padding: 1px 6px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid; margin-right: 6px; }
+  .result-category.coin { background: #ffe8b8; border-color: #b88a30; color: #5a3a00; }
+  .result-category.tx { background: #d4e8ff; border-color: #4a7ac8; color: #1a3a6b; }
+  .result-category.wallet { background: #eaf4e8; border-color: #6b9a3a; color: #2a5a10; }
+  .result-category.alert { background: #ffe4e4; border-color: #c86060; color: #8a0000; }
+
+  @media (max-width: 767px) {
+    .search-box { padding: 6px 8px; }
+    .search-box .row { gap: 4px; }
+    .search-box input[type="text"] { font-size: 11px; padding: 3px 5px; }
+    .search-box .sbtn { padding: 3px 10px; font-size: 10px; }
+    .search-box .filters { gap: 6px; font-size: 9px; }
+    .search-box .filters label { gap: 2px; }
+    .search-box .filters select { font-size: 9px; }
+    .result-item { padding: 6px 8px; margin-bottom: 4px; }
+    .result-item .r-title { font-size: 11px; }
+    .result-item .r-title a { font-size: 11px; }
+    .result-item .r-path { font-size: 9px; }
+    .result-item .r-snippet { font-size: 10px; }
+    .result-item .r-meta { font-size: 8px; gap: 8px; flex-wrap: wrap; }
+    .result-category { font-size: 8px; padding: 0 4px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="logo">₿</div>
+  <div class="title-area">
+    <div class="t1">Digital Asset Terminal</div>
+    <div class="t2">Enterprise Edition v4.1.0 &nbsp;|&nbsp; An Enterprise Digital Asset Management System</div>
+  </div>
+  <div class="user-area">
+    Welcome back, <span class="u1">A. Nakamoto</span><br/>
+    <a href="profile.html">My Profile</a> &nbsp;|&nbsp; <a href="#">Help</a> &nbsp;|&nbsp; <a href="home.html">Sign Out</a>
+  </div>
+</div>
+
+<div class="subnav">
+  <span class="tab"><a href="home.html" style="color:inherit;text-decoration:none;">Home</a></span>
+  <span class="tab"><a href="wallet.html" style="color:inherit;text-decoration:none;">Wallets</a></span>
+  <span class="tab"><a href="markets.html" style="color:inherit;text-decoration:none;">Markets</a></span>
+  <span class="tab"><a href="transactions.html" style="color:inherit;text-decoration:none;">Transactions</a></span>
+  <span class="tab"><a href="settings.html" style="color:inherit;text-decoration:none;">Settings</a></span>
+</div>
+
+<div class="breadcrumb">
+  <span class="breadcrumb-right">Results generated: 04/22/2026 09:48 AM | 0.23 seconds</span>
+  <a href="home.html">Home</a> <span class="sep">&gt;</span>
+  <span class="current">Search Results — "bitcoin"</span>
+</div>
+
+<div class="wrap">
+<div class="layout">
+
+  <!-- Left nav -->
+  <div class="left-col">
+
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Quick Navigation</span></div>
+      <div class="webpart-body" style="padding: 0;">
+        <ul class="nav-list">
+          <li class="section">My Workspace</li>
+          <li><a href="home.html">Home Dashboard</a></li>
+          <li><a href="wallet.html">My Wallets</a></li>
+          <li><a href="transactions.html">Transaction History</a></li>
+          <li><a href="#" class="current">Search...</a></li>
+
+          <li class="section">Wallets (5)</li>
+          <li><a href="wallet.html">⚡ Hot Wallet (BTC)</a></li>
+          <li><a href="#">🏠—S Cold Storage</a></li>
+          <li><a href="#">🏠O— DeFi Wallet</a></li>
+          <li><a href="#">🏠— Staking Pool</a></li>
+          <li><a href="#">💱 Exchange Account</a></li>
+
+          <li class="section">Tools</li>
+          <li><a href="#">Add New Wallet</a></li>
+          <li><a href="settings.html">Preferences</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Recent Searches</span></div>
+      <div class="webpart-body" style="font-size: 10px; line-height: 1.8;">
+        <a href="#">bitcoin</a> — just now<br/>
+        <a href="#">0xa3f8...2c41</a> — yesterday<br/>
+        <a href="#">staking rewards</a> — 2 days ago<br/>
+        <a href="#">ETH gas fee</a> — 3 days ago<br/>
+        <a href="#">DCA order</a> — Apr 18<br/>
+        <hr style="border: none; border-top: 1px dotted #c8c8c8; margin: 5px 0;"/>
+        <a href="#">Clear search history</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main -->
+  <div class="main-col">
+
+    <div class="section-heading">⚙️ Search Digital Asset Terminal</div>
+
+    <div class="search-box">
+      <div class="row">
+        <input type="text" id="globalSearch" value="bitcoin" placeholder="Search coins, transactions, wallet addresses, alerts..."/>
+        <a href="#" class="sbtn" style="text-decoration:none;" id="btnSearch">Search ⚙️</a>
+        <a href="#" class="sbtn ghost" style="text-decoration:none;" id="btnClear">Clear</a>
+      </div>
+      <div class="filters">
+        <span>Filter by:</span>
+        <label><input type="checkbox" checked/> Coins</label>
+        <label><input type="checkbox" checked/> Transactions</label>
+        <label><input type="checkbox" checked/> Wallets</label>
+        <label><input type="checkbox" checked/> Alerts</label>
+        <span style="margin-left: 10px;">Date range:</span>
+        <select><option>All time</option><option>Last 24h</option><option>Last 7 days</option><option>Last 30 days</option><option>Custom...</option></select>
+        <span style="margin-left: 10px;">Sort by:</span>
+        <select><option>Relevance</option><option>Date (newest)</option><option>Date (oldest)</option><option>Value (high—'low)</option></select>
+      </div>
+    </div>
+
+    <div style="font-size: 11px; color: #555; margin-bottom: 8px; padding: 0 2px;">
+      <b>14 results</b> found for "<b>bitcoin</b>" &nbsp;·&nbsp; across all categories &nbsp;·&nbsp; showing 1-10
+    </div>
+
+    <!-- Results -->
+    <div class="result-item">
+      <div class="r-title">
+        <span class="result-category coin">Coin</span>
+        <a href="coin.html">Bitcoin (BTC) — Market Analysis</a>
+      </div>
+      <div class="r-path">Markets —— Layer 1 —— Bitcoin (BTC)</div>
+      <div class="r-snippet">
+        <b>Bitcoin</b> (BTC) is the original and largest cryptocurrency by market capitalization. Created in 2009 by the pseudonymous Satoshi Nakamoto... Price: <b>$67,241.00</b> · Market Cap: $1.32T · Rank #1
+      </div>
+      <div class="r-meta">
+        <span>💱 $67,241.00</span>
+        <span>📊 Rank #1</span>
+        <span>⏱ Updated 2 min ago</span>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="r-title">
+        <span class="result-category wallet">Wallet</span>
+        <a href="wallet.html">Bitcoin Hot Wallet</a>
+      </div>
+      <div class="r-path">Wallets —— Active —— <b>Bitcoin</b> Hot Wallet</div>
+      <div class="r-snippet">
+        Primary trading wallet for <b>Bitcoin</b>. Balance: 0.4218 BTC (₿). Connected to Kraken exchange via API. Auto-sweep to cold storage when balance exceeds 0.5 BTC.
+      </div>
+      <div class="r-meta">
+        <span>💱 0.4218 BTC</span>
+        <span>⚡ Active</span>
+        <span>⏱ Last tx: 22 min ago</span>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="r-title">
+        <span class="result-category tx">Transaction</span>
+        <a href="tx-detail.html">Buy 0.0500 BTC @ $67,100 — Limit Order Filled</a>
+      </div>
+      <div class="r-path">Transactions —— Hot Wallet —— Buy —— <b>Bitcoin</b></div>
+      <div class="r-snippet">
+        Limit buy order for 0.0500 <b>Bitcoin</b> at $67,100 per BTC — filled via Kraken. Total: $3,355. Transaction hash: 0xa3f8...2c41. Status: 🛡️ Confirmed (6 confirmations).
+      </div>
+      <div class="r-meta">
+        <span>📦 Buy</span>
+        <span>💱 $3,355</span>
+        <span>⏱ 22 min ago</span>
+        <span>🔗 tx: 0xa3f8...2c41</span>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="r-title">
+        <span class="result-category tx">Transaction</span>
+        <a href="#">Sell 0.0300 BTC @ $68,450 — Market Order</a>
+      </div>
+      <div class="r-path">Transactions —— Hot Wallet —— Sell —— <b>Bitcoin</b></div>
+      <div class="r-snippet">
+        Market sell order for 0.0300 <b>Bitcoin</b> at $68,450 per BTC — executed via Kraken. Total: $2,054. Realized P/L: +$142. Transaction hash: 0xc7d2...4e18.
+      </div>
+      <div class="r-meta">
+        <span>⚡ Sell</span>
+        <span>💱 $2,054</span>
+        <span>⏱ Apr 18</span>
+        <span style="color: #2a5a10;">+$142 P/L</span>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="r-title">
+        <span class="result-category alert">Alert</span>
+        <a href="#">Price Alert: BTC above $70,000</a>
+      </div>
+      <div class="r-path">Alerts —— Active —— <b>Bitcoin</b> Price Alerts</div>
+      <div class="r-snippet">
+        <b>Bitcoin</b> price alert configured for upward breakout above $70,000. Current price: $67,241 (distance: +4.1%). Set 3 days ago. Status: Pending.
+      </div>
+      <div class="r-meta">
+        <span>🔔 Active</span>
+        <span>📈 Target: $70,000</span>
+        <span>⏱ Set Apr 19</span>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="r-title">
+        <span class="result-category alert">Alert</span>
+        <a href="#">Stop-Loss: BTC below $65,000</a>
+      </div>
+      <div class="r-path">Alerts —— Active —— <b>Bitcoin</b> Stop-Loss</div>
+      <div class="r-snippet">
+        <b>Bitcoin</b> stop-loss alert configured at $65,000. Current price: $67,241 (distance: -3.3%). Warning: with current volatility (-4.2%/hr), this level may be tested soon.
+      </div>
+      <div class="r-meta">
+        <span>⚡ Warning</span>
+        <span>📁— Target: $65,000</span>
+        <span>⏱ Set Apr 17</span>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="r-title">
+        <span class="result-category tx">Transaction</span>
+        <a href="#">DCA Buy 0.0200 BTC @ $66,800 — Recurring</a>
+      </div>
+      <div class="r-path">Transactions —— Hot Wallet —— DCA —— <b>Bitcoin</b></div>
+      <div class="r-snippet">
+        Weekly dollar-cost averaging order for <b>Bitcoin</b>: 0.0200 BTC purchased at $66,800. Total: $1,336. Part of recurring schedule ($100/week into BTC).
+      </div>
+      <div class="r-meta">
+        <span>📦 DCA</span>
+        <span>💱 $1,336</span>
+        <span>⏱ Apr 19</span>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="r-title">
+        <span class="result-category wallet">Wallet</span>
+        <a href="#">Cold Storage (Ledger) — Bitcoin</a>
+      </div>
+      <div class="r-path">Wallets —— Cold —— <b>Bitcoin</b> Cold Storage</div>
+      <div class="r-snippet">
+        Hardware wallet (Ledger Nano X) holding 1.0000 <b>Bitcoin</b> ($67,241) in cold storage. Last accessed: Mar 15, 2026. Security: seed phrase backed up, 2FA enabled.
+      </div>
+      <div class="r-meta">
+        <span>🏠—S Cold</span>
+        <span>💱 1.0000 BTC</span>
+        <span>⏱ Last access: Mar 15</span>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="r-title">
+        <span class="result-category tx">Transaction</span>
+        <a href="#">Swap 500 USDC —' 0.0074 BTC via Uniswap</a>
+      </div>
+      <div class="r-path">Transactions —— DeFi Wallet —— Swap —— <b>Bitcoin</b></div>
+      <div class="r-snippet">
+        DEX swap: 500 USDC —' 0.0074 Wrapped <b>Bitcoin</b> (WBTC) via Uniswap V3. Slippage: 0.12%. Gas cost: 0.003 ETH ($10.24). Pool: WBTC/USDC 0.3%.
+      </div>
+      <div class="r-meta">
+        <span>🔔 Swap</span>
+        <span>💱 $500</span>
+        <span>⏱ Apr 14</span>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="r-title">
+        <span class="result-category coin">Coin</span>
+        <a href="#">Wrapped Bitcoin (WBTC)</a>
+      </div>
+      <div class="r-path">Markets —— DeFi —— Wrapped <b>Bitcoin</b></div>
+      <div class="r-snippet">
+        ERC-20 tokenized <b>Bitcoin</b> on Ethereum. 1 WBTC = 1 BTC (₿). Used for DeFi participation — lending, liquidity provision, and yield farming with <b>Bitcoin</b> exposure on Ethereum.
+      </div>
+      <div class="r-meta">
+        <span>💱 $67,238</span>
+        <span>📊 Rank #17</span>
+        <span>🔗 ERC-20</span>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div style="background: #ece9d8; padding: 4px 8px; font-size: 10px; border: 1px solid #a8a8a8; margin-top: 6px;">
+      Showing 1-10 of 14 results &nbsp;|&nbsp;
+      <a href="#">—— Previous</a> &nbsp;
+      <b>1</b> &nbsp; <a href="#">2</a> &nbsp;
+      <a href="#">Next ——</a>
+      &nbsp;&nbsp; Results per page:
+      <select style="font-size: 10px; padding: 0;"><option>10</option><option>25</option><option>50</option></select>
+    </div>
+
+  </div>
+
+  <!-- Right sidebar -->
+  <div class="right-col">
+
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>📊 Search Summary</span></div>
+      <div class="webpart-body" style="font-size: 10px; line-height: 1.7;">
+        <b>14</b> total results<br/>
+        <hr style="border: none; border-top: 1px dotted #c8c8c8; margin: 5px 0;"/>
+        <b style="color:#5a3a00;">Coins:</b> 2 results<br/>
+        <b style="color:#1a3a6b;">Transactions:</b> 7 results<br/>
+        <b style="color:#2a5a10;">Wallets:</b> 3 results<br/>
+        <b style="color:#8a0000;">Alerts:</b> 2 results<br/>
+        <hr style="border: none; border-top: 1px dotted #c8c8c8; margin: 5px 0;"/>
+        Query time: <b>0.23s</b><br/>
+        Index: <b>847 transactions</b>, <b>12 coins</b>, <b>8 wallets</b>
+      </div>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>💱 Search Tips</span></div>
+      <div class="webpart-body" style="font-size: 10px; line-height: 1.5; color: #333;">
+        <b>Advanced search syntax:</b>
+        <ul style="margin: 4px 0 0 16px; padding: 0; font-size: 10px;">
+          <li><code style="background:#f4f4ec;border:1px solid #d4d4c4;padding:0 2px;">type:tx</code> — transactions only</li>
+          <li><code style="background:#f4f4ec;border:1px solid #d4d4c4;padding:0 2px;">type:coin</code> — coins only</li>
+          <li><code style="background:#f4f4ec;border:1px solid #d4d4c4;padding:0 2px;">wallet:hot</code> — hot wallet txns</li>
+          <li><code style="background:#f4f4ec;border:1px solid #d4d4c4;padding:0 2px;">date:7d</code> — last 7 days</li>
+          <li><code style="background:#f4f4ec;border:1px solid #d4d4c4;padding:0 2px;">amount:>1000</code> — over $1,000</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Quick Actions</span></div>
+      <div class="webpart-body" style="font-size: 11px; line-height: 1.9;">
+        <a href="markets.html"</a><br/>
+        <a href="#">⚡ Add wallet</a><br/>
+        <a href="#">⚡ Send crypto</a><br/>
+        <a href="#">📊 Generate report</a><br/>
+        <a href="#">💱 Export results (CSV)</a><br/>
+        <a href="settings.html">—sT Preferences</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+<div class="footer">
+  <div>
+    &copy; 2026 Digital Asset Terminal &nbsp;|&nbsp; v4.1.0 (build 20260418)
+    &nbsp;|&nbsp; <a href="#">Terms of Use</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a>
+    &nbsp;|&nbsp; <a href="#">Compliance</a> &nbsp;|&nbsp; <a href="#">Report an Issue</a>
+  </div>
+  <div>
+    Database: SQLite 3.42 &nbsp;|&nbsp; Server: localhost:8080 &nbsp;|&nbsp; 🛡️ Best viewed in Internet Explorer 7+
+  </div>
+</div>
+
+<script>
+  const searchInput = document.getElementById('globalSearch');
+  const btnClear = document.getElementById('btnClear');
+  const items = Array.from(document.querySelectorAll('.result-item'));
+
+  function filterResults() {
+    const q = searchInput.value.toLowerCase();
+    items.forEach(item => {
+      const text = item.textContent.toLowerCase();
+      if (text.includes(q)) {
+        item.style.display = '';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  searchInput.addEventListener('keyup', filterResults);
+  btnClear.addEventListener('click', (e) => {
+    e.preventDefault();
+    searchInput.value = '';
+    filterResults();
+  });
+</script>
+</body>
+</html>

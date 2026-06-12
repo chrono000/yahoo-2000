@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Markets Overview | Digital Asset Terminal</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  /* Markets-specific styles */
+  .corp-table td .ic { font-size: 14px; margin-right: 4px; vertical-align: middle; }
+  .corp-table td .sym { font-size: 9px; color: #888; font-weight: bold; margin-left: 4px; }
+
+  .spark { display: inline-block; width: 60px; height: 14px; vertical-align: middle; }
+  .spark .bar { display: inline-block; width: 4px; margin-right: 1px; vertical-align: bottom; background: #4a7ac8; }
+  .spark .bar.g { background: #5a8a3a; }
+  .spark .bar.r { background: #c86060; }
+
+  .stat-mini { font-size: 10px; line-height: 1.7; }
+  .stat-mini b { color: #1a3a6b; }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="logo">₿</div>
+  <div class="title-area">
+    <div class="t1">Digital Asset Terminal</div>
+    <div class="t2">Enterprise Edition v4.1.0 &nbsp;|&nbsp; An Enterprise Digital Asset Management System</div>
+  </div>
+  <div class="user-area">
+    Welcome back, <span class="u1">A. Nakamoto</span><br/>
+    <a href="profile.html">My Profile</a> &nbsp;|&nbsp; <a href="#">Help</a> &nbsp;|&nbsp; <a href="home.html">Sign Out</a>
+  </div>
+</div>
+
+<div class="subnav">
+  <span class="tab"><a href="home.html">Home</a></span>
+  <span class="tab"><a href="wallet.html">Wallets</a></span>
+  <span class="tab active"><a href="markets.html">Markets</a></span>
+  <span class="tab"><a href="transactions.html">Transactions</a></span>
+  <span class="tab"><a href="settings.html">Settings</a></span>
+</div>
+
+<div class="breadcrumb">
+  <span class="breadcrumb-right">Data source: CoinGecko API &nbsp;|&nbsp; Last update: 09:47 AM &nbsp;|&nbsp; Auto-refresh: 60s</span>
+  <a href="home.html">Home</a> <span class="sep">&gt;</span>
+  <span class="current">Markets Overview</span>
+</div>
+
+<div class="wrap">
+<div class="layout">
+
+  <!-- Left nav -->
+  <div class="left-col">
+    <div class="webpart">
+      <div class="webpart-header"><span>📁 Quick Navigation</span> <span class="actions">[<a href="#">−</a>]</span></div>
+      <div class="webpart-body" style="padding:0;">
+        <ul class="nav-list">
+          <li class="section">My Workspace</li>
+          <li><a href="home.html">Home Dashboard</a></li>
+          <li><a href="wallet.html">My Wallets</a></li>
+          <li><a href="transactions.html">Transaction History</a></li>
+          <li><a href="search.html">Search...</a></li>
+          <li><a href="favorites.html">Favorites ★</a></li>
+          <li class="section">Market Sectors</li>
+          <li><a href="#" class="current">All Markets</a></li>
+          <li><a href="#">Layer 1 (5)</a></li>
+          <li><a href="#">DeFi (4)</a></li>
+          <li><a href="#">Stablecoins (2)</a></li>
+          <li><a href="#">Cross-Chain (2)</a></li>
+          <li><a href="#">Meme (2)</a></li>
+          <li class="section">Tools</li>
+          <li><a href="settings.html">Preferences</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🏷️ Top Sectors</span></div>
+      <div class="webpart-body" style="font-size: 11px; line-height: 1.9;">
+        <a href="#">Layer 1</a> (5) &nbsp;
+        <a href="#">DeFi</a> (4) &nbsp;
+        <a href="#">NFT</a> (3) &nbsp;
+        <a href="#">Staking</a> (3) &nbsp;
+        <a href="#">Privacy</a> (2) &nbsp;
+        <a href="#">Meme</a> (2)
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-col">
+
+    <div class="section-heading">▸ Markets Overview — All Assets (15)</div>
+
+    <div class="toolbar" id="markets-toolbar">
+      <a href="#" class="tbtn primary" onclick="location.reload()">📊 Refresh</a>
+      <span class="sep"></span>
+      Sector: <select id="sectorSelect" class="tbtn" style="padding: 2px;">
+        <option value="all">All</option>
+        <option value="layer 1">Layer 1</option>
+        <option value="defi">DeFi</option>
+        <option value="stablecoin">Stablecoins</option>
+        <option value="meme">Meme</option>
+      </select>
+      Sort: <select id="sortSelect" class="tbtn" style="padding: 2px;">
+        <option value="rank">Rank</option>
+        <option value="price">Price</option>
+        <option value="name">Name</option>
+        <option value="change">24h Change</option>
+      </select>
+      <span class="sep"></span>
+      <a href="#" class="tbtn">📤 Export CSV</a>
+      <a href="#" class="tbtn" onclick="window.print()">🖨️ Print</a>
+      <div class="search">
+        <input type="text" id="marketSearch" placeholder="Find asset..." />
+        <a href="#" class="tbtn">Go</a>
+      </div>
+    </div>
+
+    <table class="corp-table">
+      <thead>
+        <tr>
+          <th style="width:35px;"><a href="#">#</a> <span class="sort">▲</span></th>
+          <th><a href="#">Name</a></th>
+          <th style="width:90px;text-align:right;"><a href="#">Price</a></th>
+          <th style="width:65px;text-align:right;"><a href="#">24h</a></th>
+          <th style="width:65px;text-align:right;"><a href="#">7d</a></th>
+          <th style="width:85px;text-align:right;"><a href="#">Market Cap</a></th>
+          <th style="width:80px;text-align:right;"><a href="#">24h Vol</a></th>
+          <th style="width:90px;text-align:right;">Your Holdings</th>
+          <th style="width:70px;text-align:center;">7d Chart</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="c">1</td>
+          <td><span class="ic">₿</span> <a href="coin.html"><b>Bitcoin</b></a> <span class="sym">BTC</span></td>
+          <td class="n">$67,241</td>
+          <td class="n down">-4.2%</td>
+          <td class="n up">+2.1%</td>
+          <td class="n">$1.32T</td>
+          <td class="n">$28.4B</td>
+          <td class="n"><b>0.4218</b></td>
+          <td class="c"><span class="spark"><span class="bar g" style="height:8px;"></span><span class="bar g" style="height:10px;"></span><span class="bar g" style="height:12px;"></span><span class="bar g" style="height:11px;"></span><span class="bar g" style="height:14px;"></span><span class="bar r" style="height:12px;"></span><span class="bar r" style="height:9px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">2</td>
+          <td><span class="ic">Ξ</span> <a href="#"><b>Ethereum</b></a> <span class="sym">ETH</span></td>
+          <td class="n">$3,412</td>
+          <td class="n up">+1.8%</td>
+          <td class="n up">+5.4%</td>
+          <td class="n">$410B</td>
+          <td class="n">$14.2B</td>
+          <td class="n"><b>3.127</b></td>
+          <td class="c"><span class="spark"><span class="bar g" style="height:6px;"></span><span class="bar g" style="height:8px;"></span><span class="bar g" style="height:9px;"></span><span class="bar g" style="height:11px;"></span><span class="bar g" style="height:12px;"></span><span class="bar g" style="height:13px;"></span><span class="bar g" style="height:14px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">3</td>
+          <td><span class="ic">💵</span> <a href="#"><b>Tether</b></a> <span class="sym">USDT</span></td>
+          <td class="n">$1.00</td>
+          <td class="n" style="color:#555;">0.0%</td>
+          <td class="n" style="color:#555;">0.0%</td>
+          <td class="n">$110B</td>
+          <td class="n">$48.1B</td>
+          <td class="n" style="color:#888;">—</td>
+          <td class="c"><span class="spark"><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">5</td>
+          <td><span class="ic">◎</span> <a href="#"><b>Solana</b></a> <span class="sym">SOL</span></td>
+          <td class="n">$148.20</td>
+          <td class="n up">+3.1%</td>
+          <td class="n up">+8.7%</td>
+          <td class="n">$64B</td>
+          <td class="n">$3.8B</td>
+          <td class="n"><b>42.5</b></td>
+          <td class="c"><span class="spark"><span class="bar g" style="height:5px;"></span><span class="bar g" style="height:7px;"></span><span class="bar g" style="height:9px;"></span><span class="bar g" style="height:10px;"></span><span class="bar g" style="height:12px;"></span><span class="bar g" style="height:13px;"></span><span class="bar g" style="height:14px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">6</td>
+          <td><span class="ic">✕</span> <a href="#"><b>XRP</b></a> <span class="sym">XRP</span></td>
+          <td class="n">$0.56</td>
+          <td class="n up">+0.4%</td>
+          <td class="n down">-1.2%</td>
+          <td class="n">$31B</td>
+          <td class="n">$1.4B</td>
+          <td class="n"><b>2,450</b></td>
+          <td class="c"><span class="spark"><span class="bar g" style="height:12px;"></span><span class="bar" style="height:11px;"></span><span class="bar" style="height:10px;"></span><span class="bar r" style="height:9px;"></span><span class="bar r" style="height:8px;"></span><span class="bar" style="height:9px;"></span><span class="bar" style="height:10px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">8</td>
+          <td><span class="ic">◆</span> <a href="#"><b>Cardano</b></a> <span class="sym">ADA</span></td>
+          <td class="n">$0.43</td>
+          <td class="n down">-0.3%</td>
+          <td class="n up">+1.1%</td>
+          <td class="n">$15.2B</td>
+          <td class="n">$420M</td>
+          <td class="n"><b>1,200</b></td>
+          <td class="c"><span class="spark"><span class="bar" style="height:9px;"></span><span class="bar" style="height:10px;"></span><span class="bar g" style="height:11px;"></span><span class="bar" style="height:10px;"></span><span class="bar r" style="height:9px;"></span><span class="bar" style="height:10px;"></span><span class="bar g" style="height:11px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">11</td>
+          <td><span class="ic">⬡</span> <a href="#"><b>Chainlink</b></a> <span class="sym">LINK</span></td>
+          <td class="n">$14.82</td>
+          <td class="n down">-1.2%</td>
+          <td class="n up">+3.4%</td>
+          <td class="n">$8.7B</td>
+          <td class="n">$580M</td>
+          <td class="n"><b>48.2</b></td>
+          <td class="c"><span class="spark"><span class="bar" style="height:8px;"></span><span class="bar g" style="height:10px;"></span><span class="bar g" style="height:12px;"></span><span class="bar r" style="height:10px;"></span><span class="bar" style="height:11px;"></span><span class="bar g" style="height:13px;"></span><span class="bar r" style="height:11px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">12</td>
+          <td><span class="ic">●</span> <a href="#"><b>Polkadot</b></a> <span class="sym">DOT</span></td>
+          <td class="n">$7.33</td>
+          <td class="n up">+0.9%</td>
+          <td class="n up">+4.2%</td>
+          <td class="n">$9.4B</td>
+          <td class="n">$310M</td>
+          <td class="n"><b>56.0</b></td>
+          <td class="c"><span class="spark"><span class="bar g" style="height:7px;"></span><span class="bar g" style="height:9px;"></span><span class="bar g" style="height:10px;"></span><span class="bar g" style="height:11px;"></span><span class="bar g" style="height:12px;"></span><span class="bar g" style="height:12px;"></span><span class="bar g" style="height:13px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">14</td>
+          <td><span class="ic">💵</span> <a href="#"><b>USDC</b></a> <span class="sym">USDC</span></td>
+          <td class="n">$1.00</td>
+          <td class="n" style="color:#555;">0.0%</td>
+          <td class="n" style="color:#555;">0.0%</td>
+          <td class="n">$32B</td>
+          <td class="n">$5.8B</td>
+          <td class="n"><b>1,200</b></td>
+          <td class="c"><span class="spark"><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span><span class="bar" style="height:10px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">17</td>
+          <td><span class="ic">🟡</span> <a href="#"><b>Wrapped BTC</b></a> <span class="sym">WBTC</span></td>
+          <td class="n">$67,238</td>
+          <td class="n down">-4.2%</td>
+          <td class="n up">+2.0%</td>
+          <td class="n">$10.1B</td>
+          <td class="n">$220M</td>
+          <td class="n"><b>0.0074</b></td>
+          <td class="c"><span class="spark"><span class="bar g" style="height:8px;"></span><span class="bar g" style="height:10px;"></span><span class="bar g" style="height:12px;"></span><span class="bar g" style="height:11px;"></span><span class="bar g" style="height:14px;"></span><span class="bar r" style="height:12px;"></span><span class="bar r" style="height:9px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">19</td>
+          <td><span class="ic">🔶</span> <a href="#"><b>Bitcoin Cash</b></a> <span class="sym">BCH</span></td>
+          <td class="n">$312</td>
+          <td class="n up">+0.8%</td>
+          <td class="n down">-2.1%</td>
+          <td class="n">$6.1B</td>
+          <td class="n">$180M</td>
+          <td class="n" style="color:#888;">—</td>
+          <td class="c"><span class="spark"><span class="bar" style="height:11px;"></span><span class="bar" style="height:10px;"></span><span class="bar r" style="height:9px;"></span><span class="bar r" style="height:8px;"></span><span class="bar" style="height:9px;"></span><span class="bar g" style="height:10px;"></span><span class="bar g" style="height:11px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">22</td>
+          <td><span class="ic">🔷</span> <a href="#"><b>Aave</b></a> <span class="sym">AAVE</span></td>
+          <td class="n">$92.40</td>
+          <td class="n up">+2.4%</td>
+          <td class="n up">+6.8%</td>
+          <td class="n">$1.3B</td>
+          <td class="n">$120M</td>
+          <td class="n" style="color:#888;">—</td>
+          <td class="c"><span class="spark"><span class="bar g" style="height:6px;"></span><span class="bar g" style="height:8px;"></span><span class="bar g" style="height:10px;"></span><span class="bar g" style="height:11px;"></span><span class="bar g" style="height:12px;"></span><span class="bar g" style="height:13px;"></span><span class="bar g" style="height:14px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">25</td>
+          <td><span class="ic">🦄</span> <a href="#"><b>Uniswap</b></a> <span class="sym">UNI</span></td>
+          <td class="n">$7.84</td>
+          <td class="n up">+1.1%</td>
+          <td class="n up">+4.5%</td>
+          <td class="n">$4.7B</td>
+          <td class="n">$190M</td>
+          <td class="n" style="color:#888;">—</td>
+          <td class="c"><span class="spark"><span class="bar g" style="height:7px;"></span><span class="bar g" style="height:9px;"></span><span class="bar" style="height:10px;"></span><span class="bar g" style="height:11px;"></span><span class="bar g" style="height:12px;"></span><span class="bar g" style="height:12px;"></span><span class="bar g" style="height:13px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">28</td>
+          <td><span class="ic">🔺</span> <a href="#"><b>Avalanche</b></a> <span class="sym">AVAX</span></td>
+          <td class="n">$35.60</td>
+          <td class="n up">+1.9%</td>
+          <td class="n up">+7.2%</td>
+          <td class="n">$13.1B</td>
+          <td class="n">$640M</td>
+          <td class="n" style="color:#888;">—</td>
+          <td class="c"><span class="spark"><span class="bar g" style="height:5px;"></span><span class="bar g" style="height:7px;"></span><span class="bar g" style="height:9px;"></span><span class="bar g" style="height:11px;"></span><span class="bar g" style="height:12px;"></span><span class="bar g" style="height:13px;"></span><span class="bar g" style="height:14px;"></span></span></td>
+        </tr>
+        <tr>
+          <td class="c">34</td>
+          <td><span class="ic">🐕</span> <a href="#"><b>Dogecoin</b></a> <span class="sym">DOGE</span></td>
+          <td class="n">$0.082</td>
+          <td class="n down">-0.6%</td>
+          <td class="n down">-3.4%</td>
+          <td class="n">$11.5B</td>
+          <td class="n">$340M</td>
+          <td class="n" style="color:#888;">—</td>
+          <td class="c"><span class="spark"><span class="bar" style="height:12px;"></span><span class="bar r" style="height:11px;"></span><span class="bar r" style="height:10px;"></span><span class="bar r" style="height:9px;"></span><span class="bar" style="height:9px;"></span><span class="bar r" style="height:8px;"></span><span class="bar r" style="height:7px;"></span></span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="background: #ece9d8; padding: 3px 8px; font-size: 10px; border: 1px solid #a8a8a8; border-top: none;">
+      Showing 1-15 of 15 tracked assets &nbsp;|&nbsp;
+      <a href="#">+ Add new asset</a> &nbsp;|&nbsp;
+      <a href="#">Import from CoinGecko</a> &nbsp;|&nbsp;
+      All prices in USD
+    </div>
+
+  </div>
+
+  <!-- Right sidebar -->
+  <div class="right-col">
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>📊 Market Summary</span></div>
+      <div class="webpart-body stat-mini">
+        <b>Total Market Cap:</b> $2.41T<br/>
+        <b>BTC Dominance:</b> 52.4%<br/>
+        <b>24h Volume:</b> $87.1B<br/>
+        <b>Fear &amp; Greed:</b> <span style="color:#d48a00;font-weight:bold;">62 (Greed)</span><br/>
+        <b>ETH Gas:</b> 23 gwei<br/>
+        <b>BTC Hash Rate:</b> 621 EH/s<br/>
+        <hr style="border:none;border-top:1px dotted #c8c8c8;margin:5px 0;"/>
+        <b>Your Portfolio:</b> $47,832<br/>
+        <b>Your Assets:</b> 12 coins<br/>
+        <b>Today P/L:</b> <span class="up">+$1,154 (+2.41%)</span>
+      </div>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>🚀 Top Gainers (24h)</span></div>
+      <ul>
+        <li>◎ SOL <span style="float:right;" class="up">+3.1%</span></li>
+        <li>🔷 AAVE <span style="float:right;" class="up">+2.4%</span></li>
+        <li>🔺 AVAX <span style="float:right;" class="up">+1.9%</span></li>
+        <li>Ξ ETH <span style="float:right;" class="up">+1.8%</span></li>
+        <li>🦄 UNI <span style="float:right;" class="up">+1.1%</span></li>
+      </ul>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>📉 Top Losers (24h)</span></div>
+      <ul>
+        <li>₿ BTC <span style="float:right;" class="down">-4.2%</span></li>
+        <li>🟡 WBTC <span style="float:right;" class="down">-4.2%</span></li>
+        <li>⬡ LINK <span style="float:right;" class="down">-1.2%</span></li>
+        <li>🐕 DOGE <span style="float:right;" class="down">-0.6%</span></li>
+        <li>◆ ADA <span style="float:right;" class="down">-0.3%</span></li>
+      </ul>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🔧 Quick Actions</span></div>
+      <div class="webpart-body" style="font-size:11px;line-height:1.9;">
+        <a href="coin.html">📊 View BTC analysis</a><br/>
+        <a href="markets.html"</a><br/>
+        <a href="#">🔔 Set price alert</a><br/>
+        <a href="favorites.html">★ Manage watchlist</a><br/>
+        <a href="search.html">🔍 Search assets</a><br/>
+        <a href="settings.html">⚙ Preferences</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="footer">
+  <div>&copy; 2026 Digital Asset Terminal &nbsp;|&nbsp; v4.1.0 (build 20260418) &nbsp;|&nbsp; <a href="#">Terms of Use</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Compliance</a></div>
+  <div>Database: SQLite 3.42 &nbsp;|&nbsp; Server: localhost:8080 &nbsp;|&nbsp; ✓ Best viewed in Internet Explorer 7+</div>
+</div>
+
+<script>
+  // Add metadata to rows so they can be sorted and filtered easily
+  const sectorMap = {
+    'BTC': 'layer 1', 'ETH': 'layer 1', 'SOL': 'layer 1', 'ADA': 'layer 1', 'DOT': 'layer 1', 'BCH': 'layer 1', 'AVAX': 'layer 1',
+    'USDT': 'stablecoin', 'USDC': 'stablecoin',
+    'WBTC': 'defi', 'AAVE': 'defi', 'UNI': 'defi', 'LINK': 'defi',
+    'DOGE': 'meme', 'SHIB': 'meme',
+    'XRP': 'layer 1'
+  };
+
+  const tbody = document.querySelector('.corp-table tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  rows.forEach(row => {
+    const sym = row.querySelector('.sym').textContent.trim();
+    const name = row.querySelector('b').textContent.trim().toLowerCase();
+    const priceText = row.querySelector('td:nth-child(3)').textContent.replace(/[\$,]/g, '');
+    const price = parseFloat(priceText);
+    const changeText = row.querySelector('td:nth-child(4)').textContent.replace(/[%+]/g, '');
+    const change = parseFloat(changeText);
+    const rank = parseInt(row.querySelector('td:nth-child(1)').textContent.trim());
+
+    row.dataset.sector = sectorMap[sym] || 'other';
+    row.dataset.price = price;
+    row.dataset.change = change;
+    row.dataset.rank = rank;
+    row.dataset.name = name;
+  });
+
+  const sectorSelect = document.getElementById('sectorSelect');
+  const sortSelect = document.getElementById('sortSelect');
+  const searchInput = document.getElementById('marketSearch');
+
+  function updateTable() {
+    const activeSector = sectorSelect.value;
+    const activeSort = sortSelect.value;
+    const query = searchInput.value.toLowerCase();
+
+    // Re-sort
+    rows.sort((a, b) => {
+      if (activeSort === 'rank') return parseInt(a.dataset.rank) - parseInt(b.dataset.rank);
+      if (activeSort === 'price') return parseFloat(b.dataset.price) - parseFloat(a.dataset.price); // High to low
+      if (activeSort === 'change') return parseFloat(b.dataset.change) - parseFloat(a.dataset.change); // High to low
+      if (activeSort === 'name') return a.dataset.name.localeCompare(b.dataset.name);
+      return 0;
+    });
+
+    // Re-attach sorted rows
+    rows.forEach(r => tbody.appendChild(r));
+
+    // Filter visibility
+    rows.forEach(row => {
+      const matchSector = activeSector === 'all' || row.dataset.sector === activeSector;
+      const matchSearch = row.dataset.name.includes(query) || row.querySelector('.sym').textContent.toLowerCase().includes(query);
+      if (matchSector && matchSearch) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  sectorSelect.addEventListener('change', updateTable);
+  sortSelect.addEventListener('change', updateTable);
+  searchInput.addEventListener('keyup', updateTable);
+</script>
+</body>
+</html>

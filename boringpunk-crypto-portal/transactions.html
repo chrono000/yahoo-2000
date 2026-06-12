@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Transaction History | Digital Asset Terminal</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  /* Transactions-specific styles */
+  .corp-table td.date { color: #555; font-size: 10px; white-space: nowrap; }
+
+  .type-tag { display: inline-block; padding: 1px 6px; font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid; }
+  .type-tag.buy { background: #dff0c8; border-color: #6b9a3a; color: #2a5a10; }
+  .type-tag.sell { background: #f4d4d4; border-color: #c86060; color: #8a0000; }
+  .type-tag.send { background: #ffe8b8; border-color: #b88a30; color: #5a3a00; }
+  .type-tag.receive { background: #d4e8ff; border-color: #4a7ac8; color: #1a3a6b; }
+  .type-tag.swap { background: #e8d4ff; border-color: #8a6ab8; color: #4a2a8a; }
+  .type-tag.stake { background: #ffe8b8; border-color: #b88a30; color: #5a3a00; }
+  .type-tag.dca { background: #dff0c8; border-color: #6b9a3a; color: #2a5a10; }
+  .type-tag.deposit { background: #e4ecfa; border-color: #6b83a8; color: #1a3a6b; }
+
+  .summary-bar { background: #fffce0; border: 1px solid #d4c878; padding: 6px 10px; font-size: 10px; margin-bottom: 10px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .summary-bar b { color: #1a3a6b; }
+
+  @media (max-width: 767px) {
+    .summary-bar { flex-direction: column; gap: 3px; font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="logo">₿</div>
+  <div class="title-area">
+    <div class="t1">Digital Asset Terminal</div>
+    <div class="t2">Enterprise Edition v4.1.0 &nbsp;|&nbsp; An Enterprise Digital Asset Management System</div>
+  </div>
+  <div class="user-area">
+    Welcome back, <span class="u1">A. Nakamoto</span><br/>
+    <a href="profile.html">My Profile</a> &nbsp;|&nbsp; <a href="#">Help</a> &nbsp;|&nbsp; <a href="home.html">Sign Out</a>
+  </div>
+</div>
+
+<div class="subnav">
+  <span class="tab"><a href="home.html">Home</a></span>
+  <span class="tab"><a href="wallet.html">Wallets</a></span>
+  <span class="tab"><a href="markets.html">Markets</a></span>
+  <span class="tab active"><a href="transactions.html">Transactions</a></span>
+  <span class="tab"><a href="settings.html">Settings</a></span>
+</div>
+
+<div class="breadcrumb">
+  <span class="breadcrumb-right">Showing all wallets &nbsp;|&nbsp; Period: All Time &nbsp;|&nbsp; 847 total</span>
+  <a href="home.html">Home</a> <span class="sep">&gt;</span>
+  <span class="current">Transaction History</span>
+</div>
+
+<div class="wrap">
+<div class="layout">
+
+  <div class="left-col">
+    <div class="webpart">
+      <div class="webpart-header"><span>📁 Quick Navigation</span></div>
+      <div class="webpart-body" style="padding:0;">
+        <ul class="nav-list">
+          <li class="section">My Workspace</li>
+          <li><a href="home.html">Home Dashboard</a></li>
+          <li><a href="wallet.html">My Wallets</a></li>
+          <li><a href="#" class="current">Transaction History</a></li>
+          <li><a href="search.html">Search...</a></li>
+          <li><a href="favorites.html">Favorites ★</a></li>
+          <li class="section">Filter by Wallet</li>
+          <li><a href="#">All Wallets</a></li>
+          <li><a href="wallet.html">🔥 Hot Wallet (BTC)</a></li>
+          <li><a href="#">🧊 Cold Storage</a></li>
+          <li><a href="#">🌐 DeFi Wallet</a></li>
+          <li><a href="#">🥩 Staking Pool</a></li>
+          <li><a href="#">💱 Exchange Account</a></li>
+          <li class="section">Filter by Type</li>
+          <li><a href="#">🟢 Buys (248)</a></li>
+          <li><a href="#">🔴 Sells (89)</a></li>
+          <li><a href="#">📤 Sends (67)</a></li>
+          <li><a href="#">📥 Receives (142)</a></li>
+          <li><a href="#">🔄 Swaps (34)</a></li>
+          <li><a href="#">🥩 Stakes (22)</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-col">
+
+    <div class="summary-bar">
+      <span><b>Total Transactions:</b> 847</span>
+      <span><b>Total Volume:</b> $284,120</span>
+      <span><b>Realized P/L:</b> <span style="color:#2a5a10;font-weight:bold;">+$12,847</span></span>
+      <span><b>Fees Paid:</b> $342.18</span>
+      <span><b>This Month:</b> 23 txns ($14,200)</span>
+    </div>
+
+    <div class="section-heading">▸ Transaction History — All Wallets (847)</div>
+
+    <div class="toolbar" id="tx-toolbar">
+      <a href="markets.html"</a>
+      <span class="sep"></span>
+      Type: <select id="typeSelect" class="tbtn" style="padding: 2px;">
+        <option value="all">All</option>
+        <option value="buy">Buy</option>
+        <option value="sell">Sell</option>
+        <option value="swap">Swap</option>
+        <option value="send">Send</option>
+        <option value="recv">Receive</option>
+        <option value="stake">Stake</option>
+        <option value="dca">DCA</option>
+        <option value="dep">Deposit</option>
+      </select>
+      Wallet: <select id="walletSelect" class="tbtn" style="padding: 2px;">
+        <option value="all">All</option>
+        <option value="hot wallet">Hot Wallet</option>
+        <option value="exchange">Exchange</option>
+        <option value="defi">DeFi</option>
+        <option value="staking">Staking</option>
+      </select>
+      <span class="sep"></span>
+      <a href="#" class="tbtn">📤 Export CSV</a>
+      <a href="#" class="tbtn">📋 Tax Report</a>
+      <a href="#" class="tbtn" onclick="window.print()">🖨️ Print</a>
+      <div class="search">
+        <input type="text" id="txSearch" placeholder="Find transaction..." />
+        <a href="#" class="tbtn">Go</a>
+      </div>
+    </div>
+
+    <table class="corp-table">
+      <thead>
+        <tr>
+          <th style="width:24px;">&nbsp;</th>
+          <th style="width:80px;"><a href="#">Date</a> <span class="sort">▼</span></th>
+          <th style="width:55px;"><a href="#">Type</a></th>
+          <th><a href="#">Description</a></th>
+          <th style="width:80px;text-align:right;"><a href="#">Amount</a></th>
+          <th style="width:75px;text-align:right;"><a href="#">USD</a></th>
+          <th style="width:100px;"><a href="#">Wallet</a></th>
+          <th style="width:45px;text-align:center;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="c">🟢</td>
+          <td class="date">04/22 09:41</td>
+          <td><span class="type-tag buy">Buy</span></td>
+          <td><a href="tx-detail.html"><b>Buy 0.0500 BTC @ $67,100</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">limit order filled · Kraken · tx: 0xa3f8...2c41</span></td>
+          <td class="n">+0.0500 BTC</td>
+          <td class="n">$3,355</td>
+          <td><a href="wallet.html">🔥 Hot Wallet</a></td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">🔴</td>
+          <td class="date">04/22 07:18</td>
+          <td><span class="type-tag sell">Sell</span></td>
+          <td><a href="#"><b>Sell 1.200 ETH @ $3,418</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">market order · Exchange Account · P/L: +$218</span></td>
+          <td class="n">-1.200 ETH</td>
+          <td class="n">$4,102</td>
+          <td>💱 Exchange</td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">🔄</td>
+          <td class="date">04/21 16:30</td>
+          <td><span class="type-tag swap">Swap</span></td>
+          <td><a href="#"><b>Swap 500 USDC → 0.0074 BTC</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">Uniswap V3 · slippage: 0.12% · gas: 0.003 ETH</span></td>
+          <td class="n">+0.0074 BTC</td>
+          <td class="n">$500</td>
+          <td>🌐 DeFi</td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">📥</td>
+          <td class="date">04/21 06:00</td>
+          <td><span class="type-tag receive">Recv</span></td>
+          <td><a href="#"><b>Staking reward: 0.847 SOL</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">daily distribution · APY: 6.8% · auto-compound enabled</span></td>
+          <td class="n">+0.847 SOL</td>
+          <td class="n">$125</td>
+          <td>🥩 Staking</td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">📤</td>
+          <td class="date">04/20 14:03</td>
+          <td><span class="type-tag send">Send</span></td>
+          <td><a href="#"><b>Send 0.1000 ETH → 0x7a3f...c821</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">external transfer · 42 confirmations · gas: 0.0021 ETH</span></td>
+          <td class="n">-0.1000 ETH</td>
+          <td class="n">$341</td>
+          <td>🌐 DeFi</td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">🟢</td>
+          <td class="date">04/19 00:01</td>
+          <td><span class="type-tag dca">DCA</span></td>
+          <td><a href="#"><b>DCA Buy 0.0200 BTC @ $66,800</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">recurring weekly · $100/week into BTC · auto-executed</span></td>
+          <td class="n">+0.0200 BTC</td>
+          <td class="n">$1,336</td>
+          <td><a href="wallet.html">🔥 Hot Wallet</a></td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">🔴</td>
+          <td class="date">04/18 16:22</td>
+          <td><span class="type-tag sell">Sell</span></td>
+          <td><a href="#"><b>Sell 0.0300 BTC @ $68,450</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">market order · Kraken · realized P/L: +$142</span></td>
+          <td class="n">-0.0300 BTC</td>
+          <td class="n">$2,054</td>
+          <td><a href="wallet.html">🔥 Hot Wallet</a></td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">🟢</td>
+          <td class="date">04/15 12:00</td>
+          <td><span class="type-tag buy">Buy</span></td>
+          <td><a href="#"><b>Buy 200 ADA @ $0.43</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">limit order · Exchange Account · filled at target</span></td>
+          <td class="n">+200 ADA</td>
+          <td class="n">$86</td>
+          <td>💱 Exchange</td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">🥩</td>
+          <td class="date">04/15 09:00</td>
+          <td><span class="type-tag stake">Stake</span></td>
+          <td><a href="#"><b>Stake 10.0 SOL (90-day lock)</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">locked until Jul 14 · estimated APY: 6.8%</span></td>
+          <td class="n">-10.0 SOL</td>
+          <td class="n">$1,482</td>
+          <td>🥩 Staking</td>
+          <td class="c" style="color:#d48a00;">🔒</td>
+        </tr>
+        <tr>
+          <td class="c">📥</td>
+          <td class="date">04/14 10:00</td>
+          <td><span class="type-tag deposit">Dep</span></td>
+          <td><a href="#"><b>Deposit $2,500 USDC from bank</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">ACH transfer · 3 business days · cleared</span></td>
+          <td class="n">+2,500 USDC</td>
+          <td class="n">$2,500</td>
+          <td>💱 Exchange</td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">🟢</td>
+          <td class="date">04/10 22:14</td>
+          <td><span class="type-tag buy">Buy</span></td>
+          <td><a href="#"><b>Buy 0.1000 BTC @ $63,200</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">limit order · Kraken · entry target hit</span></td>
+          <td class="n">+0.1000 BTC</td>
+          <td class="n">$6,320</td>
+          <td><a href="wallet.html">🔥 Hot Wallet</a></td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">📥</td>
+          <td class="date">04/08 06:00</td>
+          <td><span class="type-tag receive">Recv</span></td>
+          <td><a href="#"><b>Staking reward: 1.87 DOT</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">daily distribution · APY: 12.1%</span></td>
+          <td class="n">+1.87 DOT</td>
+          <td class="n">$14</td>
+          <td>🥩 Staking</td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">📤</td>
+          <td class="date">04/05 18:30</td>
+          <td><span class="type-tag send">Send</span></td>
+          <td><a href="#"><b>Send 0.0500 BTC → Cold Storage</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">internal transfer · auto-sweep triggered (balance > 0.5 BTC)</span></td>
+          <td class="n">-0.0500 BTC</td>
+          <td class="n">$3,216</td>
+          <td><a href="wallet.html">🔥 Hot Wallet</a></td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">🟢</td>
+          <td class="date">04/01 00:01</td>
+          <td><span class="type-tag dca">DCA</span></td>
+          <td><a href="#"><b>DCA Buy 0.0200 BTC @ $64,100</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">recurring weekly · $100/week into BTC</span></td>
+          <td class="n">+0.0200 BTC</td>
+          <td class="n">$1,282</td>
+          <td><a href="wallet.html">🔥 Hot Wallet</a></td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+        <tr>
+          <td class="c">📥</td>
+          <td class="date">03/28 14:15</td>
+          <td><span class="type-tag receive">Recv</span></td>
+          <td><a href="#"><b>Receive 0.0500 BTC from Cold Storage</b></a><br/><span style="color:#666;font-size:10px;font-style:italic;">internal transfer · for trading capital</span></td>
+          <td class="n">+0.0500 BTC</td>
+          <td class="n">$3,362</td>
+          <td><a href="wallet.html">🔥 Hot Wallet</a></td>
+          <td class="c" style="color:#2a5a10;">✓</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="background: #ece9d8; padding: 3px 8px; font-size: 10px; border: 1px solid #a8a8a8; border-top: none;">
+      Showing 1-15 of 847 transactions &nbsp;|&nbsp;
+      <a href="#">‹ Previous</a> &nbsp; <b>1</b> &nbsp; <a href="#">2</a> &nbsp; <a href="#">3</a> &nbsp; ... &nbsp; <a href="#">57</a> &nbsp; <a href="#">Next ›</a>
+      &nbsp;&nbsp; Per page: <select style="font-size:10px;padding:0;"><option>15</option><option>25</option><option>50</option></select>
+    </div>
+
+  </div>
+
+  <div class="right-col">
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>📊 Monthly Summary</span></div>
+      <div class="webpart-body" style="font-size:10px;line-height:1.7;">
+        <b>April 2026</b><br/>
+        Transactions: <b>23</b><br/>
+        Volume: <b>$14,200</b><br/>
+        Buys: <b>8</b> ($9,200)<br/>
+        Sells: <b>3</b> ($6,500)<br/>
+        Realized P/L: <b style="color:#2a5a10;">+$1,842</b><br/>
+        Fees: <b>$28.40</b><br/>
+        <hr style="border:none;border-top:1px dotted #c8c8c8;margin:5px 0;"/>
+        <b>March 2026</b><br/>
+        Transactions: <b>31</b><br/>
+        Volume: <b>$22,400</b><br/>
+        Realized P/L: <b style="color:#2a5a10;">+$3,150</b>
+      </div>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>📈 Transaction Stats</span></div>
+      <div class="webpart-body" style="font-size:10px;line-height:1.7;">
+        <b>All Time:</b><br/>
+        Total txns: <b>847</b><br/>
+        Win rate: <b style="color:#2a5a10;">68%</b> (sells only)<br/>
+        Avg. trade size: <b>$335</b><br/>
+        Largest trade: <b>$12,400</b><br/>
+        Avg. hold time: <b>14 days</b><br/>
+        <hr style="border:none;border-top:1px dotted #c8c8c8;margin:5px 0;"/>
+        <b>Tax Events (2026):</b><br/>
+        Short-term gains: <b>$8,200</b><br/>
+        Long-term gains: <b>$4,647</b><br/>
+        <a href="#">Generate tax report →</a>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🔧 Quick Actions</span></div>
+      <div class="webpart-body" style="font-size:11px;line-height:1.9;">
+        <a href="markets.html"</a><br/>
+        <a href="wallet.html">📁 View wallets</a><br/>
+        <a href="search.html">🔍 Search transactions</a><br/>
+        <a href="#">📤 Export all (CSV)</a><br/>
+        <a href="#">📋 Generate tax report</a><br/>
+        <a href="settings.html">⚙ Preferences</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="footer">
+  <div>&copy; 2026 Digital Asset Terminal &nbsp;|&nbsp; v4.1.0 (build 20260418) &nbsp;|&nbsp; <a href="#">Terms of Use</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Compliance</a></div>
+  <div>Database: SQLite 3.42 &nbsp;|&nbsp; Server: localhost:8080 &nbsp;|&nbsp; ✓ Best viewed in Internet Explorer 7+</div>
+</div>
+
+<script>
+  const tbody = document.querySelector('.corp-table tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  
+  rows.forEach(row => {
+    // Determine data for filtering
+    const typeCell = row.querySelector('.type-tag');
+    const type = typeCell ? typeCell.textContent.trim().toLowerCase() : '';
+    
+    // Last cell corresponds to Wallet typically before Status
+    // Based on HTML structure: 7th child is Wallet, 4th child is Description (can also search that)
+    const walletCell = row.querySelector('td:nth-child(7)');
+    const wallet = walletCell ? walletCell.textContent.trim().toLowerCase() : '';
+    
+    const descCell = row.querySelector('td:nth-child(4)');
+    const desc = descCell ? descCell.textContent.trim().toLowerCase() : '';
+
+    row.dataset.type = type;
+    row.dataset.wallet = wallet;
+    row.dataset.desc = desc;
+  });
+
+  const typeSelect = document.getElementById('typeSelect');
+  const walletSelect = document.getElementById('walletSelect');
+  const txSearch = document.getElementById('txSearch');
+
+  function updateTable() {
+    const activeType = typeSelect.value;
+    const activeWallet = walletSelect.value;
+    const query = txSearch.value.toLowerCase();
+
+    rows.forEach(row => {
+      const rowType = row.dataset.type;
+      const rowWallet = row.dataset.wallet;
+      
+      const matchType = (activeType === 'all') || (rowType.includes(activeType));
+      const matchWallet = (activeWallet === 'all') || (rowWallet.includes(activeWallet));
+      const matchQuery = row.dataset.desc.includes(query) || rowWallet.includes(query) || rowType.includes(query);
+
+      if (matchType && matchWallet && matchQuery) {
+        row.style.display = '';
+      } else {
+        row.style.display = 'none';
+      }
+    });
+  }
+
+  typeSelect.addEventListener('change', updateTable);
+  walletSelect.addEventListener('change', updateTable);
+  txSearch.addEventListener('keyup', updateTable);
+</script>
+</body>
+</html>

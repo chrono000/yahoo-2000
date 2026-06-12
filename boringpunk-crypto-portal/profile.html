@@ -1,0 +1,215 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Profile — A. Nakamoto | Digital Asset Terminal</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  /* Profile-specific styles */
+  .profile-hero { border: 1px solid #a8a8a8; background: linear-gradient(to bottom, #f4f0e8, #ece8d8); padding: 14px 18px; margin-bottom: 10px; display: flex; gap: 18px; align-items: center; }
+  .profile-hero .avatar { width: 72px; height: 72px; background: linear-gradient(135deg, #d4e8ff, #8ab4e8); border: 2px solid #4a7ac8; display: flex; align-items: center; justify-content: center; font-size: 32px; font-family: Georgia, serif; color: #1a3a6b; }
+  .profile-hero .info h2 { margin: 0; font-family: "Trebuchet MS", Tahoma, sans-serif; font-size: 16px; color: #1a3a6b; }
+  .profile-hero .info .sub { font-size: 10px; color: #555; margin-top: 2px; }
+  .profile-hero .info .tags { margin-top: 4px; }
+  .profile-hero .info .tags span { display: inline-block; padding: 1px 6px; font-size: 9px; font-weight: bold; border: 1px solid; margin-right: 4px; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #a8a8a8; border: 1px solid #a8a8a8; margin-bottom: 10px; }
+  .stat-grid .stat { background: #fff; padding: 8px 10px; text-align: center; }
+  .stat-grid .stat .n { font-family: Georgia, serif; font-size: 18px; font-weight: bold; color: #1a3a6b; }
+  .stat-grid .stat .l { font-size: 9px; color: #555; text-transform: uppercase; margin-top: 2px; }
+
+  .alloc-row { display: flex; gap: 6px; align-items: center; padding: 3px 0; border-bottom: 1px dotted #e4e4e4; font-size: 11px; }
+  .alloc-row .name { width: 80px; }
+  .alloc-row .bar-wrap { flex: 1; height: 14px; background: #f0f0e8; border: 1px solid #d4d4c4; }
+  .alloc-row .bar-fill { height: 100%; }
+  .alloc-row .pct { width: 35px; text-align: right; font-weight: bold; font-size: 10px; }
+  .alloc-row .val { width: 70px; text-align: right; color: #555; font-size: 10px; }
+
+  @media (max-width: 1024px) and (min-width: 768px) {
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .profile-hero { gap: 12px; }
+  }
+  @media (max-width: 767px) {
+    .profile-hero { flex-direction: column; text-align: center; padding: 10px; gap: 8px; }
+    .profile-hero .avatar { width: 50px; height: 50px; font-size: 22px; }
+    .profile-hero .info h2 { font-size: 13px; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-grid .stat .n { font-size: 14px; }
+    .stat-grid .stat .l { font-size: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="logo">₿</div>
+  <div class="title-area">
+    <div class="t1">Digital Asset Terminal</div>
+    <div class="t2">Enterprise Edition v4.1.0 &nbsp;|&nbsp; An Enterprise Digital Asset Management System</div>
+  </div>
+  <div class="user-area">
+    Welcome back, <span class="u1">A. Nakamoto</span><br/>
+    <a href="profile.html">My Profile</a> &nbsp;|&nbsp; <a href="#">Help</a> &nbsp;|&nbsp; <a href="home.html">Sign Out</a>
+  </div>
+</div>
+
+<div class="subnav">
+  <span class="tab"><a href="home.html">Home</a></span>
+  <span class="tab"><a href="wallet.html">Wallets</a></span>
+  <span class="tab"><a href="markets.html">Markets</a></span>
+  <span class="tab"><a href="transactions.html">Transactions</a></span>
+  <span class="tab"><a href="settings.html">Settings</a></span>
+</div>
+
+<div class="breadcrumb">
+  <a href="home.html">Home</a> <span class="sep">&gt;</span>
+  <a href="settings.html">Settings</a> <span class="sep">&gt;</span>
+  <span class="current">My Profile</span>
+</div>
+
+<div class="wrap">
+<div class="layout">
+
+  <div class="left-col">
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Quick Navigation</span></div>
+      <div class="webpart-body" style="padding:0;">
+        <ul class="nav-list">
+          <li class="section">My Workspace</li>
+          <li><a href="home.html">Home Dashboard</a></li>
+          <li><a href="wallet.html">My Wallets</a></li>
+          <li><a href="transactions.html">Transaction History</a></li>
+          <li><a href="search.html">Search...</a></li>
+          <li><a href="favorites.html">Favorites ⭐</a></li>
+          <li class="section">Account</li>
+          <li><a href="#" class="current" href="profile.html">My Profile</a></li>
+          <li><a href="settings.html">Settings</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-col">
+
+    <div class="section-heading">⚙️ User Profile</div>
+
+    <div class="profile-hero">
+      <div class="avatar">💱</div>
+      <div class="info">
+        <h2>A. Nakamoto</h2>
+        <div class="sub">PRO Member &nbsp;·&nbsp; Digital Asset Terminal User since February 2023</div>
+      </div>
+      <div class="stats">
+        Login streak: <b>14 days</b> ⚡<br/>
+        Trades this week: <b>12</b><br/>
+        Member for: <b>793 days</b><br/>
+        <a href="settings.html">Edit profile —'</a>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-cell"><div class="n">$47.8K</div><div class="l">Portfolio Value</div></div>
+      <div class="stat-cell"><div class="n">12</div><div class="l">Assets Held</div></div>
+      <div class="stat-cell"><div class="n">847</div><div class="l">Total Trades</div></div>
+      <div class="stat-cell"><div class="n up">+$12.8K</div><div class="l">All-Time P/L</div></div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>📊 Portfolio Allocation</span></div>
+      <div class="webpart-body">
+        <div class="alloc-row"><span class="name">BTC</span><div class="bar-wrap"><div class="bar-fill" style="width:59%;background:linear-gradient(to right,#ffbe3d,#d48a00);"></div></div><span class="pct">59.3%</span><span class="val">$28,353</span></div>
+        <div class="alloc-row"><span class="name">ETH</span><div class="bar-wrap"><div class="bar-fill" style="width:22%;background:linear-gradient(to right,#8ab4e8,#4a7ac8);"></div></div><span class="pct">22.3%</span><span class="val">$10,672</span></div>
+        <div class="alloc-row"><span class="name">SOL</span><div class="bar-wrap"><div class="bar-fill" style="width:13%;background:linear-gradient(to right,#a8d4a0,#5a8a3a);"></div></div><span class="pct">13.2%</span><span class="val">$6,299</span></div>
+        <div class="alloc-row"><span class="name">DOT</span><div class="bar-wrap"><div class="bar-fill" style="width:1%;background:#6b83a8;"></div></div><span class="pct">0.9%</span><span class="val">$410</span></div>
+        <div class="alloc-row"><span class="name">Other</span><div class="bar-wrap"><div class="bar-fill" style="width:4%;background:#c8c8c8;"></div></div><span class="pct">4.3%</span><span class="val">$2,098</span></div>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>📊 Account Details</span></div>
+      <div class="webpart-body">
+        <table class="prop-table">
+          <tr><td class="k">Username:</td><td>A. Nakamoto</td></tr>
+          <tr><td class="k">Email:</td><td>a.nakamoto@protonmail.com</td></tr>
+          <tr><td class="k">Account Tier:</td><td><b style="color:#d48a00;">⭐ PRO</b> (expires Dec 31, 2026)</td></tr>
+          <tr><td class="k">Member Since:</td><td>February 14, 2023</td></tr>
+          <tr><td class="k">Last Login:</td><td>Today, April 22, 2026 — 09:35 AM</td></tr>
+          <tr><td class="k">Timezone:</td><td>Asia/Tokyo (JST, UTC+9)</td></tr>
+          <tr><td class="k">Default Currency:</td><td>USD ($)</td></tr>
+          <tr><td class="k">2FA Status:</td><td><b style="color:#2a5a10;">🛡️ Enabled</b> (Google Authenticator)</td></tr>
+          <tr><td class="k">Security Score:</td><td><b style="color:#2a5a10;">92/100</b></td></tr>
+          <tr><td class="k">Active Wallets:</td><td>5 active, 3 archived</td></tr>
+          <tr><td class="k">Connected APIs:</td><td>Kraken, CoinGecko, Etherscan</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🏠.— Recent Activity</span> <span class="actions"><a href="transactions.html">View all —'</a></span></div>
+      <div class="webpart-body" style="padding:0;">
+        <table class="activity-table">
+          <tr><td class="ic">📦</td><td><b>Buy 0.0500 BTC</b> @ $67,100<br/><span style="color:#888;font-size:10px;">via Hot Wallet · Kraken</span></td><td class="when">22 min ago</td></tr>
+          <tr><td class="ic">📁'</td><td><b>Login session started</b><br/><span style="color:#888;font-size:10px;">Chrome 124 · Windows · 192.168.1.x</span></td><td class="when">35 min ago</td></tr>
+          <tr><td class="ic">⚡</td><td><b>Sell 1.200 ETH</b> @ $3,418<br/><span style="color:#888;font-size:10px;">via Exchange Account</span></td><td class="when">2 hours ago</td></tr>
+          <tr><td class="ic">—sT</td><td><b>Settings changed:</b> price refresh = 15s<br/><span style="color:#888;font-size:10px;">Account settings</span></td><td class="when">Apr 19</td></tr>
+          <tr><td class="ic">🔔</td><td><b>Alert triggered:</b> ETH above $3,400<br/><span style="color:#888;font-size:10px;">Price alert</span></td><td class="when">Apr 22 08:23 AM</td></tr>
+          <tr><td class="ic">⚡</td><td><b>Staking reward:</b> 0.847 SOL<br/><span style="color:#888;font-size:10px;">Staking Pool · APY 6.8%</span></td><td class="when">yesterday</td></tr>
+          <tr><td class="ic">⚡</td><td><b>2FA verified</b><br/><span style="color:#888;font-size:10px;">Periodic re-authentication</span></td><td class="when">Apr 15</td></tr>
+          <tr><td class="ic">🏠—</td><td><b>Staked 10.0 SOL</b> (90-day lock)<br/><span style="color:#888;font-size:10px;">Staking Pool</span></td><td class="when">Apr 15</td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="right-col">
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>🏠— Achievements</span></div>
+      <div class="webpart-body" style="font-size:10px;line-height:1.8;">
+        ⚡ <b>14-Day Login Streak</b><br/>
+        👤Z <b>Diamond Hands</b> (held > 1yr)<br/>
+        📈 <b>First 100 Trades</b><br/>
+        🏠— <b>Staking Pioneer</b><br/>
+        🏠—S <b>Cold Storage Setup</b><br/>
+        📁' <b>Security Expert</b> (92+ score)<br/>
+        <hr style="border:none;border-top:1px dotted #c8c8c8;margin:5px 0;"/>
+        <span style="color:#888;">6 of 15 achievements unlocked</span>
+      </div>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>📊 Trading Stats</span></div>
+      <div class="webpart-body" style="font-size:10px;line-height:1.7;">
+        <b>Win Rate:</b> 68%<br/>
+        <b>Best Trade:</b> +$4,200 (BTC)<br/>
+        <b>Worst Trade:</b> -$890 (DOGE)<br/>
+        <b>Avg Hold Time:</b> 14 days<br/>
+        <b>Longest Hold:</b> BTC (₿)<br/>
+        <b>Most Traded:</b> BTC (₿)
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Quick Actions</span></div>
+      <div class="webpart-body" style="font-size:11px;line-height:1.9;">
+        <a href="settings.html">—sT Edit settings</a><br/>
+        <a href="wallet.html">⚡ My wallets</a><br/>
+        <a href="transactions.html">📊 All transactions</a><br/>
+        <a href="favorites.html">⭐ Watchlist</a><br/>
+        <a href="#">📁' Change password</a><br/>
+        <a href="#">⚡ Export data</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="footer">
+  <div>&copy; 2026 Digital Asset Terminal &nbsp;|&nbsp; v4.1.0 (build 20260418) &nbsp;|&nbsp; <a href="#">Terms of Use</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a></div>
+  <div>Database: SQLite 3.42 &nbsp;|&nbsp; Server: localhost:8080 &nbsp;|&nbsp; 🛡️ Best viewed in Internet Explorer 7+</div>
+</div>
+
+</body>
+</html>

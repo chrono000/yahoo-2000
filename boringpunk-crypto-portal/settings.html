@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Settings | Digital Asset Terminal</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  /* Settings-specific styles */
+  .form-row { display: flex; align-items: center; padding: 4px 8px; border-bottom: 1px dotted #e4e4e4; }
+  .form-row .label { width: 130px; text-align: right; padding-right: 10px; font-weight: bold; color: #555; font-size: 11px; }
+  .form-row .field { flex: 1; }
+  .form-row input[type="text"], .form-row input[type="email"], .form-row input[type="password"] { font-family: inherit; font-size: 11px; padding: 3px 6px; border: 1px solid #888; box-shadow: inset 1px 1px 0 #d4d4d4; width: 200px; }
+  .form-row select { font-family: inherit; font-size: 11px; padding: 2px 4px; border: 1px solid #888; }
+  .form-row .hint { font-size: 10px; color: #888; margin-left: 8px; }
+  .form-row input[type="checkbox"] { margin-right: 4px; }
+
+  .status-connected { color: #2a5a10; font-weight: bold; }
+  .status-connected::before { content: "* "; }
+  .status-expired { color: #8a0000; font-weight: bold; }
+  .status-expired::before { content: "* "; }
+
+  @media (max-width: 767px) {
+    .form-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .form-row .label { width: auto; text-align: left; padding-right: 0; }
+    .form-row input[type="text"], .form-row input[type="email"], .form-row input[type="password"], .form-row select { width: 100%; }
+    .form-row .field { width: 100%; }
+    .conn-table { display: block; overflow-x: auto; white-space: nowrap; }
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="logo">₿</div>
+  <div class="title-area">
+    <div class="t1">Digital Asset Terminal</div>
+    <div class="t2">Enterprise Edition v4.1.0 &nbsp;|&nbsp; An Enterprise Digital Asset Management System</div>
+  </div>
+  <div class="user-area">
+    Welcome back, <span class="u1">A. Nakamoto</span><br/>
+    <a href="profile.html">My Profile</a> &nbsp;|&nbsp; <a href="#">Help</a> &nbsp;|&nbsp; <a href="home.html">Sign Out</a>
+  </div>
+</div>
+
+<div class="subnav">
+  <span class="tab"><a href="home.html">Home</a></span>
+  <span class="tab"><a href="wallet.html">Wallets</a></span>
+  <span class="tab"><a href="markets.html">Markets</a></span>
+  <span class="tab"><a href="transactions.html">Transactions</a></span>
+  <span class="tab active"><a href="settings.html">Settings</a></span>
+</div>
+
+<div class="breadcrumb">
+  <a href="home.html">Home</a> <span class="sep">&gt;</span>
+  <span class="current">Account Settings &amp; Preferences</span>
+</div>
+
+<div class="wrap">
+<div class="layout">
+
+  <div class="left-col">
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Settings Menu</span></div>
+      <div class="webpart-body" style="padding:0;">
+        <ul class="nav-list">
+          <li class="section">Account</li>
+          <li><a href="#" class="current">General Settings</a></li>
+          <li><a href="profile.html">My Profile</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Notifications</a></li>
+          <li class="section">Data</li>
+          <li><a href="#">API Connections</a></li>
+          <li><a href="#">Import / Export</a></li>
+          <li><a href="#">Backup</a></li>
+          <li class="section">Navigation</li>
+          <li><a href="home.html">Home Dashboard</a></li>
+          <li><a href="wallet.html">My Wallets</a></li>
+          <li><a href="markets.html">Markets</a></li>
+          <li><a href="transactions.html">Transactions</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-col">
+
+    <div class="section-heading">⚙️ Account Settings &amp; Preferences</div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>💱 Profile Information</span></div>
+      <div class="webpart-body">
+        <div class="form-section">
+          <div class="form-row">
+            <span class="label">Username:</span>
+            <span class="field"><input type="text" value="A. Nakamoto" /> <span class="hint">Display name across the terminal</span></span>
+          </div>
+          <div class="form-row">
+            <span class="label">Email:</span>
+            <span class="field"><input type="email" value="a.nakamoto@protonmail.com" /></span>
+          </div>
+          <div class="form-row">
+            <span class="label">Member Since:</span>
+            <span class="field" style="color:#555;">February 14, 2023 &nbsp;(793 days)</span>
+          </div>
+          <div class="form-row">
+            <span class="label">Last Login:</span>
+            <span class="field" style="color:#555;">Today, April 22, 2026 — 09:35 AM</span>
+          </div>
+          <div class="form-row">
+            <span class="label">Account Tier:</span>
+            <span class="field"><b style="color:#d48a00;">⭐ PRO</b> &nbsp;— expires Dec 31, 2026 &nbsp;(<a href="#">Manage subscription</a>)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🖥️— Display Preferences</span></div>
+      <div class="webpart-body">
+        <div class="form-section">
+          <div class="form-row">
+            <span class="label">Theme:</span>
+            <span class="field">
+              <select>
+                <option selected>Classic (Default)</option>
+                <option>Blue Corporate</option>
+                <option>High Contrast</option>
+                <option>Dark Mode (Beta)</option>
+              </select>
+            </span>
+          </div>
+          <div class="form-row">
+            <span class="label">Default Currency:</span>
+            <span class="field"><select><option selected>USD ($)</option><option>EUR (€)</option><option>GBP (£)</option><option>JPY (¥)</option><option>BTC (₿)</option></select></span>
+          </div>
+          <div class="form-row">
+            <span class="label">Date Format:</span>
+            <span class="field"><select><option selected>MM/DD/YYYY</option><option>DD/MM/YYYY</option><option>YYYY-MM-DD</option></select></span>
+          </div>
+          <div class="form-row">
+            <span class="label">Timezone:</span>
+            <span class="field"><select><option selected>Asia/Tokyo (JST, UTC+9)</option><option>America/New_York (EST)</option><option>Europe/London (GMT)</option><option>UTC</option></select></span>
+          </div>
+          <div class="form-row">
+            <span class="label">Price Refresh:</span>
+            <span class="field"><select><option>5 seconds</option><option selected>15 seconds</option><option>30 seconds</option><option>60 seconds</option><option>Manual only</option></select></span>
+          </div>
+          <div class="form-row">
+            <span class="label">Dashboard Layout:</span>
+            <span class="field"><select><option selected>3-Column (Full)</option><option>2-Column (Compact)</option><option>1-Column (Mobile)</option></select></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🔔 Notification Settings</span></div>
+      <div class="webpart-body">
+        <div class="form-section">
+          <div class="form-row">
+            <span class="label">Price Alerts:</span>
+            <span class="field"><input type="checkbox" checked/> Enable price threshold alerts</span>
+          </div>
+          <div class="form-row">
+            <span class="label">Trade Confirmations:</span>
+            <span class="field"><input type="checkbox" checked/> Notify on order fill/execution</span>
+          </div>
+          <div class="form-row">
+            <span class="label">Staking Rewards:</span>
+            <span class="field"><input type="checkbox" checked/> Notify on daily reward distributions</span>
+          </div>
+          <div class="form-row">
+            <span class="label">Security Warnings:</span>
+            <span class="field"><input type="checkbox" checked/> Login from new device / 2FA changes</span>
+          </div>
+          <div class="form-row">
+            <span class="label">Weekly Report:</span>
+            <span class="field"><input type="checkbox" checked/> Email portfolio summary every Monday</span>
+          </div>
+          <div class="form-row">
+            <span class="label">Network Alerts:</span>
+            <span class="field"><input type="checkbox"/> Gas spikes, mempool congestion, hard forks</span>
+          </div>
+          <div class="form-row">
+            <span class="label">Marketing:</span>
+            <span class="field"><input type="checkbox"/> Product updates and feature announcements</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🔗 API Connections</span></div>
+      <div class="webpart-body">
+        <table class="conn-table">
+          <tr>
+            <th>Exchange</th>
+            <th>Status</th>
+            <th>API Key</th>
+            <th>Last Sync</th>
+            <th>Actions</th>
+          </tr>
+          <tr>
+            <td><b>Kraken</b></td>
+            <td><span class="status-dot green"></span> Connected</td>
+            <td style="font-family:'Courier New',monospace;font-size:10px;">kra_****_8x2f</td>
+            <td>Today 09:45 AM</td>
+            <td><a href="#">Edit</a> &nbsp;|&nbsp; <a href="#">Test</a> &nbsp;|&nbsp; <a href="#">Revoke</a></td>
+          </tr>
+          <tr>
+            <td><b>CoinGecko</b> (prices)</td>
+            <td><span class="status-dot green"></span> Connected</td>
+            <td style="font-family:'Courier New',monospace;font-size:10px;">cg_****_f1a9</td>
+            <td>Today 09:47 AM</td>
+            <td><a href="#">Edit</a> &nbsp;|&nbsp; <a href="#">Test</a></td>
+          </tr>
+          <tr>
+            <td><b>Coinbase</b></td>
+            <td><span class="status-dot yellow"></span> Token Expired</td>
+            <td style="font-family:'Courier New',monospace;font-size:10px;">cb_****_3m7k</td>
+            <td>Apr 15, 2026</td>
+            <td><a href="#">Reconnect</a> &nbsp;|&nbsp; <a href="#">Remove</a></td>
+          </tr>
+          <tr>
+            <td><b>Etherscan</b></td>
+            <td><span class="status-dot green"></span> Connected</td>
+            <td style="font-family:'Courier New',monospace;font-size:10px;">eth_****_9z4w</td>
+            <td>Today 09:46 AM</td>
+            <td><a href="#">Edit</a> &nbsp;|&nbsp; <a href="#">Test</a></td>
+          </tr>
+        </table>
+        <div style="margin-top: 6px;">
+          <span class="fbtn">+ Add Connection</span>
+          <span class="fbtn ghost">Sync All Now</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>📁' Security</span></div>
+      <div class="webpart-body">
+        <div class="form-section">
+          <div class="form-row">
+            <span class="label">Password:</span>
+            <span class="field">Last changed <b>32 days ago</b> &nbsp;(<a href="#">Change password</a>)</span>
+          </div>
+          <div class="form-row">
+            <span class="label">2FA (TOTP):</span>
+            <span class="field"><span class="status-dot green"></span> <b style="color:#2a5a10;">Enabled</b> &nbsp;— Google Authenticator &nbsp;(<a href="#">Reconfigure</a>)</span>
+          </div>
+          <div class="form-row">
+            <span class="label">Recovery Keys:</span>
+            <span class="field"><b>8 of 10</b> remaining &nbsp;(<a href="#">View keys</a> · <a href="#">Regenerate</a>)</span>
+          </div>
+          <div class="form-row">
+            <span class="label">Active Sessions:</span>
+            <span class="field"><b>2</b> active &nbsp;(<a href="#">View sessions</a> · <a href="#">Revoke all</a>)</span>
+          </div>
+        </div>
+        <div class="callout green">
+          <b>🛡️ Security Score: 92/100 (Excellent)</b><br/>
+          2FA enabled, strong password, recent key rotation. Consider enabling hardware key (YubiKey) for maximum security.
+        </div>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>💱 Data Management</span></div>
+      <div class="webpart-body">
+        <div class="form-section">
+          <div class="form-row">
+            <span class="label">Export Data:</span>
+            <span class="field">
+              <span class="fbtn ghost">⚡ Export CSV</span>
+              <span class="fbtn ghost">⚡ Export JSON</span>
+              <span class="hint" style="display:block;margin-top:4px;">Includes all transactions, wallets, settings, and alert history</span>
+            </span>
+          </div>
+          <div class="form-row">
+            <span class="label">Clear Cache:</span>
+            <span class="field"><span class="fbtn ghost">🧹 Clear price cache</span> <span class="hint">Currently: 12.4 MB</span></span>
+          </div>
+          <div class="form-row">
+            <span class="label">Reset Preferences:</span>
+            <span class="field"><span class="fbtn danger">⚡ Reset to defaults</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 8px 0; text-align: right;">
+      <span class="fbtn">Save All Changes</span>
+      <span class="fbtn ghost">Cancel</span>
+    </div>
+
+  </div>
+
+  <div class="right-col">
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>📊 Account Status</span></div>
+      <div class="webpart-body" style="font-size:10px;line-height:1.7;">
+        <b>User:</b> A. Nakamoto<br/>
+        <b>Tier:</b> <span style="color:#d48a00;font-weight:bold;">⭐ PRO</span><br/>
+        <b>Member Since:</b> Feb 14, 2023<br/>
+        <b>Storage Used:</b> 12.4 MB / 500 MB<br/>
+        <b>API Calls:</b> 847 / 10,000 (today)<br/>
+        <b>Security Score:</b> <span style="color:#2a5a10;font-weight:bold;">92/100</span><br/>
+        <hr style="border:none;border-top:1px dotted #c8c8c8;margin:5px 0;"/>
+        <b>Last Settings Change:</b><br/>
+        Apr 19, 2026 — timezone
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>💱 Tips</span></div>
+      <div class="webpart-body" style="font-size:10px;line-height:1.5;color:#333;">
+        <b>Pro Tip:</b> Enable 2FA on all connected exchanges for maximum security.<br/><br/>
+        <b>Data Export:</b> Export your data regularly for backup. CSV format works with Excel and Google Sheets.<br/><br/>
+        <b>API Keys:</b> Only grant read-only access unless you need trade execution.
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Quick Links</span></div>
+      <div class="webpart-body" style="font-size:11px;line-height:1.9;">
+        <a href="home.html">🏠— Home Dashboard</a><br/>
+        <a href="profile.html">💱 My Profile</a><br/>
+        <a href="wallet.html">⚡ My Wallets</a><br/>
+        <a href="#">⚡ Contact Support</a><br/>
+        <a href="#">🔗 Documentation</a><br/>
+        <a href="#">🏠—> Report a Bug</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="footer">
+  <div>&copy; 2026 Digital Asset Terminal &nbsp;|&nbsp; v4.1.0 (build 20260418) &nbsp;|&nbsp; <a href="#">Terms of Use</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Compliance</a></div>
+  <div>Database: SQLite 3.42 &nbsp;|&nbsp; Server: localhost:8080 &nbsp;|&nbsp; 🛡️ Best viewed in Internet Explorer 7+</div>
+</div>
+
+</body>
+</html>

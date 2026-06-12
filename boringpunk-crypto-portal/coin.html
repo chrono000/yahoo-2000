@@ -1,0 +1,516 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Bitcoin (BTC) — Market Analysis | Digital Asset Terminal</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  /* Coin-specific: right sidebar column is 220px not 240px */
+  .layout { grid-template-columns: 220px 1fr 220px; }
+
+  /* Page tree */
+  .tree-pane { padding: 0 !important; font-size: 11px; }
+  .tree-list { list-style: none; margin: 0; padding: 0; }
+  .tree-list li { padding: 2px 6px 2px 18px; border-bottom: 1px dotted #e8e8e8; background-repeat: no-repeat; background-position: 6px 6px; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><polygon points='2,2 8,5 2,8' fill='%230058b8'/></svg>"); }
+  .tree-list li a { color: #0033cc; text-decoration: none; }
+  .tree-list li a:hover { text-decoration: underline; }
+  .tree-list li.folder { font-weight: bold; background-color: #f4f4ec; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><polygon points='1,2 9,2 5,8' fill='%230058b8'/></svg>"); padding-left: 18px; }
+  .tree-list li.folder a { color: #000; }
+  .tree-list li.indent { padding-left: 34px; background-position: 22px 6px; }
+  .tree-list li.current { background-color: #fff3b8; border-left: 3px solid #d48a00; padding-left: 31px !important; background-position: 19px 6px !important; }
+  .tree-list li.current a { font-weight: bold; color: #000; }
+  .tree-list li small { color: #888; font-size: 9px; font-weight: normal; margin-left: 4px; }
+
+  /* Page head */
+  .page-head { background: #fff; border: 1px solid #a8a8a8; border-top: none; padding: 10px 14px; display: flex; gap: 12px; align-items: center; }
+  .page-head .icon { font-size: 32px; line-height: 1; }
+  .page-head .title-block { flex: 1; }
+  .page-head h1 { margin: 0; font-family: "Trebuchet MS", Tahoma, sans-serif; font-size: 18px; font-weight: bold; color: #1a3a6b; }
+  .page-head .subtitle { font-size: 11px; color: #555; font-style: italic; margin-top: 2px; }
+  .page-head .meta-row { font-size: 10px; color: #666; margin-top: 4px; }
+  .page-head .meta-row span { margin-right: 10px; }
+  .page-head .meta-row b { color: #000; }
+
+  /* Toolbar */
+  .wysiwyg-bar { background: linear-gradient(to bottom, #f4f4f4 0%, #d8d4cc 100%); border: 1px solid #8a8a8a; border-top: none; padding: 3px 4px; display: flex; gap: 1px; flex-wrap: wrap; align-items: center; }
+  .wbtn { display: inline-flex; align-items: center; justify-content: center; min-width: 22px; height: 22px; padding: 0 5px; background: linear-gradient(to bottom, #fff 0%, #e0dcd4 100%); border: 1px solid transparent; color: #000; font-size: 11px; cursor: pointer; }
+  .wbtn:hover { background: linear-gradient(to bottom, #fffce0 0%, #f4e8a8 100%); border-color: #c8a040; }
+  .wbtn.active { background: linear-gradient(to bottom, #d4e8ff 0%, #a0c4f4 100%); border-color: #4a7ac8; }
+  .wbtn select { border: none; background: transparent; font-family: inherit; font-size: 11px; padding: 0; outline: none; }
+  .wbtn.dropdown { padding: 0 4px 0 6px; }
+  .wbtn.dropdown::after { content: " \25be"; color: #555; font-size: 8px; margin-left: 2px; }
+  .wysiwyg-bar .wsep { width: 1px; height: 18px; background: #a8a8a8; margin: 0 3px; }
+
+  /* Save status */
+  .save-row { background: #ffffe0; border: 1px solid #d4c878; border-top: none; padding: 3px 8px; font-size: 10px; display: flex; justify-content: space-between; align-items: center; }
+  .save-row .status { color: #5a3a00; }
+  .save-row .status b { color: #2a5a10; }
+  .save-row .actions-right { display: flex; gap: 4px; }
+  .save-row .abtn { display: inline-block; padding: 1px 8px; background: linear-gradient(to bottom, #fff 0%, #e0dcd4 100%); border: 1px solid #8a8a8a; color: #000; font-size: 10px; cursor: pointer; }
+  .save-row .abtn:hover { background: linear-gradient(to bottom, #fffce0 0%, #f4e8a8 100%); }
+  .save-row .abtn.primary { background: linear-gradient(to bottom, #d4e8ff 0%, #8ab4e8 100%); border-color: #4a7ac8; font-weight: bold; }
+
+  /* Page body */
+  .page-body { background: #fff; border: 1px solid #a8a8a8; border-top: none; padding: 18px 22px 24px; font-family: Verdana, Tahoma, sans-serif; font-size: 12px; line-height: 1.6; color: #222; }
+  .page-body h2 { font-family: "Trebuchet MS", Tahoma, sans-serif; font-size: 15px; color: #1a3a6b; margin: 22px 0 8px; padding-bottom: 3px; border-bottom: 2px solid #c8d4e8; }
+  .page-body h2:first-child { margin-top: 0; }
+  .page-body h3 { font-family: "Trebuchet MS", Tahoma, sans-serif; font-size: 13px; color: #2a5a9a; margin: 14px 0 6px; }
+  .page-body p { margin: 0 0 8px; }
+  .page-body strong, .page-body b { color: #000; }
+  .page-body ul, .page-body ol { margin: 4px 0 10px 22px; padding: 0; }
+  .page-body li { margin-bottom: 3px; }
+  .page-body code { background: #f4f4ec; border: 1px solid #d4d4c4; padding: 0 3px; font-family: "Courier New", monospace; font-size: 11px; }
+  .page-body a { color: #0033cc; }
+
+  /* Callouts */
+  .callout { background: #fffce0; border: 1px solid #d4c878; padding: 8px 10px; margin: 10px 0; font-size: 11px; }
+  .callout .kicker { font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: #b86a00; font-weight: bold; margin-bottom: 3px; }
+  .callout.tip { background: #eaf4e8; border-color: #6b9a3a; }
+  .callout.tip .kicker { color: #2a5a10; }
+  .callout.warning { background: #ffe8d0; border-color: #d48a30; }
+  .callout.warning .kicker { color: #8a4a00; }
+  .callout.question { background: #ffe4e4; border-color: #d46a6a; }
+  .callout.question .kicker { color: #8a0000; }
+
+  .formula-block { background: #fafaf4; border: 1px solid #d4d4c4; border-left: 3px solid #4a7ac8; padding: 10px 14px; margin: 10px 0; font-size: 14px; text-align: center; position: relative; }
+  .formula-block .eq-num { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-family: "Courier New", monospace; font-size: 10px; color: #888; }
+
+  /* Comparison table */
+  .mech-table { width: 100%; border-collapse: collapse; font-size: 11px; margin: 10px 0; background: #fff; }
+  .mech-table th { background: linear-gradient(to bottom, #e8eef7 0%, #c8d4e8 100%); border: 1px solid #8098b8; padding: 5px 8px; text-align: left; color: #1a3a6b; }
+  .mech-table th.col-btc { background: linear-gradient(to bottom, #ffe8b8, #f4c870); color: #5a3a00; border-color: #b88a30; }
+  .mech-table th.col-eth { background: linear-gradient(to bottom, #d4e8ff, #8ab4e8); color: #1a3a6b; border-color: #4a7ac8; }
+  .mech-table th.col-sol { background: linear-gradient(to bottom, #eaf4e8, #a8d4a0); color: #2a5a10; border-color: #6b9a3a; }
+  .mech-table th.col-xrp { background: linear-gradient(to bottom, #ffe4e4, #e8a8a8); color: #8a0000; border-color: #c86060; }
+  .mech-table td { border: 1px solid #d8d8d8; padding: 5px 8px; vertical-align: top; }
+  .mech-table td.rowhead { background: #f4f4ec; font-weight: bold; color: #333; white-space: nowrap; }
+  .mech-table tr:nth-child(even) td:not(.rowhead) { background: #fafafa; }
+
+  .tag { display: inline-block; padding: 0 4px; font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid; vertical-align: 1px; margin: 0 2px; }
+  .tag.btc { background: #ffe8b8; border-color: #b88a30; color: #5a3a00; }
+  .tag.eth { background: #d4e8ff; border-color: #4a7ac8; color: #1a3a6b; }
+  .tag.sol { background: #eaf4e8; border-color: #6b9a3a; color: #2a5a10; }
+  .tag.xrp { background: #ffe4e4; border-color: #c86060; color: #8a0000; }
+
+  .rxn { background: #f8f8f0; border: 1px dashed #c8c8b8; padding: 10px 14px; margin: 10px 0; font-family: "Courier New", "Lucida Console", monospace; font-size: 12px; line-height: 1.5; color: #000; white-space: pre; overflow-x: auto; }
+  .rxn .label { color: #888; font-size: 10px; font-family: Tahoma, sans-serif; }
+
+  .wikilink { background: #eaf0ff; border: 1px solid #b8c8e8; padding: 0 4px; border-radius: 2px; color: #0033cc; font-size: 11px; text-decoration: none; }
+  .wikilink:hover { background: #fffce0; border-color: #d4c878; color: #ff0000; }
+
+  .prop-table { width: 100%; font-size: 10px; }
+  .prop-table td { padding: 2px 4px; vertical-align: top; }
+  .prop-table td.k { color: #555; font-weight: bold; width: 45%; }
+
+  .vhist { font-size: 10px; color: #333; }
+  .vhist .v { padding: 3px 6px; border-bottom: 1px dotted #d8d8d8; }
+  .vhist .v b { color: #1a3a6b; font-family: "Courier New", monospace; }
+  .vhist .v small { color: #888; }
+
+  @media (max-width: 1024px) and (min-width: 768px) {
+    .layout { grid-template-columns: 1fr 200px; }
+    .page-head h1 { font-size: 16px; }
+    .page-body { padding: 14px 16px 18px; }
+    .mech-table { font-size: 10px; }
+    .mech-table td, .mech-table th { padding: 4px 6px; }
+    .rxn { font-size: 11px; padding: 8px 10px; }
+  }
+  @media (max-width: 767px) {
+    .page-head { padding: 6px 8px; gap: 8px; }
+    .page-head .icon { font-size: 22px; }
+    .page-head h1 { font-size: 14px; }
+    .page-head .subtitle { font-size: 10px; }
+    .page-head .meta-row { font-size: 9px; }
+    .page-head .meta-row span { margin-right: 6px; }
+    .wysiwyg-bar { padding: 2px 3px; }
+    .wbtn { min-width: 18px; height: 20px; font-size: 10px; padding: 0 3px; }
+    .wbtn select { font-size: 10px; }
+    .wysiwyg-bar .wsep { height: 14px; }
+    .save-row { padding: 2px 6px; font-size: 9px; flex-wrap: wrap; gap: 3px; }
+    .save-row .abtn { font-size: 9px; padding: 1px 6px; }
+    .page-body { padding: 10px 10px 14px; font-size: 11px; line-height: 1.5; }
+    .page-body h2 { font-size: 13px; margin: 14px 0 6px; }
+    .page-body h3 { font-size: 12px; margin: 10px 0 4px; }
+    .callout { padding: 6px 8px; margin: 8px 0; font-size: 10px; }
+    .callout .kicker { font-size: 8px; }
+    .formula-block { padding: 8px 10px; font-size: 11px; margin: 8px 0; }
+    .formula-block .eq-num { font-size: 9px; right: 4px; }
+    .mech-table { font-size: 10px; display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .mech-table td, .mech-table th { padding: 3px 5px; font-size: 10px; white-space: nowrap; }
+    .rxn { font-size: 10px; padding: 6px 8px; margin: 6px 0; }
+    .tag { font-size: 8px; padding: 0 3px; }
+    .wikilink { font-size: 10px; }
+    .prop-table { font-size: 9px; }
+    .prop-table td { padding: 1px 3px; }
+    .vhist { font-size: 9px; }
+    .vhist .v { padding: 2px 4px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="logo">₿</div>
+  <div class="title-area">
+    <div class="t1">Digital Asset Terminal</div>
+    <div class="t2">Enterprise Edition v4.1.0 &nbsp;|&nbsp; An Enterprise Digital Asset Management System</div>
+  </div>
+  <div class="user-area">
+    Welcome back, <span class="u1">A. Nakamoto</span><br/>
+    <a href="profile.html">My Profile</a> &nbsp;|&nbsp; <a href="#">Help</a> &nbsp;|&nbsp; <a href="home.html">Sign Out</a>
+  </div>
+</div>
+
+<div class="subnav">
+  <span class="tab"><a href="home.html" style="color:inherit;text-decoration:none;">Home</a></span>
+  <span class="tab"><a href="wallet.html" style="color:inherit;text-decoration:none;">Wallets</a></span>
+  <span class="tab active"><a href="markets.html" style="color:inherit;text-decoration:none;">Markets</a></span>
+  <span class="tab"><a href="transactions.html" style="color:inherit;text-decoration:none;">Transactions</a></span>
+  <span class="tab"><a href="settings.html" style="color:inherit;text-decoration:none;">Settings</a></span>
+</div>
+
+<div class="breadcrumb">
+  <span class="breadcrumb-right">Price updated: 04/22/2026 09:47 AM | Source: CoinGecko API</span>
+  <a href="home.html">Home</a> <span class="sep">&gt;</span>
+  <a href="markets.html">Markets</a> <span class="sep">&gt;</span>
+  <a href="#">Layer 1</a> <span class="sep">&gt;</span>
+  <span class="current">Bitcoin (BTC) — Market Analysis</span>
+</div>
+
+<div class="wrap">
+<div class="layout">
+
+  <!-- Left: Coin tree -->
+  <div class="left-col">
+
+    <div class="webpart">
+      <div class="webpart-header">
+        <span>📊 Market Overview</span>
+        <span class="actions">[<a href="#">—^'</a>]</span>
+      </div>
+      <div class="webpart-body" style="padding: 0;">
+        <ul class="tree-list tree-pane">
+          <li class="folder"><a href="#">🏠— Dashboard</a></li>
+          <li class="folder"><a href="#">Layer 1</a> <small>4</small></li>
+          <li class="current indent"><a href="coin.html">—,— Bitcoin (BTC)</a></li>
+          <li class="indent"><a href="#">💠 Ethereum (ETH)</a></li>
+          <li class="indent"><a href="#">—Z Solana (SOL)</a></li>
+          <li class="indent"><a href="#">—— Cardano (ADA)</a></li>
+          <li class="folder"><a href="#">DeFi</a> <small>3</small></li>
+          <li class="indent"><a href="#">⬡ Chainlink (LINK)</a></li>
+          <li class="indent"><a href="#">⚡ Aave (AAVE)</a></li>
+          <li class="indent"><a href="#">🏠— Uniswap (UNI)</a></li>
+          <li class="folder"><a href="#">Stablecoins</a> <small>2</small></li>
+          <li class="indent"><a href="#">💱 USDC</a></li>
+          <li class="indent"><a href="#">💱 USDT</a></li>
+          <li class="folder"><a href="#">Cross-Chain</a> <small>2</small></li>
+          <li class="indent"><a href="#">⚙️ Polkadot (DOT)</a></li>
+          <li class="indent"><a href="#">—o. XRP</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🔗 Sections</span></div>
+      <div class="webpart-body" style="font-size: 10px; line-height: 1.6;">
+        <a href="#overview">» Overview</a><br/>
+        <a href="#metrics">» Key Metrics</a><br/>
+        <a href="#">» Supply & Tokenomics</a><br/>
+        <a href="#comparison">» Comparison Table</a><br/>
+        <a href="#position">» Your Position</a><br/>
+        <a href="#technical">» Technical Levels</a><br/>
+        <a href="#network">» Network Data</a><br/>
+        <a href="#notes">» Analysis Notes</a><br/>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Main: The Coin Page -->
+  <div class="main-col">
+
+    <div class="section-heading">⚙️ Asset: Bitcoin (BTC) — Market Analysis</div>
+    <div class="page-head">
+      <span class="icon">—,—</span>
+      <div class="title-block">
+        <h1>Bitcoin (BTC) — Market Analysis & Research</h1>
+        <div class="subtitle">Decentralized digital currency — proof-of-work consensus — Layer 1 blockchain</div>
+        <div class="meta-row">
+          <span>📤 <b>Layer 1</b></span>
+          <span>💱 <b>$67,241.00</b></span>
+          <span style="color:#8a0000;">⚙️ <b>-4.2% (1h)</b></span>
+          <span>📊 <b>Rank #1</b></span>
+          <span>⏱ updated <b>2 min ago</b></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analysis toolbar -->
+    <div class="wysiwyg-bar">
+      <span class="wbtn dropdown"><select><option>1 Day</option><option>1 Week</option><option>1 Month</option><option>3 Months</option><option>1 Year</option><option>All Time</option></select></span>
+      <span class="wsep"></span>
+      <span class="wbtn active">Line</span>
+      <span class="wbtn">Candle</span>
+      <span class="wbtn">Area</span>
+      <span class="wsep"></span>
+      <span class="wbtn">MA</span>
+      <span class="wbtn">RSI</span>
+      <span class="wbtn">MACD</span>
+      <span class="wbtn">Bollinger</span>
+      <span class="wbtn">Volume</span>
+      <span class="wsep"></span>
+      <span class="wbtn">🔔 Set Alert</span>
+      <span class="wbtn">⚡ Share</span>
+      <span class="wbtn">🖨️️ Print</span>
+      <span class="wsep"></span>
+      <span class="wbtn">——</span>
+      <span class="wbtn">——</span>
+    </div>
+
+    <div class="save-row">
+      <span class="status">🛡️ <b>Live</b> price feed active &nbsp;·&nbsp; Last update: 09:47:22 AM &nbsp;·&nbsp; Source: CoinGecko &nbsp;·&nbsp; Refresh: 15s</span>
+      <span class="actions-right">
+        <span class="abtn">Add to Watchlist</span>
+        <span class="abtn primary">Trade BTC ⚙️</span>
+      </span>
+    </div>
+
+    <!-- Page body -->
+    <div class="page-body">
+
+      <p>Bitcoin (<span class="tag btc">BTC</span>) is the original and largest cryptocurrency by market capitalization. Created in 2009 by the pseudonymous <b>Satoshi Nakamoto</b>, it operates on a decentralized proof-of-work blockchain. See also <a class="wikilink">Ethereum (ETH)</a> for comparison with the leading smart contract platform and <a class="wikilink">Solana (SOL)</a> for a high-throughput alternative.</p>
+
+      <div class="callout tip">
+        <div class="kicker">⭐ Key Insight</div>
+        <b>"Digital gold thesis."</b> Bitcoin's fixed supply of <b>21 million coins</b> and its <b>halving schedule</b> (block reward cuts every ~4 years) create a predictable, deflationary monetary policy — unique among financial assets.
+      </div>
+
+      <h2 id="metrics">Key Metrics</h2>
+
+      <p>Core valuation metrics for Bitcoin as of April 22, 2026:</p>
+
+      <div class="formula-block">
+        Market Cap = Price × Circulating Supply = $67,241 — 19,687,500 = <b>$1.324 Trillion</b>
+        <span class="eq-num">(1)</span>
+      </div>
+
+      <div class="formula-block">
+        Fully Diluted Valuation = Price × Max Supply = $67,241 — 21,000,000 = <b>$1.412 Trillion</b>
+        <span class="eq-num">(2)</span>
+      </div>
+
+      <h2 id="supply">Supply & Tokenomics</h2>
+
+      <p>Bitcoin has a <b>hard cap</b> at 21 million coins. The current supply schedule and halvings:</p>
+
+      <div class="rxn"><span class="label">                Block Reward History</span>
+  2009-2012:  50.0  BTC/block   (Genesis —' Block 210,000)
+  2012-2016:  25.0  BTC/block   (1st halving)
+  2016-2020:  12.5  BTC/block   (2nd halving)
+  2020-2024:   6.25 BTC/block   (3rd halving)
+  2024-2028:   3.125 BTC/block  (4th halving —— current)
+  ...
+  ~2140:       0    BTC/block   (all 21M mined)</div>
+
+      <h2 id="comparison">Comparison Table — Top Layer 1 Assets</h2>
+
+      <p>Comparing the four major Layer 1 blockchains across key metrics:</p>
+
+      <table class="mech-table">
+        <tr>
+          <th></th>
+          <th class="col-btc" style="text-align:center;"><span class="tag btc">BTC</span></th>
+          <th class="col-eth" style="text-align:center;"><span class="tag eth">ETH</span></th>
+          <th class="col-sol" style="text-align:center;"><span class="tag sol">SOL</span></th>
+          <th class="col-xrp" style="text-align:center;"><span class="tag xrp">XRP</span></th>
+        </tr>
+        <tr>
+          <td class="rowhead">Price</td>
+          <td style="text-align:center;">$67,241</td>
+          <td style="text-align:center;">$3,412</td>
+          <td style="text-align:center;">$148.20</td>
+          <td style="text-align:center;">$0.56</td>
+        </tr>
+        <tr>
+          <td class="rowhead">Market Cap</td>
+          <td style="text-align:center;">$1.32T</td>
+          <td style="text-align:center;">$410B</td>
+          <td style="text-align:center;">$64B</td>
+          <td style="text-align:center;">$31B</td>
+        </tr>
+        <tr>
+          <td class="rowhead">Consensus</td>
+          <td style="text-align:center;">Proof of Work</td>
+          <td style="text-align:center;">Proof of Stake</td>
+          <td style="text-align:center;">Proof of History</td>
+          <td style="text-align:center;">XRP Ledger</td>
+        </tr>
+        <tr>
+          <td class="rowhead">TPS</td>
+          <td style="text-align:center;">~7</td>
+          <td style="text-align:center;">~30</td>
+          <td style="text-align:center;">~65,000</td>
+          <td style="text-align:center;">~1,500</td>
+        </tr>
+        <tr>
+          <td class="rowhead">Max Supply</td>
+          <td style="text-align:center;">21M (hard cap)</td>
+          <td style="text-align:center;">No cap (burn)</td>
+          <td style="text-align:center;">No cap (inflationary)</td>
+          <td style="text-align:center;">100B (deflationary)</td>
+        </tr>
+        <tr>
+          <td class="rowhead">24h Change</td>
+          <td style="text-align:center;color:#8a0000;font-weight:bold;">-4.2%</td>
+          <td style="text-align:center;color:#2a5a10;font-weight:bold;">+1.8%</td>
+          <td style="text-align:center;color:#2a5a10;font-weight:bold;">+3.1%</td>
+          <td style="text-align:center;color:#2a5a10;font-weight:bold;">+0.4%</td>
+        </tr>
+        <tr>
+          <td class="rowhead">Your Holdings</td>
+          <td style="text-align:center;"><b>0.4218 BTC</b></td>
+          <td style="text-align:center;"><b>3.127 ETH</b></td>
+          <td style="text-align:center;"><b>42.5 SOL</b></td>
+          <td style="text-align:center;"><b>2,450 XRP</b></td>
+        </tr>
+      </table>
+
+      <h2 id="position">Your Position</h2>
+
+      <div class="callout">
+        <div class="kicker">📊 Position Summary</div>
+        <b>Holdings:</b> 0.4218 BTC (₿) &nbsp;|&nbsp; <b>Avg. Entry:</b> $47,200 &nbsp;|&nbsp; <b>Unrealized P/L:</b> <b style="color:#2a5a10;">+$8,458 (+42.5%)</b><br/>
+        <b>Wallets:</b> Hot Wallet (0.4218 BTC) + Cold Storage (1.0000 BTC) = <b>1.4218 BTC total</b>
+      </div>
+
+      <h2 id="technical">Technical Levels</h2>
+
+      <h3>Support &amp; Resistance</h3>
+
+      <ul>
+        <li><b>Strong Support:</b> $62,000 (200-day MA), $58,500 (previous cycle high)</li>
+        <li><b>Weak Support:</b> $65,000 (your stop-loss level)</li>
+        <li><b>Resistance:</b> $70,000 (psychological), $73,800 (all-time high)</li>
+      </ul>
+
+      <div class="callout warning">
+        <div class="kicker">⚡ Volatility Alert</div>
+        BTC dropped <b>4.2% in the last hour</b>. RSI(14) is at <b>38</b> (approaching oversold). MACD shows <b>bearish crossover</b> on the 4H chart. Consider tightening stops or waiting for confirmation before adding.
+      </div>
+
+      <h3>Indicators (4H chart)</h3>
+
+      <div class="rxn"><span class="label">                Current Technical Indicators</span>
+  RSI (14):         38.2    (approaching oversold < 30)
+  MACD:            -142     (bearish, below signal)
+  MA (50):      $68,420     (price below —' bearish)
+  MA (200):     $62,100     (price above —' bullish long-term)
+  Bollinger:    $64,800 — $71,600  (price near lower band)
+  Volume (24h): $28.4B      (above average —' ⚡ selling pressure)</div>
+
+      <h2 id="network">Network Data</h2>
+
+      <p>On-chain metrics as of April 22, 2026:</p>
+
+      <ul>
+        <li><b>Hash Rate:</b> 621 EH/s (all-time high)</li>
+        <li><b>Block Height:</b> 892,447</li>
+        <li><b>Mempool:</b> 14,203 unconfirmed transactions (moderate)</li>
+        <li><b>Average Fee:</b> 12 sat/vB ($0.84)</li>
+        <li><b>Lightning Capacity:</b> 5,847 BTC (₿)</li>
+        <li><b>Active Addresses (24h):</b> 1.02M</li>
+      </ul>
+
+      <h2 id="notes">Analysis Notes</h2>
+
+      <div class="callout question">
+        <div class="kicker">— Open Questions</div>
+        <ul style="margin: 4px 0 0 18px; padding: 0;">
+          <li>Will FOMC minutes (Apr 23) trigger further BTC sell-off, or is the dip being front-run—</li>
+          <li>Is the hash rate ATH a signal that miners are confident, or are they positioning to sell—</li>
+          <li>Should I increase DCA amount during this dip or wait for $62K support test—</li>
+        </ul>
+      </div>
+
+      <p><b>Note:</b> This analysis is for personal reference only. Not financial advice. Always do your own research (DYOR). Last updated manually on Apr 22, 2026 by A. Nakamoto.</p>
+
+    </div>
+
+  </div>
+
+  <!-- Right sidebar -->
+  <div class="right-col">
+
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>📊 Coin Properties</span></div>
+      <div class="webpart-body">
+        <table class="prop-table">
+          <tr><td class="k">Symbol:</td><td>BTC</td></tr>
+          <tr><td class="k">Rank:</td><td>#1</td></tr>
+          <tr><td class="k">Price:</td><td><b>$67,241.00</b></td></tr>
+          <tr><td class="k">24h Change:</td><td style="color:#8a0000;"><b>-4.2%</b></td></tr>
+          <tr><td class="k">Market Cap:</td><td>$1.324T</td></tr>
+          <tr><td class="k">24h Volume:</td><td>$28.4B</td></tr>
+          <tr><td class="k">Circ. Supply:</td><td>19.69M</td></tr>
+          <tr><td class="k">Max Supply:</td><td>21.00M</td></tr>
+          <tr><td class="k">ATH:</td><td>$73,800</td></tr>
+          <tr><td class="k">ATH Date:</td><td>03/14/2024</td></tr>
+          <tr><td class="k">Launch:</td><td>01/03/2009</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>📈 Price History</span></div>
+      <div class="vhist">
+        <div class="v"><b>$67,241</b> — now <small>(Apr 22)</small></div>
+        <div class="v"><b>$70,182</b> — 1 hour ago <small>(high before drop)</small></div>
+        <div class="v"><b>$68,900</b> — 24h ago <small>(Apr 21)</small></div>
+        <div class="v"><b>$66,800</b> — 1 week ago <small>(Apr 15)</small></div>
+        <div class="v"><b>$63,200</b> — 1 month ago <small>(Mar 22)</small></div>
+        <div class="v"><b>$42,100</b> — 1 year ago <small>(Apr 2025)</small></div>
+        <div class="v"><b>$73,800</b> — ATH <small>(Mar 14, 2024)</small></div>
+      </div>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>🔗 Related Coins</span></div>
+      <ul>
+        <li><a href="#">💠 Ethereum (ETH)</a><br/><span style="font-size:9px;color:#888;">smart contracts · #2</span></li>
+        <li><a href="#">⚡ Bitcoin Cash (BCH)</a><br/><span style="font-size:9px;color:#888;">BTC fork · #19</span></li>
+        <li><a href="#">⚡ Lightning Network (LN)</a><br/><span style="font-size:9px;color:#888;">BTC Layer 2</span></li>
+        <li><a href="#">📦 Wrapped BTC (₿)</a><br/><span style="font-size:9px;color:#888;">ERC-20 BTC</span></li>
+      </ul>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>⚡ Actions</span></div>
+      <ul>
+        <li><a href="#">💱 Trade BTC</a></li>
+        <li><a href="#">🔔 Set price alert</a></li>
+        <li><a href="#">📊 Compare coins</a></li>
+        <li><a href="#">⚡ Share analysis</a></li>
+        <li><a href="#">🖨️️ Print report</a></li>
+        <li><a href="#">📊 Export data (CSV)</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+<div class="footer">
+  <div>
+    &copy; 2026 Digital Asset Terminal &nbsp;|&nbsp; v4.1.0 (build 20260418)
+    &nbsp;|&nbsp; <a href="#">Terms of Use</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a>
+    &nbsp;|&nbsp; <a href="#">Compliance</a> &nbsp;|&nbsp; <a href="#">Report an Issue</a>
+  </div>
+  <div>
+    Database: SQLite 3.42 &nbsp;|&nbsp; Server: localhost:8080 &nbsp;|&nbsp; 🛡️ Best viewed in Internet Explorer 7+
+  </div>
+</div>
+
+</body>
+</html>

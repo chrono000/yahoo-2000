@@ -1,0 +1,1501 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My Dashboard | Digital Asset Terminal</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: Tahoma, Verdana, "MS Sans Serif", Geneva, sans-serif;
+    font-size: 11px;
+    color: #000;
+    background: #d4d0c8 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='4'><rect width='4' height='4' fill='%23d4d0c8'/><rect width='1' height='1' fill='%23c8c4bc'/></svg>");
+  }
+  a { color: #0033cc; text-decoration: underline; cursor: pointer; }
+  a:visited { color: #551a8b; }
+  a:hover { color: #ff0000; }
+
+  /* ——— Banner ——— */
+  .banner {
+    height: 62px;
+    background: #003d7a linear-gradient(to bottom, #0058b8 0%, #003d7a 55%, #002855 100%);
+    border-bottom: 2px solid #001a3d;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+  }
+  .banner .logo {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, #ffbe3d, #d48a00);
+    border: 2px solid #fff;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: Georgia, serif;
+    font-weight: bold; font-style: italic;
+    font-size: 22px; color: #003d7a;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 1px 2px rgba(0,0,0,0.3);
+    margin-right: 12px;
+  }
+  .banner .title-area { flex: 1; }
+  .banner .title-area .t1 {
+    font-family: "Trebuchet MS", Tahoma, sans-serif;
+    font-size: 18px; font-weight: bold;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+  }
+  .banner .title-area .t2 {
+    font-size: 10px; color: #b8d4ff; margin-top: 2px; font-style: italic;
+  }
+
+  /* Search box in banner */
+  .banner-search {
+    display: flex;
+    margin-right: 20px;
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,0.3);
+  }
+  .banner-search input {
+    font-family: inherit;
+    font-size: 11px;
+    padding: 4px 6px;
+    border: 1px solid #001a3d;
+    background: #fff;
+    width: 200px;
+    outline: none;
+  }
+  .banner-search .go {
+    background: linear-gradient(to bottom, #ffbe3d, #d48a00);
+    border: 1px solid #001a3d;
+    border-left: none;
+    color: #003d7a;
+    font-weight: bold;
+    font-size: 11px;
+    padding: 0 10px;
+    cursor: pointer;
+  }
+  .banner-search .go:hover { background: linear-gradient(to bottom, #ffd060, #e89a10); }
+
+  .banner .user-area { text-align: right; font-size: 10px; color: #e0ecff; }
+  .banner .user-area .u1 { font-weight: bold; color: #fff; }
+  .banner .user-area a { color: #ffcc66; }
+
+  /* ——— Subnav ——— */
+  .subnav {
+    background: linear-gradient(to bottom, #eaeaea 0%, #d4d0c8 100%);
+    border-bottom: 1px solid #8a8a8a;
+    height: 26px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 8px;
+  }
+  .subnav .tab {
+    display: inline-block;
+    padding: 4px 14px 5px;
+    margin-right: 2px;
+    background: linear-gradient(to bottom, #f4f4f4, #d8d4cc);
+    border: 1px solid #8a8a8a;
+    border-bottom: none;
+    font-size: 11px;
+    color: #222;
+    cursor: pointer;
+    position: relative;
+    top: 1px;
+  }
+  .subnav .tab:hover { background: linear-gradient(to bottom, #fff, #e4e0d8); }
+  .subnav .tab.active {
+    background: #ece9d8;
+    font-weight: bold;
+    padding-bottom: 6px;
+    top: 0;
+  }
+
+  /* ——— Breadcrumb ——— */
+  .breadcrumb {
+    background: #ece9d8;
+    padding: 4px 10px;
+    border-bottom: 1px solid #b8b4a8;
+    font-size: 11px;
+  }
+  .breadcrumb .sep { color: #888; margin: 0 5px; }
+  .breadcrumb .current { color: #000; font-weight: bold; }
+  .breadcrumb-right {
+    float: right;
+    color: #555;
+    font-size: 10px;
+  }
+
+  /* ——— Welcome banner (dashboard-specific) ——— */
+  .welcome-banner {
+    background: linear-gradient(to bottom, #fff5d4 0%, #f4d98a 100%);
+    border-bottom: 1px solid #c8a040;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .welcome-banner .w-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, #fff, #ffd060);
+    border: 2px solid #c8a040;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(0,0,0,0.15);
+  }
+  .welcome-banner .w-text { flex: 1; }
+  .welcome-banner h2 {
+    margin: 0;
+    font-family: "Trebuchet MS", Tahoma, sans-serif;
+    font-size: 16px;
+    color: #5a3a00;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.6);
+  }
+  .welcome-banner .sub { font-size: 11px; color: #6a4a10; margin-top: 2px; font-style: italic; }
+  .welcome-banner .w-right {
+    text-align: right;
+    font-size: 10px;
+    color: #5a3a00;
+    line-height: 1.6;
+  }
+
+  /* ——— Layout ——— */
+  .wrap { padding: 10px; }
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr 240px;
+    gap: 10px;
+  }
+  /* Within main column, we have a 2-col sub-grid for web parts */
+  .main-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-content: start;
+  }
+  .main-col .full { grid-column: 1 / -1; }
+
+  /* ——— Web parts ——— */
+  .webpart {
+    background: #fff;
+    border: 1px solid #a8a8a8;
+    box-shadow: 1px 1px 0 #b8b8b8;
+  }
+  .webpart-header {
+    background: linear-gradient(to bottom, #e8eef7 0%, #c8d4e8 100%);
+    border-bottom: 1px solid #6b83a8;
+    padding: 4px 8px;
+    font-weight: bold;
+    font-size: 11px;
+    color: #1a3a6b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .webpart-header .actions { font-size: 10px; font-weight: normal; }
+  .webpart-header .actions a { color: #0033cc; font-weight: normal; }
+  .webpart-body { padding: 6px 8px; }
+
+  /* Orange headers for "announcements" style */
+  .wp-orange .webpart-header {
+    background: linear-gradient(to bottom, #ffe8b8 0%, #f4c870 100%);
+    border-bottom-color: #b88a30;
+    color: #5a3a00;
+  }
+  /* Green */
+  .wp-green .webpart-header {
+    background: linear-gradient(to bottom, #e4f0d4 0%, #a8c88a 100%);
+    border-bottom-color: #5a8a3a;
+    color: #2a5a10;
+  }
+  /* Red */
+  .wp-red .webpart-header {
+    background: linear-gradient(to bottom, #f4d4d4 0%, #e09090 100%);
+    border-bottom-color: #a04040;
+    color: #8a0000;
+  }
+
+  /* ——— Nav pane (left) ——— */
+  .nav-list { list-style: none; margin: 0; padding: 0; font-size: 11px; }
+  .nav-list li a {
+    display: block;
+    padding: 4px 10px 4px 22px;
+    color: #0033cc;
+    text-decoration: none;
+    border-bottom: 1px dotted #d8d8d8;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><polygon points='2,2 8,5 2,8' fill='%230058b8'/></svg>") 8px 6px no-repeat;
+  }
+  .nav-list li a:hover { background-color: #ffffcc; text-decoration: underline; }
+  .nav-list li a.current { background-color: #ffffcc; font-weight: bold; color: #000; }
+  .nav-list li.section {
+    padding: 6px 10px 3px;
+    background: #f4f4ec;
+    border-bottom: 1px solid #d8d8c8;
+    font-weight: bold;
+    font-size: 10px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ——— Announcements ——— */
+  .announce {
+    background: #fffce0;
+    border: 1px solid #d4c878;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    font-size: 11px;
+  }
+  .announce:last-child { margin-bottom: 0; }
+  .announce .kicker {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: bold;
+    color: #b86a00;
+    margin-bottom: 2px;
+  }
+  .announce.red { background: #ffe4e4; border-color: #c86060; }
+  .announce.red .kicker { color: #8a0000; }
+  .announce.green { background: #eaf4e8; border-color: #6b9a3a; }
+  .announce.green .kicker { color: #2a5a10; }
+  .announce.blue { background: #e4ecfa; border-color: #6b83a8; }
+  .announce.blue .kicker { color: #1a3a6b; }
+
+  /* ——— Recent activity table ——— */
+  .activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+  }
+  .activity-table td {
+    border-bottom: 1px solid #e8e8e8;
+    padding: 3px 6px;
+    vertical-align: top;
+  }
+  .activity-table tr:nth-child(odd) td { background: #fafafa; }
+  .activity-table tr:hover td { background: #ffffcc; }
+  .activity-table td.ic { width: 20px; text-align: center; font-size: 13px; }
+  .activity-table td.verb { color: #555; font-size: 10px; white-space: nowrap; width: 60px; }
+  .activity-table td.when { color: #777; font-size: 10px; white-space: nowrap; width: 90px; text-align: right; }
+  .activity-table td.ttl a { font-size: 11px; }
+  .activity-table td.ttl .ctx { font-size: 10px; color: #888; }
+
+  /* ——— "Holdings at a glance" shelf ——— */
+  .shelf-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    padding: 6px;
+  }
+  .shelf-card {
+    background: #fafafa;
+    border: 1px solid #c8c8c8;
+    padding: 6px;
+    cursor: pointer;
+    position: relative;
+    min-height: 80px;
+  }
+  .shelf-card:hover {
+    background: #ffffcc;
+    border-color: #b88a30;
+  }
+  .shelf-card .ic {
+    font-size: 22px;
+    margin-bottom: 3px;
+    display: block;
+    filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.1));
+  }
+  .shelf-card .t {
+    font-size: 11px;
+    font-weight: bold;
+    color: #1a3a6b;
+    line-height: 1.2;
+    margin-bottom: 3px;
+  }
+  .shelf-card .meta {
+    font-size: 9px;
+    color: #666;
+  }
+  .shelf-card .recent-dot {
+    position: absolute;
+    top: 4px; right: 4px;
+    width: 8px; height: 8px;
+    background: #d43a3a;
+    border: 1px solid #8a0000;
+    border-radius: 50%;
+  }
+  .shelf-card.archived {
+    opacity: 0.75;
+    background: #f0f0ec;
+  }
+  .shelf-card.archived .t { color: #555; }
+  .shelf-card .price-up { color: #2a5a10; font-weight: bold; }
+  .shelf-card .price-down { color: #8a0000; font-weight: bold; }
+
+  /* ——— Stats mini-dashboard ——— */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: #c8c8c8;
+    border: 1px solid #a8a8a8;
+  }
+  .stat-cell {
+    background: linear-gradient(to bottom, #ffffff, #f0f0e8);
+    padding: 8px 6px;
+    text-align: center;
+  }
+  .stat-cell .n {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #1a3a6b;
+    line-height: 1;
+    text-shadow: 1px 1px 0 #fff;
+  }
+  .stat-cell .l {
+    font-size: 9px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 3px;
+  }
+  .stat-cell .d {
+    font-size: 9px;
+    color: #2a5a10;
+    font-weight: bold;
+    margin-top: 2px;
+  }
+  .stat-cell .d.red { color: #8a0000; }
+
+  /* ——— Calendar (tiny Outlook-style) ——— */
+  .cal-head {
+    background: #1a3a6b;
+    color: #fff;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .cal-head a { color: #ffcc66; }
+  .cal-head a:hover { color: #ffeebb; }
+  .cal-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+  .cal-table th {
+    background: #c8d4e8;
+    border: 1px solid #8098b8;
+    color: #1a3a6b;
+    padding: 2px;
+    font-weight: bold;
+    width: 14.28%;
+  }
+  .cal-table td {
+    border: 1px solid #d8d8d8;
+    padding: 2px 4px;
+    text-align: right;
+    height: 22px;
+    vertical-align: top;
+    color: #333;
+    cursor: pointer;
+  }
+  .cal-table td:hover { background: #ffffcc; }
+  .cal-table td.off { color: #bbb; background: #fafafa; }
+  .cal-table td.today {
+    background: #ffbe3d !important;
+    color: #5a3a00;
+    font-weight: bold;
+    box-shadow: inset 0 0 0 2px #d48a00;
+  }
+  .cal-table td.event {
+    background: #eaf0ff;
+    color: #1a3a6b;
+    font-weight: bold;
+    position: relative;
+  }
+  .cal-table td.event.deadline {
+    background: #ffe4e4;
+    color: #8a0000;
+  }
+
+  /* Events list below calendar */
+  .event-list { font-size: 11px; }
+  .event-list li {
+    padding: 3px 8px;
+    border-bottom: 1px dotted #d8d8d8;
+    list-style: none;
+  }
+  .event-list li:last-child { border-bottom: none; }
+  .event-list .date {
+    display: inline-block;
+    font-family: "Courier New", monospace;
+    font-size: 10px;
+    color: #1a3a6b;
+    background: #e8eef7;
+    border: 1px solid #b8c8e0;
+    padding: 0 3px;
+    margin-right: 4px;
+    font-weight: bold;
+  }
+  .event-list .date.urgent {
+    background: #ffe4e4; border-color: #c86060; color: #8a0000;
+  }
+
+  /* ——— Tips & help box ——— */
+  .tip-box {
+    font-size: 11px;
+    line-height: 1.6;
+    padding: 6px 8px;
+  }
+  .tip-box .quote {
+    font-family: Georgia, serif;
+    font-style: italic;
+    color: #1a3a6b;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-left: 3px solid #c8d4e8;
+    background: #fafaf4;
+    margin: 4px 0;
+  }
+  .tip-box .quote cite {
+    display: block;
+    font-size: 10px;
+    color: #777;
+    font-style: normal;
+    text-align: right;
+    margin-top: 3px;
+  }
+
+  /* ——— Tasks list ——— */
+  .task-list li {
+    list-style: none;
+    padding: 4px 8px;
+    border-bottom: 1px dotted #d8d8d8;
+    font-size: 11px;
+    display: grid;
+    grid-template-columns: 16px 1fr auto;
+    gap: 6px;
+    align-items: center;
+  }
+  .task-list li:last-child { border-bottom: none; }
+  .task-list .chk {
+    width: 13px; height: 13px;
+    background: #fff;
+    border: 1px solid #888;
+    box-shadow: inset 1px 1px 0 #d4d4d4;
+    display: inline-block;
+  }
+  .task-list .chk.done {
+    background: #fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='13' height='13'><polyline points='2,7 5,10 11,3' stroke='%232a5a10' stroke-width='2' fill='none'/></svg>") center/11px no-repeat;
+  }
+  .task-list li.done { color: #888; text-decoration: line-through; }
+  .task-list .prio {
+    font-size: 9px;
+    font-weight: bold;
+    padding: 0 4px;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+  .task-list .prio.hi { background: #ffe4e4; border-color: #c86060; color: #8a0000; }
+  .task-list .prio.med { background: #ffe8b8; border-color: #c8a040; color: #5a3a00; }
+  .task-list .prio.low { background: #eaf0ff; border-color: #6b83a8; color: #1a3a6b; }
+
+  /* ——— Quick capture box ——— */
+  .capture-box {
+    padding: 8px;
+    font-size: 11px;
+  }
+  .capture-box textarea {
+    width: 100%;
+    height: 60px;
+    font-family: Verdana, sans-serif;
+    font-size: 11px;
+    border: 1px solid #888;
+    box-shadow: inset 1px 1px 0 #d4d4d4;
+    padding: 4px;
+    resize: vertical;
+  }
+  .capture-box .ctrls {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+    align-items: center;
+  }
+  .capture-box select {
+    font-family: inherit;
+    font-size: 10px;
+    padding: 1px 3px;
+    border: 1px solid #888;
+  }
+  .capture-box input[type="text"] {
+    font-family: inherit;
+    font-size: 11px;
+    padding: 2px 4px;
+    border: 1px solid #888;
+    box-shadow: inset 1px 1px 0 #d4d4d4;
+    width: 80px;
+  }
+  .capture-box .cbtn {
+    display: inline-block;
+    padding: 2px 10px;
+    background: linear-gradient(to bottom, #d4e8ff, #8ab4e8);
+    border: 1px solid #4a7ac8;
+    color: #002855;
+    font-weight: bold;
+    font-size: 10px;
+    cursor: pointer;
+  }
+  .capture-box .cbtn:hover { background: linear-gradient(to bottom, #e8f4ff, #a0c4f4); }
+  .capture-box .cbtn.ghost {
+    background: linear-gradient(to bottom, #fff, #e0dcd4);
+    border-color: #8a8a8a;
+    color: #000;
+    font-weight: normal;
+  }
+  .capture-box .cbtn.sell {
+    background: linear-gradient(to bottom, #f4d4d4, #e09090);
+    border-color: #a04040;
+    color: #8a0000;
+  }
+  .capture-box .cbtn.buy {
+    background: linear-gradient(to bottom, #e4f0d4, #a8c88a);
+    border-color: #5a8a3a;
+    color: #2a5a10;
+  }
+
+  /* ——— Open Questions / Alerts feed ——— */
+  .q-list li {
+    list-style: none;
+    padding: 4px 8px;
+    border-bottom: 1px dotted #d8d8d8;
+    font-size: 11px;
+    display: grid;
+    grid-template-columns: 16px 1fr auto;
+    gap: 6px;
+    align-items: baseline;
+  }
+  .q-list li:last-child { border-bottom: none; }
+  .q-list .qic {
+    color: #c00;
+    font-weight: bold;
+  }
+  .q-list .q-src {
+    font-size: 9px;
+    color: #888;
+    margin-top: 2px;
+  }
+  .q-list .age {
+    font-size: 10px;
+    color: #777;
+  }
+
+  /* ——— Stats/usage sparkline table ——— */
+  .usage-table {
+    width: 100%;
+    font-size: 10px;
+    border-collapse: collapse;
+  }
+  .usage-table td { padding: 2px 6px; }
+  .usage-table td.bar-cell { width: 100%; padding-right: 6px; }
+  .usage-table .bar {
+    height: 10px;
+    background: linear-gradient(to bottom, #8ab4e8, #4a7ac8);
+    border: 1px solid #1a3a6b;
+    display: inline-block;
+    vertical-align: middle;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+  .usage-table .bar.green {
+    background: linear-gradient(to bottom, #a8c88a, #5a8a3a);
+    border-color: #2a5a10;
+  }
+  .usage-table .bar.red {
+    background: linear-gradient(to bottom, #e09090, #c86060);
+    border-color: #8a0000;
+  }
+  .usage-table td.n {
+    text-align: right;
+    font-family: "Courier New", monospace;
+    font-weight: bold;
+    color: #1a3a6b;
+    width: 60px;
+  }
+  .usage-table td.n.green { color: #2a5a10; }
+  .usage-table td.n.red { color: #8a0000; }
+
+  /* ——— Footer ——— */
+  .footer {
+    background: linear-gradient(to bottom, #eaeaea, #d4d0c8);
+    border-top: 1px solid #8a8a8a;
+    padding: 6px 10px;
+    margin-top: 10px;
+    font-size: 10px;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ========================================= */
+  /* TABLET: 768px — 1024px                    */
+  /* Dense 2-col corporate layout              */
+  /* ========================================= */
+  @media (max-width: 1024px) and (min-width: 768px) {
+    .layout {
+      grid-template-columns: 1fr 240px;
+    }
+    .left-col { display: none; }
+    .main-col {
+      grid-template-columns: 1fr 1fr;
+    }
+    .banner .title-area .t2 { display: none; }
+    .banner-search input { width: 140px; }
+    .welcome-banner .w-icon { width: 36px; height: 36px; font-size: 20px; }
+    .welcome-banner h2 { font-size: 14px; }
+    .shelf-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 4px; }
+    .shelf-card { min-height: 65px; padding: 4px; }
+    .shelf-card .ic { font-size: 18px; }
+    .stat-cell .n { font-size: 20px; }
+    .footer { flex-direction: column; gap: 3px; text-align: center; }
+  }
+
+  /* ========================================= */
+  /* MOBILE: < 768px                           */
+  /* Pocket PC dense corporate mode            */
+  /* ========================================= */
+  @media (max-width: 767px) {
+    html, body { font-size: 10px; }
+
+    /* Banner: compact horizontal bar */
+    .banner {
+      height: auto;
+      padding: 4px 8px;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .banner .logo {
+      width: 26px; height: 26px;
+      font-size: 16px;
+      margin-right: 6px;
+    }
+    .banner .title-area .t1 { font-size: 13px; }
+    .banner .title-area .t2 { display: none; }
+    .banner-search { display: none; }
+    .banner .user-area { font-size: 9px; }
+
+    /* Subnav: scrollable tabs */
+    .subnav {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      white-space: nowrap;
+      height: auto;
+      padding: 0 4px;
+    }
+    .subnav .tab {
+      padding: 3px 10px 4px;
+      font-size: 10px;
+    }
+
+    /* Breadcrumb: compact */
+    .breadcrumb { padding: 3px 6px; font-size: 10px; }
+    .breadcrumb-right { display: none; }
+
+    /* Welcome banner: stacked */
+    .welcome-banner {
+      flex-direction: column;
+      padding: 6px 8px;
+      gap: 4px;
+      text-align: center;
+    }
+    .welcome-banner .w-icon { width: 32px; height: 32px; font-size: 18px; }
+    .welcome-banner h2 { font-size: 12px; }
+    .welcome-banner .sub { font-size: 10px; }
+    .welcome-banner .w-right {
+      text-align: center;
+      font-size: 9px;
+      border-top: 1px dotted #c8a040;
+      padding-top: 4px;
+    }
+
+    /* Layout: single column, left nav hidden */
+    .wrap { padding: 4px; }
+    .layout {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+    .left-col { display: none; }
+    .right-col { display: block; }
+
+    /* Main: single column */
+    .main-col {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+
+    /* Web parts: tighter */
+    .webpart { box-shadow: none; }
+    .webpart-header { padding: 3px 6px; font-size: 10px; }
+    .webpart-header .actions { font-size: 9px; }
+    .webpart-body { padding: 4px 6px; }
+
+    /* Stat grid: 2x2 on mobile */
+    .stat-grid { grid-template-columns: 1fr 1fr; }
+    .stat-cell { padding: 6px 4px; }
+    .stat-cell .n { font-size: 18px; }
+    .stat-cell .l { font-size: 8px; }
+
+    /* Holdings: 2 columns on mobile */
+    .shelf-grid { grid-template-columns: 1fr 1fr; gap: 3px; padding: 3px; }
+    .shelf-card { min-height: 60px; padding: 4px; }
+    .shelf-card .ic { font-size: 16px; margin-bottom: 2px; }
+    .shelf-card .t { font-size: 10px; }
+    .shelf-card .meta { font-size: 8px; }
+
+    /* Announcements: tighter */
+    .announce { padding: 4px 6px; margin-bottom: 4px; font-size: 10px; }
+    .announce .kicker { font-size: 8px; }
+
+    /* Activity table: hide context lines */
+    .activity-table td { padding: 2px 4px; font-size: 10px; }
+    .activity-table td.ic { width: 16px; font-size: 11px; }
+    .activity-table td.verb { font-size: 9px; width: 45px; }
+    .activity-table td.when { font-size: 9px; width: 50px; }
+    .activity-table td.ttl .ctx { display: none; }
+
+    /* Calendar: compact */
+    .cal-table td { height: 18px; font-size: 9px; padding: 1px 2px; }
+    .cal-table th { font-size: 9px; padding: 1px; }
+    .event-list li { padding: 2px 4px; font-size: 10px; }
+
+    /* Tasks & alerts */
+    .task-list li { padding: 3px 6px; font-size: 10px; }
+    .q-list li { padding: 3px 6px; font-size: 10px; }
+
+    /* Quick trade: stack controls */
+    .capture-box { padding: 4px 6px; }
+    .capture-box .ctrls { flex-wrap: wrap; gap: 3px; font-size: 10px; }
+    .capture-box select { font-size: 9px; }
+    .capture-box input[type="text"] { width: 60px; font-size: 10px; }
+
+    /* P/L chart */
+    .usage-table td { padding: 1px 4px; font-size: 9px; }
+    .usage-table td.n { font-size: 9px; width: 50px; }
+
+    /* Tip box */
+    .tip-box { padding: 4px 6px; font-size: 10px; }
+    .tip-box .quote { font-size: 10px; padding: 4px 8px; }
+
+    /* Footer */
+    .footer {
+      flex-direction: column;
+      gap: 2px;
+      text-align: center;
+      padding: 4px 6px;
+      font-size: 9px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Banner with search -->
+<div class="banner">
+  <div class="logo">₿</div>
+  <div class="title-area">
+    <div class="t1">Digital Asset Terminal</div>
+    <div class="t2">Enterprise Edition v4.1.0 &nbsp;|&nbsp; An Enterprise Digital Asset Management System</div>
+  </div>
+  <div class="banner-search">
+    <input type="text" placeholder="Search coins, wallets, transactions..."/>
+    <button class="go">Go ⚙️</button>
+  </div>
+  <div class="user-area">
+    Welcome back, <span class="u1">A. Nakamoto</span><br/>
+    <a href="profile.html">My Profile</a> &nbsp;|&nbsp; <a href="#">Help</a> &nbsp;|&nbsp; <a href="home.html">Sign Out</a>
+  </div>
+</div>
+
+<!-- Subnav -->
+<div class="subnav">
+  <span class="tab active"><a href="home.html" style="color:inherit;text-decoration:none;">Home</a></span>
+  <span class="tab"><a href="wallet.html" style="color:inherit;text-decoration:none;">Wallets</a></span>
+  <span class="tab"><a href="markets.html" style="color:inherit;text-decoration:none;">Markets</a></span>
+  <span class="tab"><a href="transactions.html" style="color:inherit;text-decoration:none;">Transactions</a></span>
+  <span class="tab"><a href="settings.html" style="color:inherit;text-decoration:none;">Settings</a></span>
+</div>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <span class="breadcrumb-right">Wednesday, April 22, 2026 &nbsp;|&nbsp; 09:47 AM &nbsp;|&nbsp; Session: 00:12:41</span>
+  <span class="current">Home / My Dashboard</span>
+</div>
+
+<!-- Welcome banner -->
+<div class="welcome-banner">
+  <div class="w-icon">📈</div>
+  <div class="w-text">
+    <h2>Good morning, A. Nakamoto!</h2>
+    <div class="sub">Your portfolio is valued at <b>$47,832.14</b>, <b style="color:#2a5a10;">+2.41% (24h)</b>. You have <b>5 price alerts</b> active and <b>3 pending orders</b> awaiting fill.</div>
+  </div>
+  <div class="w-right">
+    Login Streak: <b>14 consecutive days</b> ⚡<br/>
+    Trades this week: <b>12</b><br/>
+    Last sync: <b>today 09:45 AM 🛡️</b>
+  </div>
+</div>
+
+<div class="wrap">
+<div class="layout">
+
+  <!-- ===== LEFT: Navigation ===== -->
+  <div class="left-col">
+
+    <div class="webpart">
+      <div class="webpart-header">
+        <span>⚡ Quick Navigation</span>
+        <span class="actions">[<a href="#">—^'</a>]</span>
+      </div>
+      <div class="webpart-body" style="padding: 0;">
+        <ul class="nav-list">
+          <li class="section">My Workspace</li>
+          <li><a href="#" class="current">Home Dashboard</a></li>
+          <li><a href="wallet.html">My Wallets</a></li>
+          <li><a href="transactions.html">Transaction History</a></li>
+          <li><a href="search.html">Search...</a></li>
+          <li><a href="favorites.html">Favorites ⭐</a></li>
+
+          <li class="section">Wallets (5)</li>
+          <li><a href="wallet.html">⚡ Hot Wallet (BTC)</a></li>
+          <li><a href="#">🏠—S Cold Storage</a></li>
+          <li><a href="#">🏠O— DeFi Wallet</a></li>
+          <li><a href="#">🏠— Staking Pool</a></li>
+          <li><a href="#">💱 Exchange Account</a></li>
+
+          <li class="section">Watchlist (8)</li>
+          <li><a href="coin.html">—,— Bitcoin (BTC)</a></li>
+          <li><a href="#">💠 Ethereum (ETH)</a></li>
+          <li><a href="#">—Z Solana (SOL)</a></li>
+          <li><a href="#">—o. XRP</a></li>
+          <li><a href="favorites.html">View all watchlist »</a></li>
+
+          <li class="section">Tools</li>
+          <li><a href="#">Add New Wallet</a></li>
+          <li><a href="#">Import / Export Keys</a></li>
+          <li><a href="#">Backup Seed Phrase</a></li>
+          <li><a href="settings.html">Preferences</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🔗 Pinned Assets</span></div>
+      <div class="webpart-body" style="font-size: 11px; line-height: 1.8;">
+        <a href="coin.html">⭐ Bitcoin (BTC) — $67,241</a><br/>
+        <a href="#">⭐ Ethereum (ETH) — $3,412</a><br/>
+        <a href="#">⭐ Solana (SOL) — $148.20</a><br/>
+        <a href="#">⭐ Chainlink (LINK) — $14.82</a><br/>
+        <a href="#">⭐ Polkadot (DOT) — $7.33</a><br/>
+        <span style="font-size: 10px; color: #888;"><a href="favorites.html">» Manage watchlist</a></span>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🏠—️ Top Sectors</span></div>
+      <div class="webpart-body" style="font-size: 11px; line-height: 1.9;">
+        <a href="#">Layer 1</a> (12) &nbsp;
+        <a href="#">DeFi</a> (9) &nbsp;
+        <a href="#">NFT</a> (6) &nbsp;
+        <a href="#">Staking</a> (5) &nbsp;
+        <a href="#">Privacy</a> (4) &nbsp;
+        <a href="#">Gaming</a> (3) &nbsp;
+        <a href="#">Oracle</a> (3) &nbsp;
+        <a href="#">Meme</a> (2) &nbsp;
+        <a href="#">AI</a> (2)
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== MAIN (2-column grid of web parts) ===== -->
+  <div class="main-col">
+
+    <!-- Market Alerts (full width) -->
+    <div class="webpart wp-orange full">
+      <div class="webpart-header">
+        <span>⚡ Market Alerts &amp; Notifications</span>
+        <span class="actions">[<a href="#">Manage</a>] [<a href="#">—^'</a>]</span>
+      </div>
+      <div class="webpart-body">
+        <div class="announce red">
+          <div class="kicker">⚡ High Volatility Warning</div>
+          <b>BTC dropped 4.2% in the last hour</b> — currently at $67,241. Your stop-loss at $65,000 is <b>3.3% away</b>. <a href="#">Review position —'</a>
+        </div>
+        <div class="announce">
+          <div class="kicker">🔔 Price Alert Triggered</div>
+          <b>ETH crossed above $3,400</b> — target hit at 08:23 AM. You have a <b>limit buy at $3,200</b> still active. <a href="#">Manage alerts —'</a>
+        </div>
+        <div class="announce green">
+          <div class="kicker">🛡️ Staking Reward Collected</div>
+          Your <b>SOL staking pool</b> distributed <b>0.847 SOL ($125.36)</b> overnight. Total staked: <b>42.5 SOL</b>. APY: <b>6.8%</b>. <a href="#">View staking —'</a>
+        </div>
+        <div class="announce blue">
+          <div class="kicker">—— Network Status</div>
+          Ethereum gas: <b>23 gwei</b> (low). Bitcoin mempool: <b>14,203 unconfirmed txns</b>. Last wallet sync: <b>09:45 AM 🛡️</b>. <a href="#">Network details</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats mini-dashboard (full width) -->
+    <div class="full">
+      <div style="background: linear-gradient(to bottom, #4a7ac8, #2a5a9a); color: #fff; font-weight: bold; font-size: 11px; padding: 3px 8px; border: 1px solid #1a3a6b; text-shadow: 1px 1px 0 rgba(0,0,0,0.3);">
+        ⚙️ Portfolio at a Glance
+      </div>
+      <div class="stat-grid">
+        <div class="stat-cell">
+          <div class="n">$47.8K</div>
+          <div class="l">Total Value</div>
+          <div class="d">+2.41% today</div>
+        </div>
+        <div class="stat-cell">
+          <div class="n">12</div>
+          <div class="l">Assets Held</div>
+          <div class="d">+2 this month</div>
+        </div>
+        <div class="stat-cell">
+          <div class="n">847</div>
+          <div class="l">Total Transactions</div>
+          <div class="d">+23 this week</div>
+        </div>
+        <div class="stat-cell">
+          <div class="n">5</div>
+          <div class="l">Active Alerts</div>
+          <div class="d red">2 triggered today</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Holdings at a glance (full width) -->
+    <div class="webpart full">
+      <div class="webpart-header">
+        <span>💱 Holdings at a Glance — Active (8)</span>
+        <span class="actions">[<a href="#">View all</a>] [<a href="#">Grid</a>] [<a href="#">List</a>] [<a href="#">+ Add</a>]</span>
+      </div>
+      <div class="shelf-grid">
+        <div class="shelf-card">
+          <span class="recent-dot" title="price alert active"></span>
+          <span class="ic">—,—</span>
+          <div class="t">Bitcoin (BTC)</div>
+          <div class="meta">0.4218 BTC · $28,353<br/><span class="price-down">⚙️ -4.2% (1h)</span></div>
+        </div>
+        <div class="shelf-card">
+          <span class="recent-dot"></span>
+          <span class="ic">—z</span>
+          <div class="t">Ethereum (ETH)</div>
+          <div class="meta">3.127 ETH · $10,672<br/><span class="price-up">⚙️ +1.8% (24h)</span></div>
+        </div>
+        <div class="shelf-card">
+          <span class="ic">—Z</span>
+          <div class="t">Solana (SOL)</div>
+          <div class="meta">42.5 SOL · $6,299<br/><span class="price-up">⚙️ +3.1% (24h)</span></div>
+        </div>
+        <div class="shelf-card">
+          <span class="ic">—o.</span>
+          <div class="t">XRP</div>
+          <div class="meta">2,450 XRP · $1,372<br/><span class="price-up">⚙️ +0.4% (24h)</span></div>
+        </div>
+        <div class="shelf-card">
+          <span class="ic">⬡</span>
+          <div class="t">Chainlink (LINK)</div>
+          <div class="meta">48.2 LINK · $714<br/><span class="price-down">⚙️ -1.2% (24h)</span></div>
+        </div>
+        <div class="shelf-card">
+          <span class="ic">⚙️</span>
+          <div class="t">Polkadot (DOT)</div>
+          <div class="meta">56.0 DOT · $410<br/><span class="price-up">⚙️ +0.9% (24h)</span></div>
+        </div>
+        <div class="shelf-card">
+          <span class="ic">——</span>
+          <div class="t">Cardano (ADA)</div>
+          <div class="meta">1,200 ADA · $516<br/><span class="price-down">⚙️ -0.3% (24h)</span></div>
+        </div>
+        <div class="shelf-card archived" style="background: repeating-linear-gradient(45deg, #f0f0e8 0 3px, #e8e8e0 3px 6px); border-style: dashed;">
+          <span class="ic" style="opacity: 0.4;">—z.</span>
+          <div class="t" style="color: #666;">Add new asset...</div>
+          <div class="meta" style="color: #999;">click to add</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Transactions (left col of main) -->
+    <div class="webpart">
+      <div class="webpart-header">
+        <span>⏱ Recent Transactions</span>
+        <span class="actions">[<a href="#">View all</a>]</span>
+      </div>
+      <div class="webpart-body" style="padding: 0;">
+        <table class="activity-table">
+          <tr>
+            <td class="ic">📦</td>
+            <td class="verb">bought</td>
+            <td class="ttl">
+              <a href="#">0.0500 BTC @ $67,100</a>
+              <div class="ctx">via Hot Wallet · limit order filled</div>
+            </td>
+            <td class="when">22 min</td>
+          </tr>
+          <tr>
+            <td class="ic">⚡</td>
+            <td class="verb">sold</td>
+            <td class="ttl">
+              <a href="#">1.200 ETH @ $3,418</a>
+              <div class="ctx">via Exchange Account · market order</div>
+            </td>
+            <td class="when">2 hours</td>
+          </tr>
+          <tr>
+            <td class="ic">🔔</td>
+            <td class="verb">swapped</td>
+            <td class="ttl">
+              <a href="#">500 USDC —' 0.0074 BTC</a>
+              <div class="ctx">via DeFi Wallet · Uniswap V3</div>
+            </td>
+            <td class="when">yesterday</td>
+          </tr>
+          <tr>
+            <td class="ic">⚡</td>
+            <td class="verb">received</td>
+            <td class="ttl">
+              <a href="#">0.847 SOL (staking reward)</a>
+              <div class="ctx">from Staking Pool · auto-compound</div>
+            </td>
+            <td class="when">yesterday</td>
+          </tr>
+          <tr>
+            <td class="ic">⚡</td>
+            <td class="verb">sent</td>
+            <td class="ttl">
+              <a href="#">0.1000 ETH —' 0x7a3f...c821</a>
+              <div class="ctx">from Hot Wallet · 42 confirmations</div>
+            </td>
+            <td class="when">2 days</td>
+          </tr>
+          <tr>
+            <td class="ic">📦</td>
+            <td class="verb">bought</td>
+            <td class="ttl">
+              <a href="#">200 ADA @ $0.43</a>
+              <div class="ctx">via Exchange Account · DCA order</div>
+            </td>
+            <td class="when">3 days</td>
+          </tr>
+          <tr>
+            <td class="ic">📁'</td>
+            <td class="verb">staked</td>
+            <td class="ttl">
+              <a href="#">10.0 SOL locked (90-day pool)</a>
+              <div class="ctx">Staking Pool · 6.8% APY</div>
+            </td>
+            <td class="when">Apr 15</td>
+          </tr>
+          <tr>
+            <td class="ic">⚡</td>
+            <td class="verb">deposited</td>
+            <td class="ttl">
+              <a href="#">$2,500 USDC from bank</a>
+              <div class="ctx">Exchange Account · ACH transfer</div>
+            </td>
+            <td class="when">Apr 14</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Market Events Calendar -->
+    <div class="webpart">
+      <div class="cal-head">
+        <span>—— April 2026 ⚙️</span>
+        <span><a href="#">Today</a> · <a href="#">Month</a></span>
+      </div>
+      <table class="cal-table">
+        <tr><th>S</th><th>M</th><th>T</th><th>W</th><th>T</th><th>F</th><th>S</th></tr>
+        <tr>
+          <td class="off">29</td><td class="off">30</td><td class="off">31</td>
+          <td>1</td><td>2</td><td>3</td><td>4</td>
+        </tr>
+        <tr>
+          <td>5</td><td>6</td><td>7</td><td>8</td>
+          <td>9</td><td>10</td><td>11</td>
+        </tr>
+        <tr>
+          <td>12</td><td>13</td><td>14</td>
+          <td class="event" title="ETH Pectra upgrade">15</td>
+          <td>16</td><td>17</td><td>18</td>
+        </tr>
+        <tr>
+          <td>19</td><td>20</td><td>21</td>
+          <td class="today">22</td>
+          <td class="event" title="FOMC minutes">23</td>
+          <td>24</td><td>25</td>
+        </tr>
+        <tr>
+          <td>26</td><td>27</td>
+          <td class="event deadline" title="ARB token unlock">28</td>
+          <td>29</td><td>30</td>
+          <td class="off">1</td><td class="off">2</td>
+        </tr>
+      </table>
+      <ul class="event-list" style="margin: 0; padding: 0;">
+        <li>
+          <span class="date">TODAY</span>
+          <a href="#">Portfolio rebalance review</a> — 4 PM
+        </li>
+        <li>
+          <span class="date">APR 23</span>
+          <a href="#">FOMC Meeting Minutes</a> — 2:00 PM EST
+          <div style="font-size: 9px; color: #888; padding-left: 50px;">—— expect volatility</div>
+        </li>
+        <li>
+          <span class="date urgent">APR 28</span>
+          <a href="#">ARB token unlock</a> — 1.1B tokens
+        </li>
+        <li>
+          <span class="date urgent">MAY 06</span>
+          <b>SOL staking lock expires</b> — 10.0 SOL
+        </li>
+        <li>
+          <span class="date">MAY 15</span>
+          <a href="#">ETH Pectra hardfork</a> — mainnet
+        </li>
+      </ul>
+    </div>
+
+    <!-- Price Alerts -->
+    <div class="webpart wp-red">
+      <div class="webpart-header">
+        <span>🔔 Active Price Alerts (5)</span>
+        <span class="actions">[<a href="#">View all</a>]</span>
+      </div>
+      <ul class="q-list" style="margin: 0; padding: 0;">
+        <li>
+          <span class="qic">⚙️</span>
+          <div>
+            <a href="#">BTC above $70,000</a>
+            <div class="q-src">current: $67,241 · distance: +4.1%</div>
+          </div>
+          <span class="age">set 3d ago</span>
+        </li>
+        <li>
+          <span class="qic">⚙️</span>
+          <div>
+            <a href="#">BTC below $65,000 (stop-loss)</a>
+            <div class="q-src">current: $67,241 · distance: -3.3%</div>
+          </div>
+          <span class="age">set 5d ago</span>
+        </li>
+        <li>
+          <span class="qic">⚙️</span>
+          <div>
+            <a href="#">ETH above $3,500</a>
+            <div class="q-src">current: $3,412 · distance: +2.6%</div>
+          </div>
+          <span class="age">set 1d ago</span>
+        </li>
+        <li>
+          <span class="qic">⚙️</span>
+          <div>
+            <a href="#">SOL below $130 (buy zone)</a>
+            <div class="q-src">current: $148.20 · distance: -12.3%</div>
+          </div>
+          <span class="age">set 7d ago</span>
+        </li>
+        <li>
+          <span class="qic">⚙️</span>
+          <div>
+            <a href="#">LINK above $16 (breakout)</a>
+            <div class="q-src">current: $14.82 · distance: +8.0%</div>
+          </div>
+          <span class="age">set today</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Pending Orders -->
+    <div class="webpart wp-green">
+      <div class="webpart-header">
+        <span>📊 Pending Orders (3)</span>
+        <span class="actions">[<a href="#">Add</a>] [<a href="#">All</a>]</span>
+      </div>
+      <ul class="task-list" style="margin: 0; padding: 0;">
+        <li>
+          <span class="chk"></span>
+          <a href="#">Limit Buy: 0.05 BTC @ $62,000</a>
+          <span class="prio hi">ACTIVE</span>
+        </li>
+        <li>
+          <span class="chk"></span>
+          <a href="#">Stop-Loss: 1.0 ETH @ $2,800</a>
+          <span class="prio hi">ACTIVE</span>
+        </li>
+        <li>
+          <span class="chk"></span>
+          <a href="#">DCA Order: $100 BTC weekly (Sunday)</a>
+          <span class="prio med">RECURRING</span>
+        </li>
+        <li class="done">
+          <span class="chk done"></span>
+          <span>Limit Buy: 200 ADA @ $0.43 — filled Apr 19</span>
+          <span class="prio low">FILLED</span>
+        </li>
+        <li class="done">
+          <span class="chk done"></span>
+          <span>Swap: 500 USDC —' BTC via Uniswap — executed Apr 21</span>
+          <span class="prio low">DONE</span>
+        </li>
+        <li>
+          <span class="chk"></span>
+          <a href="#">Take-Profit: 0.1 BTC @ $75,000</a>
+          <span class="prio low">PENDING</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Quick Trade -->
+    <div class="webpart">
+      <div class="webpart-header">
+        <span>⚡ Quick Trade</span>
+        <span class="actions">[<a href="#">₿</a>]</span>
+      </div>
+      <div class="capture-box">
+        <div class="ctrls" style="margin-top: 0; margin-bottom: 6px;">
+          <span>Asset:</span>
+          <select>
+            <option>—,— Bitcoin (BTC)</option>
+            <option>💠 Ethereum (ETH)</option>
+            <option>—Z Solana (SOL)</option>
+            <option>—o. XRP</option>
+            <option>⬡ Chainlink (LINK)</option>
+          </select>
+          <span style="margin-left: 8px;">Amount:</span>
+          <input type="text" placeholder="0.00" style="width: 70px;"/>
+          <span style="margin-left: 8px;">Type:</span>
+          <select>
+            <option>Market</option>
+            <option>Limit</option>
+            <option>Stop-Loss</option>
+          </select>
+        </div>
+        <div class="ctrls">
+          <span style="font-size: 10px; color: #555;">BTC Price: <b>$67,241.00</b> &nbsp;|&nbsp; Est. Total: <b>$0.00</b></span>
+          <span style="flex: 1;"></span>
+          <span class="cbtn sell">Sell ⚙️</span>
+          <span class="cbtn buy">Buy ⚙️</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Portfolio Performance chart -->
+    <div class="webpart">
+      <div class="webpart-header">
+        <span>📊 Portfolio Performance (7-Day P/L)</span>
+        <span class="actions">[<a href="#">Stats</a>]</span>
+      </div>
+      <div class="webpart-body">
+        <table class="usage-table">
+          <tr>
+            <td>Thu 04/16</td>
+            <td class="bar-cell"><span class="bar green" style="width: 30%;"></span></td>
+            <td class="n green">+$312</td>
+          </tr>
+          <tr>
+            <td>Fri 04/17</td>
+            <td class="bar-cell"><span class="bar red" style="width: 45%;"></span></td>
+            <td class="n red">-$487</td>
+          </tr>
+          <tr>
+            <td>Sat 04/18</td>
+            <td class="bar-cell"><span class="bar green" style="width: 18%;"></span></td>
+            <td class="n green">+$184</td>
+          </tr>
+          <tr>
+            <td>Sun 04/19</td>
+            <td class="bar-cell"><span class="bar green" style="width: 80%;"></span></td>
+            <td class="n green">+$1,082</td>
+          </tr>
+          <tr>
+            <td>Mon 04/20</td>
+            <td class="bar-cell"><span class="bar red" style="width: 25%;"></span></td>
+            <td class="n red">-$263</td>
+          </tr>
+          <tr>
+            <td>Tue 04/21</td>
+            <td class="bar-cell"><span class="bar green" style="width: 55%;"></span></td>
+            <td class="n green">+$605</td>
+          </tr>
+          <tr>
+            <td><b>Wed 04/22</b></td>
+            <td class="bar-cell"><span class="bar" style="width: 70%; background: linear-gradient(to bottom, #ffbe3d, #d48a00); border-color: #8a4a00;"></span></td>
+            <td class="n"><b>+$952</b></td>
+          </tr>
+          <tr style="border-top: 1px solid #c8c8c8;">
+            <td style="padding-top: 4px;"><b>Week Total</b></td>
+            <td class="bar-cell"></td>
+            <td class="n green"><b>+$2,385</b></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Market Insight of the Day -->
+    <div class="webpart wp-orange full">
+      <div class="webpart-header">
+        <span>💱 Market Insight of the Day</span>
+        <span class="actions">[<a href="#">Next</a>] [<a href="#">Dismiss</a>]</span>
+      </div>
+      <div class="tip-box">
+        <p><b>Tip #47:</b> When gas fees are below <code style="background:#f4f4ec;border:1px solid #d4d4c4;padding: 0 3px;font-family:monospace;">30 gwei</code>, it's an ideal time to interact with smart contracts. Set a gas alert using the <code style="background:#f4f4ec;border:1px solid #d4d4c4;padding: 0 3px;font-family:monospace;">Settings —' Network</code> panel to catch low-fee windows automatically.</p>
+        <div class="quote">
+          "The stock market is a device for transferring money from the impatient to the patient."
+          <cite>— Warren Buffett</cite>
+        </div>
+        <p style="font-size: 10px; color: #666; text-align: right; margin: 0;">
+          <a href="#">Browse 184 insights</a> &nbsp;|&nbsp; <a href="#">Submit an insight</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== RIGHT: Side web parts ===== -->
+  <div class="right-col">
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🏠O— Market Pulse</span></div>
+      <div class="webpart-body" style="font-size: 10px; line-height: 1.7;">
+        <b>Wednesday, April 22, 2026</b><br/>
+        BTC Dominance: <b>52.4%</b><br/>
+        Total Market Cap: <b>$2.41T</b><br/>
+        24h Volume: <b>$87.3B</b><br/>
+        Fear & Greed Index: <b style="color:#2a5a10;">62 (Greed)</b><br/>
+        <hr style="border: none; border-top: 1px dotted #c8c8c8; margin: 5px 0;"/>
+        <b style="color:#1a3a6b;">ETH Gas: 23 gwei</b><br/>
+        BTC Hashrate: <b>621 EH/s</b>
+      </div>
+    </div>
+
+    <div class="webpart wp-green">
+      <div class="webpart-header"><span>⚡ Trading Streak</span></div>
+      <div class="webpart-body" style="text-align: center; padding: 10px;">
+        <div style="font-family: Georgia, serif; font-size: 36px; font-weight: bold; color: #2a5a10; line-height: 1;">14</div>
+        <div style="font-size: 10px; color: #555; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.06em;">consecutive days</div>
+        <div style="font-size: 10px; margin-top: 6px; color: #2a5a10;"><b>Best streak:</b> 23 days<br/>(Jan 3 — Jan 25)</div>
+        <div style="font-size: 10px; margin-top: 4px;"><a href="#">View streak history</a></div>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🏠— Staking Rewards</span></div>
+      <div class="webpart-body" style="font-size: 11px; line-height: 1.5;">
+        <div style="font-size: 10px; color: #888; margin-bottom: 4px;">Active staking positions:</div>
+        <p style="margin: 0 0 6px;"><b>—Z 42.5 SOL</b> staked at <b>6.8% APY</b><br/>
+        Rewards earned: <b>2.14 SOL ($317)</b></p>
+        <p style="margin: 0 0 6px;"><b>⚙️ 56.0 DOT</b> staked at <b>12.1% APY</b><br/>
+        Rewards earned: <b>1.87 DOT ($13.71)</b></p>
+        <div style="text-align: right; margin-top: 6px;">
+          <span style="display: inline-block; padding: 1px 8px; background: linear-gradient(to bottom, #fff, #e0dcd4); border: 1px solid #8a8a8a; font-size: 10px; cursor: pointer;">Claim All</span>
+          <span style="display: inline-block; padding: 1px 8px; background: linear-gradient(to bottom, #fff, #e0dcd4); border: 1px solid #8a8a8a; font-size: 10px; cursor: pointer;">Stake More</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Did You Know—</span></div>
+      <div class="webpart-body" style="font-size: 10px; line-height: 1.6; color: #333;">
+        You've executed <b>847 transactions</b> across all wallets since Feb 2023 — with a total realized P/L of <b style="color:#2a5a10;">+$12,403</b>.
+        <hr style="border: none; border-top: 1px dotted #c8c8c8; margin: 6px 0;"/>
+        Your longest-held asset is <a href="#">Bitcoin</a>, first purchased <b>Feb 14, 2023</b> (1,163 days ago). Current unrealized gain: <b style="color:#2a5a10;">+142%</b>.
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🔔 Recent Reports</span></div>
+      <div class="webpart-body" style="padding: 0;">
+        <ul style="list-style: none; margin: 0; padding: 0; font-size: 10px;">
+          <li style="padding: 3px 6px; border-bottom: 1px dotted #d8d8d8;">
+            📊 <a href="#">Tax Report Q1 2026</a><br/>
+            <span style="font-size: 9px; color: #888; padding-left: 16px;">generated Apr 15 · PDF</span>
+          </li>
+          <li style="padding: 3px 6px; border-bottom: 1px dotted #d8d8d8;">
+            📊 <a href="#">Monthly Summary — Mar 2026</a><br/>
+            <span style="font-size: 9px; color: #888; padding-left: 16px;">generated Apr 1 · PDF</span>
+          </li>
+          <li style="padding: 3px 6px; border-bottom: 1px dotted #d8d8d8;">
+            📊 <a href="#">Staking Rewards Report</a><br/>
+            <span style="font-size: 9px; color: #888; padding-left: 16px;">generated Mar 31 · CSV</span>
+          </li>
+          <li style="padding: 3px 6px;">
+            📊 <a href="#">Capital Gains Summary 2025</a><br/>
+            <span style="font-size: 9px; color: #888; padding-left: 16px;">archived · Feb 2026</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Notifications (3)</span></div>
+      <div class="webpart-body" style="padding: 0;">
+        <ul style="list-style: none; margin: 0; padding: 0; font-size: 10px;">
+          <li style="padding: 4px 6px; border-bottom: 1px dotted #d8d8d8; background: #fffce0;">
+            <b>Price alert</b> · 08:23 AM<br/>
+            <span style="color: #555;">"ETH crossed above $3,400"</span>
+          </li>
+          <li style="padding: 4px 6px; border-bottom: 1px dotted #d8d8d8; background: #fffce0;">
+            <b>📁' Staking reward</b> · overnight<br/>
+            <span style="color: #555;">"+0.847 SOL distributed"</span>
+          </li>
+          <li style="padding: 4px 6px; background: #fffce0;">
+            <b>Order filled</b> · Apr 19<br/>
+            <span style="color: #555;">"Limit buy 200 ADA @ $0.43 executed"</span>
+          </li>
+        </ul>
+        <div style="padding: 4px 6px; text-align: right; background: #ece9d8; border-top: 1px solid #c8c4b4;">
+          <a href="#">View all notifications —'</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Quick Actions</span></div>
+      <div class="webpart-body" style="font-size: 11px; line-height: 1.9;">
+        <a href="markets.html"</a><br/>
+        <a href="#">⚡ Add wallet</a><br/>
+        <a href="#">⚡ Send crypto</a><br/>
+        <a href="search.html">⚡ Search transactions</a><br/>
+        <a href="#">📊 Generate report</a><br/>
+        <a href="#">💱 Export CSV</a><br/>
+        <a href="#">—sT Preferences</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div>
+    &copy; 2026 Digital Asset Terminal &nbsp;|&nbsp; v4.1.0 (build 20260418)
+    &nbsp;|&nbsp; <a href="#">Terms of Use</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a>
+    &nbsp;|&nbsp; <a href="#">Compliance</a> &nbsp;|&nbsp; <a href="#">Report an Issue</a>
+  </div>
+  <div>
+    Database: SQLite 3.42 &nbsp;|&nbsp; Server: localhost:8080 &nbsp;|&nbsp; 🛡️ Best viewed in Internet Explorer 7+
+  </div>
+</div>
+
+</body>
+</html>

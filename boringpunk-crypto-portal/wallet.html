@@ -1,0 +1,953 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Digital Asset Terminal - Bitcoin Hot Wallet</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  /* ——— Authentic 2007 corporate reset & basics ——— */
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: Tahoma, Verdana, "MS Sans Serif", Geneva, sans-serif;
+    font-size: 11px;
+    color: #000;
+    background: #d4d0c8 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='4'><rect width='4' height='4' fill='%23d4d0c8'/><rect width='1' height='1' fill='%23c8c4bc'/></svg>");
+  }
+  a { color: #0033cc; text-decoration: underline; cursor: pointer; }
+  a:visited { color: #551a8b; }
+  a:hover { color: #ff0000; }
+
+  /* ——— Top blue banner ——— */
+  .banner {
+    height: 62px;
+    background: #003d7a linear-gradient(to bottom, #0058b8 0%, #003d7a 55%, #002855 100%);
+    border-bottom: 2px solid #001a3d;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    position: relative;
+  }
+  .banner .logo {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, #ffbe3d, #d48a00);
+    border: 2px solid #fff;
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: Georgia, serif;
+    font-weight: bold; font-style: italic;
+    font-size: 22px; color: #003d7a;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 1px 2px rgba(0,0,0,0.3);
+    margin-right: 12px;
+  }
+  .banner .title-area { flex: 1; }
+  .banner .title-area .t1 {
+    font-family: "Trebuchet MS", Tahoma, sans-serif;
+    font-size: 18px; font-weight: bold;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+    letter-spacing: -0.01em;
+  }
+  .banner .title-area .t2 {
+    font-size: 10px; color: #b8d4ff; margin-top: 2px; font-style: italic;
+  }
+  .banner .user-area {
+    text-align: right; font-size: 10px; color: #e0ecff;
+  }
+  .banner .user-area .u1 { font-weight: bold; color: #fff; }
+  .banner .user-area a { color: #ffcc66; }
+  .banner .user-area a:hover { color: #ffeebb; }
+
+  /* ——— Secondary nav / tabbed row ——— */
+  .subnav {
+    background: linear-gradient(to bottom, #eaeaea 0%, #d4d0c8 100%);
+    border-bottom: 1px solid #8a8a8a;
+    height: 26px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 8px;
+  }
+  .subnav .tab {
+    display: inline-block;
+    padding: 4px 14px 5px;
+    margin-right: 2px;
+    background: linear-gradient(to bottom, #f4f4f4, #d8d4cc);
+    border: 1px solid #8a8a8a;
+    border-bottom: none;
+    font-size: 11px;
+    color: #222;
+    cursor: pointer;
+    position: relative;
+    top: 1px;
+  }
+  .subnav .tab:hover { background: linear-gradient(to bottom, #fff, #e4e0d8); }
+  .subnav .tab.active {
+    background: #ece9d8;
+    font-weight: bold;
+    padding-bottom: 6px;
+    top: 0;
+    z-index: 2;
+  }
+
+  /* ——— Breadcrumb row ——— */
+  .breadcrumb {
+    background: #ece9d8;
+    padding: 4px 10px;
+    border-bottom: 1px solid #b8b4a8;
+    font-size: 11px;
+    color: #333;
+  }
+  .breadcrumb .sep { color: #888; margin: 0 5px; }
+  .breadcrumb .current { color: #000; font-weight: bold; }
+  .breadcrumb-right {
+    float: right;
+    color: #555;
+    font-size: 10px;
+  }
+
+  /* ——— Page wrapper: 3 columns (nav | content | sidebar) ——— */
+  .wrap { padding: 10px; }
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr 240px;
+    gap: 10px;
+  }
+
+  /* ——— Generic "web part" panel ——— */
+  .webpart {
+    background: #fff;
+    border: 1px solid #a8a8a8;
+    margin-bottom: 10px;
+    box-shadow: 1px 1px 0 #b8b8b8;
+  }
+  .webpart-header {
+    background: linear-gradient(to bottom, #e8eef7 0%, #c8d4e8 100%);
+    border-bottom: 1px solid #6b83a8;
+    padding: 4px 8px;
+    font-weight: bold;
+    font-size: 11px;
+    color: #1a3a6b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    letter-spacing: 0.02em;
+  }
+  .webpart-header .title {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .webpart-header .actions {
+    font-size: 10px;
+    font-weight: normal;
+  }
+  .webpart-header .actions a { color: #0033cc; font-weight: normal; }
+  .webpart-body { padding: 6px; }
+  .webpart-body.tight { padding: 0; }
+
+  /* ——— Nav pane (left) ——— */
+  .nav-pane .webpart-body {
+    padding: 0;
+    font-size: 11px;
+  }
+  .nav-list { list-style: none; margin: 0; padding: 0; }
+  .nav-list li a {
+    display: block;
+    padding: 4px 10px 4px 22px;
+    color: #0033cc;
+    text-decoration: none;
+    border-bottom: 1px dotted #d8d8d8;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><polygon points='2,2 8,5 2,8' fill='%230058b8'/></svg>") 8px 6px no-repeat;
+  }
+  .nav-list li a:hover { background-color: #ffffcc; text-decoration: underline; }
+  .nav-list li a.current { background-color: #ffffcc; font-weight: bold; color: #000; }
+  .nav-list li.section {
+    padding: 6px 10px 3px;
+    background: #f4f4ec;
+    border-bottom: 1px solid #d8d8c8;
+    font-weight: bold;
+    font-size: 10px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* ——— Shelf table (top of main area) ——— */
+  .corp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    background: #fff;
+  }
+  .corp-table th {
+    background: linear-gradient(to bottom, #e8eef7 0%, #c8d4e8 100%);
+    border: 1px solid #8098b8;
+    padding: 4px 8px;
+    text-align: left;
+    font-weight: bold;
+    color: #1a3a6b;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .corp-table th a { color: #1a3a6b; text-decoration: none; }
+  .corp-table th a:hover { text-decoration: underline; }
+  .corp-table th .sort { color: #6b83a8; font-size: 9px; margin-left: 3px; }
+  .corp-table td {
+    border-bottom: 1px solid #e4e4e4;
+    padding: 4px 8px;
+    vertical-align: top;
+  }
+  .corp-table tr:nth-child(odd) td { background: #fafafa; }
+  .corp-table tr:hover td { background: #ffffcc; }
+  .corp-table tr.current-row td { background: #fff3b8 !important; }
+  .corp-table tr.current-row td:first-child { border-left: 3px solid #d48a00; }
+  .corp-table td .ic { font-size: 13px; margin-right: 4px; }
+  .corp-table td.c { text-align: center; }
+  .corp-table td.n { text-align: right; font-family: "Courier New", monospace; font-size: 11px; }
+  .corp-table td.date { color: #555; font-size: 10px; white-space: nowrap; }
+  .corp-table td.up { color: #2a5a10; font-weight: bold; }
+  .corp-table td.down { color: #8a0000; font-weight: bold; }
+
+  .status-lozenge {
+    display: inline-block;
+    padding: 1px 6px;
+    font-size: 9px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid;
+  }
+  .status-lozenge.active { background: #dff0c8; border-color: #6b9a3a; color: #2a5a10; }
+  .status-lozenge.cold { background: #e4ecfa; border-color: #6b83a8; color: #1a3a6b; }
+  .status-lozenge.locked { background: #ffe8b8; border-color: #b88a30; color: #5a3a00; }
+  .status-lozenge.archived { background: #e8e8e8; border-color: #888; color: #555; }
+
+  /* ——— Wallet overview (below shelf table) ——— */
+  .nb-overview {
+    background: #fff;
+    border: 1px solid #a8a8a8;
+    margin-bottom: 10px;
+  }
+  .nb-overview-header {
+    background: linear-gradient(to bottom, #fff5d4 0%, #f4d98a 100%);
+    border-bottom: 1px solid #c8a040;
+    padding: 8px 12px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .nb-overview-header .icon-big {
+    font-size: 36px;
+    line-height: 1;
+    filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.15));
+  }
+  .nb-overview-header .title-block h2 {
+    margin: 0;
+    font-family: "Trebuchet MS", Tahoma, sans-serif;
+    font-size: 16px;
+    color: #5a3a00;
+    text-shadow: 1px 1px 0 rgba(255,255,255,0.6);
+  }
+  .nb-overview-header .title-block .sub {
+    font-size: 11px;
+    color: #6a4a10;
+    font-style: italic;
+    margin-top: 2px;
+  }
+  .nb-overview-body {
+    padding: 10px 12px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+  }
+  .nb-overview-body .description {
+    font-size: 11px;
+    line-height: 1.5;
+    color: #222;
+  }
+  .nb-overview-body .description p { margin: 0 0 8px; }
+
+  .factsheet {
+    background: #f7f7f2;
+    border: 1px solid #c8c8b8;
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+  .factsheet table { width: 100%; border-collapse: collapse; }
+  .factsheet td { padding: 2px 4px; vertical-align: top; }
+  .factsheet td.k {
+    color: #555;
+    font-weight: bold;
+    white-space: nowrap;
+    width: 40%;
+  }
+  .factsheet td.v { color: #000; }
+  .factsheet .kicker {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6b83a8;
+    font-weight: bold;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #d4d4c4;
+    margin-bottom: 4px;
+  }
+
+  /* ——— Toolbar above the tx table ——— */
+  .toolbar {
+    background: linear-gradient(to bottom, #f4f4f4 0%, #d8d4cc 100%);
+    border: 1px solid #8a8a8a;
+    border-bottom: none;
+    padding: 3px 6px;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    font-size: 10px;
+  }
+  .tbtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: linear-gradient(to bottom, #fff 0%, #e0dcd4 100%);
+    border: 1px solid #8a8a8a;
+    color: #000;
+    font-size: 10px;
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 #fff;
+  }
+  .tbtn:hover { background: linear-gradient(to bottom, #fffce0 0%, #f4e8a8 100%); }
+  .tbtn .ic { font-size: 11px; }
+  .tbtn.primary {
+    background: linear-gradient(to bottom, #d4e8ff 0%, #8ab4e8 100%);
+    border-color: #4a7ac8;
+    color: #002855;
+    font-weight: bold;
+  }
+  .tbtn.primary:hover { background: linear-gradient(to bottom, #e8f4ff 0%, #a0c4f4 100%); }
+  .toolbar .sep {
+    width: 1px; height: 16px;
+    background: #a8a8a8;
+    margin: 0 3px;
+  }
+  .toolbar .search {
+    margin-left: auto;
+    display: flex;
+    gap: 2px;
+    align-items: center;
+  }
+  .toolbar .search input {
+    font-family: inherit;
+    font-size: 10px;
+    padding: 2px 4px;
+    border: 1px solid #888;
+    background: #fff;
+    width: 140px;
+    box-shadow: inset 1px 1px 0 #d4d4d4;
+  }
+
+  /* ——— Transaction table styles ——— */
+  .pages-table td.title-cell {
+    padding-left: 20px;
+    background-repeat: no-repeat;
+    background-position: 6px center;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10'><polygon points='2,2 8,5 2,8' fill='%230058b8'/></svg>");
+  }
+
+  .new-tag {
+    display: inline-block;
+    background: #ff3333;
+    color: #fff;
+    font-size: 8px;
+    font-weight: bold;
+    padding: 1px 4px;
+    margin-left: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    vertical-align: 1px;
+  }
+  .new-tag.green { background: #2a5a10; }
+  .new-tag.blue { background: #1a3a6b; }
+
+  /* ——— Right sidebar panels ——— */
+  .side-panel .webpart-header {
+    background: linear-gradient(to bottom, #ffe8b8 0%, #f4c870 100%);
+    border-bottom: 1px solid #b88a30;
+    color: #5a3a00;
+  }
+  .side-panel ul {
+    list-style: none; margin: 0; padding: 0; font-size: 11px;
+  }
+  .side-panel ul li {
+    padding: 4px 6px;
+    border-bottom: 1px dotted #d8d8d8;
+  }
+  .side-panel ul li:last-child { border-bottom: none; }
+  .side-panel .recent-item .t { display: block; }
+  .side-panel .recent-item .d { font-size: 10px; color: #777; }
+
+  .announcement {
+    background: #fffce0;
+    border: 1px solid #d4c878;
+    padding: 6px 8px;
+    margin: 6px;
+    font-size: 10px;
+  }
+  .announcement .kicker {
+    color: #b86a00;
+    font-weight: bold;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+
+  /* Quick links box */
+  .quick-links { padding: 6px 8px; font-size: 11px; }
+  .quick-links a { display: block; padding: 2px 0; }
+
+  /* Section heading inside main column */
+  .section-heading {
+    background: linear-gradient(to bottom, #4a7ac8 0%, #2a5a9a 100%);
+    color: #fff;
+    font-weight: bold;
+    font-size: 11px;
+    padding: 3px 8px;
+    border: 1px solid #1a3a6b;
+    margin-bottom: 0;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+    letter-spacing: 0.02em;
+  }
+
+  /* ——— Footer ——— */
+  .footer {
+    background: linear-gradient(to bottom, #eaeaea, #d4d0c8);
+    border-top: 1px solid #8a8a8a;
+    padding: 6px 10px;
+    margin-top: 10px;
+    font-size: 10px;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+  }
+  .footer a { font-size: 10px; }
+  .webpart h3 { margin: 0 0 4px; }
+
+  /* ========================================= */
+  /* TABLET (768—1024px)                       */
+  /* ========================================= */
+  @media (max-width: 1024px) and (min-width: 768px) {
+    .layout { grid-template-columns: 1fr 220px; }
+    .left-col { display: none; }
+    .banner .title-area .t2 { display: none; }
+    .nb-overview-body { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .toolbar { flex-wrap: wrap; }
+    .toolbar .search input { width: 100px; }
+    .corp-table { font-size: 10px; }
+    .corp-table td, .corp-table th { padding: 3px 6px; }
+    .footer { flex-direction: column; gap: 3px; text-align: center; }
+  }
+
+  /* ========================================= */
+  /* MOBILE (< 768px)                          */
+  /* ========================================= */
+  @media (max-width: 767px) {
+    html, body { font-size: 10px; }
+
+    .banner { height: auto; padding: 4px 8px; flex-wrap: wrap; gap: 4px; }
+    .banner .logo { width: 26px; height: 26px; font-size: 16px; margin-right: 6px; }
+    .banner .title-area .t1 { font-size: 13px; }
+    .banner .title-area .t2 { display: none; }
+    .banner .user-area { font-size: 9px; }
+
+    .subnav { overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; height: auto; padding: 0 4px; }
+    .subnav .tab { padding: 3px 10px 4px; font-size: 10px; }
+
+    .breadcrumb { padding: 3px 6px; font-size: 10px; }
+    .breadcrumb-right { display: none; }
+
+    .wrap { padding: 4px; }
+    .layout { grid-template-columns: 1fr; gap: 4px; }
+    .left-col { display: none; }
+
+    .webpart { box-shadow: none; margin-bottom: 4px; }
+    .webpart-header { padding: 3px 6px; font-size: 10px; }
+    .webpart-body { padding: 4px 6px; }
+
+    .section-heading { font-size: 10px; padding: 2px 6px; }
+
+    /* Toolbar: wrap and compact */
+    .toolbar { flex-wrap: wrap; padding: 3px 4px; gap: 3px; }
+    .tbtn { padding: 2px 6px; font-size: 9px; }
+    .toolbar .search { width: 100%; margin-left: 0; }
+    .toolbar .search input { width: 100%; flex: 1; }
+    .toolbar .sep { display: none; }
+
+    /* Tables: scrollable on mobile */
+    .corp-table { font-size: 10px; display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .corp-table thead, .corp-table tbody, .corp-table tr { display: table; width: 100%; table-layout: auto; }
+    .corp-table td, .corp-table th { padding: 3px 5px; font-size: 10px; }
+    .corp-table td.n { font-size: 10px; }
+    .corp-table td.date { font-size: 9px; }
+
+    /* Wallet overview: stack */
+    .nb-overview-header { padding: 6px 8px; gap: 8px; }
+    .nb-overview-header .icon-big { font-size: 24px; }
+    .nb-overview-header .title-block h2 { font-size: 13px; }
+    .nb-overview-header .title-block .sub { font-size: 10px; }
+    .nb-overview-body { grid-template-columns: 1fr; gap: 8px; padding: 6px 8px; }
+
+    .factsheet { font-size: 9px; }
+    .factsheet td { padding: 1px 3px; }
+
+    /* Sidebar stuff */
+    .announcement { padding: 4px 6px; margin: 4px; font-size: 9px; }
+    .quick-links { font-size: 10px; }
+    .side-panel ul li { padding: 3px 5px; font-size: 10px; }
+
+    .footer { flex-direction: column; gap: 2px; text-align: center; padding: 4px 6px; font-size: 9px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top banner -->
+<div class="banner">
+  <div class="logo">₿</div>
+  <div class="title-area">
+    <div class="t1">Digital Asset Terminal</div>
+    <div class="t2">Enterprise Edition v4.1.0 &nbsp;|&nbsp; An Enterprise Digital Asset Management System</div>
+  </div>
+  <div class="user-area">
+    Welcome back, <span class="u1">A. Nakamoto</span><br/>
+    <a href="profile.html">My Profile</a> &nbsp;|&nbsp; <a href="#">Help</a> &nbsp;|&nbsp; <a href="home.html">Sign Out</a>
+  </div>
+</div>
+
+<!-- Secondary nav -->
+<div class="subnav">
+  <span class="tab"><a href="home.html" style="color:inherit;text-decoration:none;">Home</a></span>
+  <span class="tab active"><a href="wallet.html" style="color:inherit;text-decoration:none;">Wallets</a></span>
+  <span class="tab"><a href="markets.html" style="color:inherit;text-decoration:none;">Markets</a></span>
+  <span class="tab"><a href="transactions.html" style="color:inherit;text-decoration:none;">Transactions</a></span>
+  <span class="tab"><a href="settings.html" style="color:inherit;text-decoration:none;">Settings</a></span>
+</div>
+
+<!-- Breadcrumb -->
+<div class="breadcrumb">
+  <span class="breadcrumb-right">Last sync: Wed Apr 22, 2026 at 09:45 AM | Session expires in 58 min</span>
+  <a href="home.html">Home</a> <span class="sep">&gt;</span>
+  <a href="#">Wallets</a> <span class="sep">&gt;</span>
+  <a href="#">All Wallets</a> <span class="sep">&gt;</span>
+  <span class="current">Bitcoin Hot Wallet</span>
+</div>
+
+<div class="wrap">
+<div class="layout">
+
+  <!-- ===== LEFT NAV PANE ===== -->
+  <div class="left-col">
+
+    <div class="webpart nav-pane">
+      <div class="webpart-header">
+        <span class="title">⚡ Quick Navigation</span>
+        <span class="actions">[<a href="#">—^'</a>]</span>
+      </div>
+      <div class="webpart-body tight">
+        <ul class="nav-list">
+          <li class="section">My Workspace</li>
+          <li><a href="home.html">Home Dashboard</a></li>
+          <li><a href="wallet.html">My Wallets</a></li>
+          <li><a href="transactions.html">Transaction History</a></li>
+          <li><a href="search.html">Search...</a></li>
+
+          <li class="section">Wallets (5)</li>
+          <li><a href="#" class="current">⚡ Hot Wallet (BTC)</a></li>
+          <li><a href="#">🏠—S Cold Storage</a></li>
+          <li><a href="#">🏠O— DeFi Wallet</a></li>
+          <li><a href="#">🏠— Staking Pool</a></li>
+          <li><a href="#">💱 Exchange Account</a></li>
+
+          <li class="section">Archived (3)</li>
+          <li><a href="#">Old Hardware Wallet</a></li>
+          <li><a href="#">Legacy ETH Wallet</a></li>
+          <li><a href="#">Test Wallet (Goerli)</a></li>
+
+          <li class="section">Tools</li>
+          <li><a href="#">Add New Wallet</a></li>
+          <li><a href="#">Import / Export Keys</a></li>
+          <li><a href="#">Backup Seed Phrase</a></li>
+          <li><a href="settings.html">Preferences</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header">
+        <span class="title">📊 Portfolio Stats</span>
+      </div>
+      <div class="webpart-body" style="font-size: 10px; line-height: 1.7;">
+        <b>5</b> active wallets<br/>
+        <b>3</b> archived wallets<br/>
+        <b>12</b> assets held<br/>
+        <b>847</b> total transactions<br/>
+        <b>$47,832</b> portfolio value<br/>
+        <hr style="border: none; border-top: 1px dotted #c8c8c8; margin: 5px 0;"/>
+        <span style="color: #555;">Last sync:</span><br/>
+        Apr 22, 2026 09:45 AM 🛡️
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="main-col">
+
+    <!-- Shelf / wallets list -->
+    <div class="section-heading">⚙️ All Wallets (showing 5 of 8)</div>
+
+    <div class="toolbar">
+      <span class="tbtn primary"><span class="ic">⚡</span> New Wallet</span>
+      <span class="sep"></span>
+      <span class="tbtn"><span class="ic">📤</span> Open</span>
+      <span class="tbtn"><span class="ic">🏠—️</span> Archive</span>
+      <span class="tbtn"><span class="ic">📊</span> Properties</span>
+      <span class="sep"></span>
+      <span class="tbtn">View: <b>Details</b> ⚙️</span>
+      <span class="tbtn">Filter: <b>Active Only</b> ⚙️</span>
+      <div class="search">
+        <input type="text" value="" placeholder="Find wallet..."/>
+        <span class="tbtn">Go</span>
+      </div>
+    </div>
+
+    <table class="corp-table">
+      <thead>
+        <tr>
+          <th style="width: 24px;">&nbsp;</th>
+          <th><a href="#">Wallet Name</a> <span class="sort">⚙️</span></th>
+          <th style="width: 70px;"><a href="#">Status</a></th>
+          <th style="width: 80px; text-align: right;"><a href="#">Balance</a></th>
+          <th style="width: 80px; text-align: right;"><a href="#">USD Value</a></th>
+          <th style="width: 70px; text-align: right;"><a href="#">24h</a></th>
+          <th style="width: 110px;"><a href="#">Last Activity</a> <span class="sort">⚙️</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="current-row">
+          <td class="c"><span class="ic">⚡</span></td>
+          <td><a href="#"><b>Bitcoin Hot Wallet</b></a> <span class="new-tag">Selected</span></td>
+          <td><span class="status-lozenge active">Active</span></td>
+          <td class="n">0.4218 BTC</td>
+          <td class="n">$28,353</td>
+          <td class="n down">-4.2%</td>
+          <td class="date">04/22/2026 09:41</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="ic">🏠—S</span></td>
+          <td><a href="#">Cold Storage (Ledger)</a></td>
+          <td><span class="status-lozenge cold">Cold</span></td>
+          <td class="n">1.0000 BTC</td>
+          <td class="n">$67,241</td>
+          <td class="n down">-4.2%</td>
+          <td class="date">03/15/2026 14:22</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="ic">🏠O—</span></td>
+          <td><a href="#">DeFi Wallet (MetaMask)</a></td>
+          <td><span class="status-lozenge active">Active</span></td>
+          <td class="n">3.127 ETH</td>
+          <td class="n">$10,672</td>
+          <td class="n up">+1.8%</td>
+          <td class="date">04/21/2026 22:15</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="ic">🏠—</span></td>
+          <td><a href="#">Staking Pool (SOL + DOT)</a></td>
+          <td><span class="status-lozenge locked">Locked</span></td>
+          <td class="n">42.5 SOL</td>
+          <td class="n">$6,709</td>
+          <td class="n up">+2.1%</td>
+          <td class="date">04/22/2026 06:00</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="ic">💱</span></td>
+          <td><a href="#">Exchange Account (Kraken)</a></td>
+          <td><span class="status-lozenge active">Active</span></td>
+          <td class="n">—</td>
+          <td class="n">$2,058</td>
+          <td class="n up">+0.4%</td>
+          <td class="date">04/22/2026 09:22</td>
+        </tr>
+        <tr style="color: #888;">
+          <td class="c" style="opacity: 0.6;"><span class="ic">⚡</span></td>
+          <td><a href="#">Old Hardware Wallet</a></td>
+          <td><span class="status-lozenge archived">Archived</span></td>
+          <td class="n" style="color: #888;">0.0000 BTC</td>
+          <td class="n" style="color: #888;">$0.00</td>
+          <td class="n">—</td>
+          <td class="date">09/30/2024 16:00</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="background: #ece9d8; padding: 3px 8px; font-size: 10px; border: 1px solid #a8a8a8; border-top: none;">
+      Showing 1-6 of 8 wallets &nbsp;|&nbsp;
+      <a href="#">—— Previous</a> &nbsp;
+      <b>1</b> &nbsp; <a href="#">2</a> &nbsp;
+      <a href="#">Next ——</a>
+      &nbsp;&nbsp; Items per page:
+      <select style="font-size: 10px; padding: 0;"><option>10</option><option>25</option><option>50</option></select>
+    </div>
+
+    <br/>
+
+    <!-- Wallet overview panel -->
+    <div class="section-heading">⚙️ Selected Wallet Details</div>
+
+    <div class="nb-overview">
+      <div class="nb-overview-header">
+        <div class="icon-big">⚡</div>
+        <div class="title-block">
+          <h2>Bitcoin Hot Wallet</h2>
+          <div class="sub">Primary trading wallet — BTC &amp; USDC holdings for active trading and DCA orders</div>
+        </div>
+      </div>
+      <div class="nb-overview-body">
+        <div class="description">
+          <p><b>Purpose:</b> Primary hot wallet for daily trading operations. Holds BTC for active limit/market orders and USDC for buying opportunities. Connected to Kraken exchange via API for automated order execution.</p>
+          <p><b>Security:</b> Software wallet with 2FA enabled. Hardware key backup stored in cold storage. Auto-sweep to cold storage when balance exceeds 0.5 BTC. Last security audit: April 1, 2026.</p>
+          <p><b>Strategy:</b> Dollar-cost averaging $100/week into BTC. Limit orders set at key support levels. Stop-loss at -8% from entry.</p>
+        </div>
+        <div class="factsheet">
+          <div class="kicker">Wallet Properties</div>
+          <table>
+            <tr><td class="k">Wallet ID:</td><td class="v">WLT-00001</td></tr>
+            <tr><td class="k">Status:</td><td class="v"><b style="color:#2a5a10;">ACTIVE</b></td></tr>
+            <tr><td class="k">Owner:</td><td class="v">A. Nakamoto</td></tr>
+            <tr><td class="k">Created:</td><td class="v">02/14/2023</td></tr>
+            <tr><td class="k">Address:</td><td class="v" style="font-family: 'Courier New', monospace; font-size: 9px;">bc1q7a3f...x8c821</td></tr>
+            <tr><td class="k">Balance:</td><td class="v"><b>0.4218 BTC</b></td></tr>
+            <tr><td class="k">USD Value:</td><td class="v"><b>$28,353.41</b></td></tr>
+            <tr><td class="k">Transactions:</td><td class="v">342</td></tr>
+            <tr><td class="k">Network:</td><td class="v">Bitcoin Mainnet</td></tr>
+            <tr><td class="k">2FA:</td><td class="v">Enabled 🛡️</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transactions in this wallet -->
+    <div class="section-heading">⚙️ Transaction History (342)</div>
+
+    <div class="toolbar">
+      <a href="markets.html" class="tbtn primary" style="text-decoration:none;"><span class="ic">💱</span> New Trade</a>
+      <span class="tbtn"><span class="ic">⚡</span> Send</span>
+      <span class="sep"></span>
+      <span class="tbtn"><span class="ic">⚡</span> Receive</span>
+      <span class="tbtn"><span class="ic">📊</span> Copy Address</span>
+      <span class="sep"></span>
+      <span class="tbtn">View: <b>Details</b> ⚙️</span>
+      <span class="tbtn">Filter: <b>All Types</b> ⚙️</span>
+      <div class="search">
+        <input type="text" value="" placeholder="Find transaction..."/>
+        <span class="tbtn">Go</span>
+      </div>
+    </div>
+
+    <table class="corp-table pages-table">
+      <thead>
+        <tr>
+          <th style="width: 24px;">&nbsp;</th>
+          <th>Transaction</th>
+          <th style="width: 80px; text-align: right;">Amount</th>
+          <th style="width: 75px; text-align: right;">USD</th>
+          <th style="width: 90px;">Date</th>
+          <th style="width: 50px;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="current-row">
+          <td class="c"><span class="ic">📦</span></td>
+          <td class="title-cell"><a href="#"><b>Buy 0.0500 BTC @ $67,100</b></a> <span class="new-tag green">New</span>
+            <span style="display:block;color:#666;font-size:10px;margin-top:2px;font-style:italic;">limit order filled · Kraken · tx: 0xa3f8...2c41</span>
+          </td>
+          <td class="n">+0.0500</td>
+          <td class="n">$3,355</td>
+          <td class="date">04/22 09:41</td>
+          <td class="c"><span class="new-tag green" style="font-size: 8px;">🛡️ Conf</span></td>
+        </tr>
+        <tr>
+          <td class="c"><span class="ic">⚡</span></td>
+          <td class="title-cell"><a href="#">Send 0.1000 ETH —' 0x7a3f...c821</a>
+            <span style="display:block;color:#666;font-size:10px;margin-top:2px;font-style:italic;">external transfer · 42 confirmations · gas: 0.0021 ETH</span>
+          </td>
+          <td class="n">-0.1000</td>
+          <td class="n">$341</td>
+          <td class="date">04/20 14:03</td>
+          <td class="c">🛡️</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="ic">📦</span></td>
+          <td class="title-cell"><a href="#">Buy 0.0200 BTC @ $66,800 (DCA)</a>
+            <span style="display:block;color:#666;font-size:10px;margin-top:2px;font-style:italic;">recurring order · weekly DCA · tx: 0xb2e1...9f03</span>
+          </td>
+          <td class="n">+0.0200</td>
+          <td class="n">$1,336</td>
+          <td class="date">04/19 00:01</td>
+          <td class="c">🛡️</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="ic">⚡</span></td>
+          <td class="title-cell"><a href="#">Sell 0.0300 BTC @ $68,450</a>
+            <span style="display:block;color:#666;font-size:10px;margin-top:2px;font-style:italic;">market order · Kraken · realized P/L: +$142</span>
+          </td>
+          <td class="n">-0.0300</td>
+          <td class="n">$2,054</td>
+          <td class="date">04/18 16:22</td>
+          <td class="c">🛡️</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="ic">⚡</span></td>
+          <td class="title-cell"><a href="#">Receive 0.0500 BTC from Cold Storage</a>
+            <span style="display:block;color:#666;font-size:10px;margin-top:2px;font-style:italic;">internal transfer · bc1q8k2...f4a1 —' this wallet</span>
+          </td>
+          <td class="n">+0.0500</td>
+          <td class="n">$3,362</td>
+          <td class="date">04/15 09:30</td>
+          <td class="c">🛡️</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="ic">🔔</span></td>
+          <td class="title-cell"><a href="#">Swap 500 USDC —' 0.0074 BTC via Uniswap</a>
+            <span style="display:block;color:#666;font-size:10px;margin-top:2px;font-style:italic;">DEX swap · slippage: 0.12% · gas: 0.003 ETH</span>
+          </td>
+          <td class="n">+0.0074</td>
+          <td class="n">$500</td>
+          <td class="date">04/14 11:47</td>
+          <td class="c">🛡️</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="ic">📦</span></td>
+          <td class="title-cell"><a href="#">Buy 0.1000 BTC @ $63,200</a>
+            <span style="display:block;color:#666;font-size:10px;margin-top:2px;font-style:italic;">limit order filled · Kraken · entry target hit</span>
+          </td>
+          <td class="n">+0.1000</td>
+          <td class="n">$6,320</td>
+          <td class="date">04/10 22:14</td>
+          <td class="c">🛡️</td>
+        </tr>
+        <tr>
+          <td class="c"><span class="ic">⚡</span></td>
+          <td class="title-cell"><a href="#">Deposit $2,500 USDC from bank (ACH)</a>
+            <span style="display:block;color:#666;font-size:10px;margin-top:2px;font-style:italic;">fiat on-ramp · 3 business days · cleared</span>
+          </td>
+          <td class="n">+2,500 USDC</td>
+          <td class="n">$2,500</td>
+          <td class="date">04/08 10:00</td>
+          <td class="c">🛡️</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="background: #ece9d8; padding: 3px 8px; font-size: 10px; border: 1px solid #a8a8a8; border-top: none;">
+      Showing 1-8 of 342 transactions &nbsp;|&nbsp; <a href="#">Export to CSV</a> &nbsp;|&nbsp; <a href="#">Tax Report</a> &nbsp;|&nbsp; <a href="#">View all</a>
+    </div>
+
+  </div>
+
+  <!-- ===== RIGHT SIDEBAR ===== -->
+  <div class="right-col">
+
+    <div class="webpart side-panel">
+      <div class="webpart-header">
+        <span class="title">⚡ Wallet Alerts</span>
+        <span class="actions">[<a href="#">—^'</a>]</span>
+      </div>
+      <div class="announcement">
+        <div class="kicker">⚡ Volatility</div>
+        BTC dropped <b>4.2%</b> in the last hour. Stop-loss at <b>$65,000</b> is 3.3% away. <a href="#">Review —'</a>
+      </div>
+      <div class="announcement">
+        <div class="kicker">📁' Security</div>
+        2FA last verified <b>7 days ago</b>. Consider re-authenticating. <a href="#">Security settings —'</a>
+      </div>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header">
+        <span class="title">⏱ Recent Activity</span>
+      </div>
+      <ul>
+        <li class="recent-item">
+          <span class="t"><a href="#">Buy 0.0500 BTC</a></span>
+          <span class="d">22 min ago</span>
+        </li>
+        <li class="recent-item">
+          <span class="t"><a href="#">Send 0.1000 ETH</a></span>
+          <span class="d">2 days ago</span>
+        </li>
+        <li class="recent-item">
+          <span class="t"><a href="#">DCA Buy 0.0200 BTC</a></span>
+          <span class="d">3 days ago</span>
+        </li>
+        <li class="recent-item">
+          <span class="t"><a href="#">Sell 0.0300 BTC</a></span>
+          <span class="d">4 days ago</span>
+        </li>
+        <li class="recent-item">
+          <span class="t"><a href="#">Receive from Cold Storage</a></span>
+          <span class="d">7 days ago</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header">
+        <span class="title">🔗 Connected Services</span>
+      </div>
+      <div class="quick-links">
+        <a href="#">Kraken Exchange API</a>
+        <span style="font-size: 9px; color: #2a5a10; display: block; margin-top: -2px; margin-bottom: 4px;">connected · synced 3 min ago</span>
+        <a href="#">Uniswap V3 (DeFi)</a>
+        <span style="font-size: 9px; color: #2a5a10; display: block; margin-top: -2px; margin-bottom: 4px;">connected</span>
+        <a href="#">CoinGecko Price Feed</a>
+        <span style="font-size: 9px; color: #2a5a10; display: block; margin-top: -2px; margin-bottom: 4px;">active · 15s refresh</span>
+      </div>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header">
+        <span class="title">⚡ Wallet Actions</span>
+      </div>
+      <div class="quick-links">
+        <a href="markets.html"</a>
+        <a href="#">⚡ Send crypto</a>
+        <a href="#">⚡ Receive crypto</a>
+        <a href="#">📊 Copy wallet address</a>
+        <a href="#">📁' View private key</a>
+        <a href="#">📊 Generate report</a>
+        <a href="#">🏠—️ Archive this wallet</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div>
+    &copy; 2026 Digital Asset Terminal &nbsp;|&nbsp; v4.1.0 (build 20260418)
+    &nbsp;|&nbsp; <a href="#">Terms of Use</a>
+    &nbsp;|&nbsp; <a href="#">Privacy Policy</a>
+    &nbsp;|&nbsp; <a href="#">Compliance</a>
+    &nbsp;|&nbsp; <a href="#">Report an Issue</a>
+  </div>
+  <div>
+    Database: SQLite 3.42 &nbsp;|&nbsp; Server: localhost:8080 &nbsp;|&nbsp; 🛡️ Best viewed in Internet Explorer 7+
+  </div>
+</div>
+
+</body>
+</html>

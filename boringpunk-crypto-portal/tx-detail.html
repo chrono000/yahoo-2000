@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Transaction Detail — Buy 0.0500 BTC | Digital Asset Terminal</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  /* TX Detail-specific styles */
+  .tx-hero { background: linear-gradient(to bottom, #dff0c8, #c8e0a8); border: 1px solid #6b9a3a; padding: 12px 16px; display: flex; gap: 16px; align-items: center; margin-bottom: 10px; }
+  .tx-hero .icon-big { font-size: 36px; line-height: 1; }
+  .tx-hero .info { flex: 1; }
+  .tx-hero .info h2 { margin: 0; font-family: "Trebuchet MS", Tahoma, sans-serif; font-size: 16px; color: #2a5a10; }
+  .tx-hero .info .sub { font-size: 11px; color: #4a7a2a; margin-top: 2px; }
+  .tx-hero .amount { text-align: right; }
+  .tx-hero .amount .big { font-family: Georgia, serif; font-size: 24px; font-weight: bold; color: #2a5a10; }
+  .tx-hero .amount .usd { font-size: 12px; color: #555; }
+
+  .prop-table { width: 100%; font-size: 11px; border-collapse: collapse; }
+  .prop-table td { padding: 4px 8px; border-bottom: 1px dotted #e4e4e4; vertical-align: top; }
+  .prop-table td.k { color: #555; font-weight: bold; width: 35%; background: #fafafa; }
+
+  .timeline { padding: 8px 0; }
+  .timeline .step { display: flex; gap: 10px; margin-bottom: 6px; font-size: 11px; }
+  .timeline .step .dot { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+  .timeline .step .dot.done { background: #dff0c8; border: 2px solid #6b9a3a; color: #2a5a10; }
+  .timeline .step .dot.pending { background: #ffe8b8; border: 2px solid #b88a30; color: #5a3a00; }
+  .timeline .step .content { flex: 1; }
+  .timeline .step .content .title { font-weight: bold; }
+  .timeline .step .content .time { font-size: 10px; color: #888; }
+  .timeline .line { width: 2px; height: 10px; background: #c8c8c8; margin-left: 9px; margin-bottom: 4px; }
+
+  .mono { font-family: "Courier New", "Lucida Console", monospace; font-size: 10px; background: #f4f4ec; border: 1px solid #d4d4c4; padding: 2px 6px; word-break: break-all; }
+
+  @media (max-width: 767px) {
+    .tx-hero { flex-direction: column; text-align: center; padding: 8px; gap: 6px; }
+    .tx-hero .amount .big { font-size: 18px; }
+    .prop-table td.k { width: 40%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="logo">₿</div>
+  <div class="title-area">
+    <div class="t1">Digital Asset Terminal</div>
+    <div class="t2">Enterprise Edition v4.1.0 &nbsp;|&nbsp; An Enterprise Digital Asset Management System</div>
+  </div>
+  <div class="user-area">
+    Welcome back, <span class="u1">A. Nakamoto</span><br/>
+    <a href="profile.html">My Profile</a> &nbsp;|&nbsp; <a href="#">Help</a> &nbsp;|&nbsp; <a href="home.html">Sign Out</a>
+  </div>
+</div>
+
+<div class="subnav">
+  <span class="tab"><a href="home.html">Home</a></span>
+  <span class="tab"><a href="wallet.html">Wallets</a></span>
+  <span class="tab"><a href="markets.html">Markets</a></span>
+  <span class="tab active"><a href="transactions.html">Transactions</a></span>
+  <span class="tab"><a href="settings.html">Settings</a></span>
+</div>
+
+<div class="breadcrumb">
+  <a href="home.html">Home</a> <span class="sep">&gt;</span>
+  <a href="transactions.html">Transactions</a> <span class="sep">&gt;</span>
+  <span class="current">TX-2026-04220941 — Buy 0.0500 BTC</span>
+</div>
+
+<div class="wrap">
+<div class="layout">
+
+  <div class="left-col">
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Quick Navigation</span></div>
+      <div class="webpart-body" style="padding:0;">
+        <ul class="nav-list">
+          <li class="section">Transaction</li>
+          <li><a href="#" class="current">TX-2026-04220941</a></li>
+          <li><a href="transactions.html">—— Back to History</a></li>
+          <li class="section">Context</li>
+          <li><a href="wallet.html">⚡ Hot Wallet</a></li>
+          <li><a href="coin.html">—,— Bitcoin (BTC)</a></li>
+          <li class="section">Navigation</li>
+          <li><a href="home.html">Home Dashboard</a></li>
+          <li><a href="search.html">Search...</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-col">
+
+    <div class="section-heading">⚙️ Transaction Detail: TX-2026-04220941</div>
+
+    <div class="tx-hero">
+      <div class="icon-big">📦</div>
+      <div class="info">
+        <h2>Buy 0.0500 BTC @ $67,100</h2>
+        <div class="sub">Limit order filled &nbsp;·&nbsp; April 22, 2026 09:41:18 AM JST &nbsp;·&nbsp; 🛡️ Confirmed</div>
+      </div>
+      <div class="amount">
+        <div class="big">+0.0500 BTC</div>
+        <div class="usd">—^ $3,355.00</div>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>📊 Transaction Properties</span></div>
+      <div class="webpart-body" style="padding:0;">
+        <table class="prop-table">
+          <tr><td class="k">Transaction ID:</td><td><b>TX-2026-04220941</b></td></tr>
+          <tr><td class="k">Type:</td><td><span style="display:inline-block;padding:1px 6px;font-size:9px;font-weight:bold;background:#dff0c8;border:1px solid #6b9a3a;color:#2a5a10;text-transform:uppercase;">BUY</span></td></tr>
+          <tr><td class="k">Asset:</td><td><a href="coin.html">Bitcoin (BTC)</a></td></tr>
+          <tr><td class="k">Amount:</td><td><b>0.0500 BTC</b></td></tr>
+          <tr><td class="k">Price per Unit:</td><td>$67,100.00</td></tr>
+          <tr><td class="k">Total USD:</td><td><b>$3,355.00</b></td></tr>
+          <tr><td class="k">Order Type:</td><td>Limit Order (price —— $67,100)</td></tr>
+          <tr><td class="k">Date &amp; Time:</td><td>April 22, 2026 at 09:41:18 AM JST (UTC+9)</td></tr>
+          <tr><td class="k">Wallet:</td><td><a href="wallet.html">⚡ Hot Wallet (BTC)</a> — WLT-00001</td></tr>
+          <tr><td class="k">Exchange:</td><td>Kraken</td></tr>
+          <tr><td class="k">Status:</td><td><b style="color:#2a5a10;">🛡️ CONFIRMED</b></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>🔗 On-Chain Details</span></div>
+      <div class="webpart-body" style="padding:0;">
+        <table class="prop-table">
+          <tr><td class="k">Transaction Hash:</td><td><span class="mono">0xa3f8e2c41b7d9f0e8a2c41b7d9f0e8a2c41b7d9f0e8a2c41</span></td></tr>
+          <tr><td class="k">Block Number:</td><td>892,445</td></tr>
+          <tr><td class="k">Confirmations:</td><td><b>847</b> (finalized)</td></tr>
+          <tr><td class="k">Network:</td><td>Bitcoin Mainnet</td></tr>
+          <tr><td class="k">Network Fee:</td><td>0.00012 BTC (₿) — 14 sat/vB</td></tr>
+          <tr><td class="k">Exchange Fee:</td><td>0.0001 BTC (₿) — 0.2% maker</td></tr>
+          <tr><td class="k">Total Fees:</td><td><b>$14.79</b></td></tr>
+          <tr><td class="k">Block Explorer:</td><td><a href="#">View on Mempool.space —'</a></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>⚡ Addresses</span></div>
+      <div class="webpart-body" style="padding:0;">
+        <table class="prop-table">
+          <tr><td class="k">From (Exchange):</td><td><span class="mono">bc1qkraken_hot_wallet_a8x2f9e3c4d5b6a7</span></td></tr>
+          <tr><td class="k">To (Your Wallet):</td><td><span class="mono">bc1q7a3f8e2c41b7d9f0e8a2c41b7d9x8c821</span><br/><span style="font-size:10px;color:#888;">⚡ Hot Wallet — WLT-00001</span></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>⏱ Status Timeline</span></div>
+      <div class="webpart-body">
+        <div class="timeline">
+          <div class="step"><div class="dot done">🛡️</div><div class="content"><div class="title">Order Submitted</div><div class="time">09:38:42 AM — Limit buy @ $67,100</div></div></div>
+          <div class="line"></div>
+          <div class="step"><div class="dot done">🛡️</div><div class="content"><div class="title">Order Matched</div><div class="time">09:41:14 AM — Matched with sell order on Kraken order book</div></div></div>
+          <div class="line"></div>
+          <div class="step"><div class="dot done">🛡️</div><div class="content"><div class="title">Transaction Broadcast</div><div class="time">09:41:15 AM — Submitted to Bitcoin mempool</div></div></div>
+          <div class="line"></div>
+          <div class="step"><div class="dot done">🛡️</div><div class="content"><div class="title">First Confirmation</div><div class="time">09:41:18 AM — Block 892,445 mined</div></div></div>
+          <div class="line"></div>
+          <div class="step"><div class="dot done">🛡️</div><div class="content"><div class="title">Finalized (6+ confirmations)</div><div class="time">09:52:30 AM — 847 confirmations as of now</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>📈 P/L Impact</span></div>
+      <div class="webpart-body" style="padding:0;">
+        <table class="prop-table">
+          <tr><td class="k">Entry Price:</td><td>$67,100.00 per BTC</td></tr>
+          <tr><td class="k">Current Price:</td><td>$67,241.00 per BTC</td></tr>
+          <tr><td class="k">Unrealized P/L:</td><td><b style="color:#2a5a10;">+$7.05 (+0.21%)</b></td></tr>
+          <tr><td class="k">Position after:</td><td>0.4218 BTC (₿)</td></tr>
+          <tr><td class="k">Avg Entry (portfolio):</td><td>$47,200 —' $46,180 (improved)</td></tr>
+          <tr><td class="k">Tax Lot:</td><td>FIFO — Short-term (held &lt; 1yr)</td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="right-col">
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>⚡ Actions</span></div>
+      <ul>
+        <li><a href="#">💱 Trade BTC again</a></li>
+        <li><a href="wallet.html">⚡ View wallet</a></li>
+        <li><a href="coin.html">📊 BTC analysis</a></li>
+        <li><a href="#">📊 Copy tx hash</a></li>
+        <li><a href="#">⚡ Share details</a></li>
+        <li><a href="#">🖨️️ Print receipt</a></li>
+        <li><a href="#">📊 View on explorer</a></li>
+      </ul>
+    </div>
+
+    <div class="webpart side-panel">
+      <div class="webpart-header"><span>📁Z Related Transactions</span></div>
+      <ul>
+        <li><a href="tx-detail.html"><b>Buy 0.0200 BTC</b></a><br/><span style="font-size:9px;color:#888;">DCA · Apr 19 · $1,336</span></li>
+        <li><a href="#"><b>Sell 0.0300 BTC</b></a><br/><span style="font-size:9px;color:#888;">Market · Apr 18 · $2,054</span></li>
+        <li><a href="#"><b>Recv 0.0500 BTC</b></a><br/><span style="font-size:9px;color:#888;">Cold Storage · Apr 15</span></li>
+        <li><a href="#"><b>Buy 0.1000 BTC</b></a><br/><span style="font-size:9px;color:#888;">Limit · Apr 10 · $6,320</span></li>
+      </ul>
+    </div>
+
+    <div class="webpart">
+      <div class="webpart-header"><span>📊 Notes</span></div>
+      <div class="webpart-body" style="font-size:10px;line-height:1.5;color:#333;">
+        <i>"Limit order set at $67,100 support level. BTC dropped after FOMC speculation. Good entry."</i><br/><br/>
+        <span style="color:#888;font-size:9px;">— added by A. Nakamoto, Apr 22</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="footer">
+  <div>&copy; 2026 Digital Asset Terminal &nbsp;|&nbsp; v4.1.0 (build 20260418) &nbsp;|&nbsp; <a href="#">Terms of Use</a> &nbsp;|&nbsp; <a href="#">Privacy Policy</a></div>
+  <div>Database: SQLite 3.42 &nbsp;|&nbsp; Server: localhost:8080 &nbsp;|&nbsp; 🛡️ Best viewed in Internet Explorer 7+</div>
+</div>
+
+</body>
+</html>
